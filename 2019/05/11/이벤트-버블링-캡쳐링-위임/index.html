@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>이벤트 버블링, 캡쳐링, 위임 - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,JavaScript">
+    
+
+    <meta name="description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. &amp;lt;div onclick=&quot;functionA&quot;&amp;gt;   &amp;lt;div onclick=&quot;functionB&quot;&amp;gt;     &amp;lt;div onclick=&quot;functionC&quot;&amp;gt;     &amp;lt;/div&amp;gt;   &amp;lt;">
+<meta name="keywords" content="Tech,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="이벤트 버블링, 캡쳐링, 위임">
+<meta property="og:url" content="https://vallista.kr/2019/05/11/이벤트-버블링-캡쳐링-위임/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. &amp;lt;div onclick=&quot;functionA&quot;&amp;gt;   &amp;lt;div onclick=&quot;functionB&quot;&amp;gt;     &amp;lt;div onclick=&quot;functionC&quot;&amp;gt;     &amp;lt;/div&amp;gt;   &amp;lt;">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:53.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="이벤트 버블링, 캡쳐링, 위임">
+<meta name="twitter:description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. &amp;lt;div onclick=&quot;functionA&quot;&amp;gt;   &amp;lt;div onclick=&quot;functionB&quot;&amp;gt;     &amp;lt;div onclick=&quot;functionC&quot;&amp;gt;     &amp;lt;/div&amp;gt;   &amp;lt;">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/11/이벤트-버블링-캡쳐링-위임/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">이벤트 버블링, 캡쳐링, 위임</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-11</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#이벤트-버블링"><span class="toc-text">이벤트 버블링</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#이벤트-캡처링"><span class="toc-text">이벤트 캡처링</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#이벤트-전파-중지"><span class="toc-text">이벤트 전파 중지</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#이벤트-위임"><span class="toc-text">이벤트 위임</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다.</p>
+<p>단, 아래와 같은 상황에서는 이벤트가 전파 된다.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span>div onclick<span class="token operator">=</span><span class="token string">"functionA"</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>div onclick<span class="token operator">=</span><span class="token string">"functionB"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>div onclick<span class="token operator">=</span><span class="token string">"functionC"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span></code></pre>
+<p>functionA, functionB, functionC를 <code>이벤트 등록</code>했다.</p>
+<h2 id="이벤트-버블링"><a href="#이벤트-버블링" class="headerlink" title="이벤트 버블링"></a>이벤트 버블링</h2><p>이벤트 버블링은 아래와 같이 이벤트가 전파되는 행위를 일컫는다.</p>
+<p>FunctionC → FunctionB → FunctionA</p>
+<p>즉, 가장 하위의 자식 노드의 이벤트부터, 최상단의 부모 노드 순으로 실행된다.</p>
+<h2 id="이벤트-캡처링"><a href="#이벤트-캡처링" class="headerlink" title="이벤트 캡처링"></a>이벤트 캡처링</h2><p>이벤트 캡처링은 아래와 같이 이벤트가 전파되는 행위를 일컫는다.</p>
+<p><code>functionA</code> → <code>functionB</code> → <code>functionC</code></p>
+<p>즉, 최상단의 부모 노드부터 최하단의 자식 노드까지 실행된다.</p>
+<p>이벤트 캡처링을 하기 위해서, addEventListener의 API에서 설정해야 한다.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> event<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  capture<span class="token punctuation">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<h2 id="이벤트-전파-중지"><a href="#이벤트-전파-중지" class="headerlink" title="이벤트 전파 중지"></a>이벤트 전파 중지</h2><p>이벤트 전파를 중지하고 싶을 때가 존재한다.</p>
+<p>event API의 stopPropagation() 메서드로 해당 함수 실행 이후의 자식, 부모 노드의 이벤트를 중지한다.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  e<span class="token punctuation">.</span><span class="token function">stopPropagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<h2 id="이벤트-위임"><a href="#이벤트-위임" class="headerlink" title="이벤트 위임"></a>이벤트 위임</h2><p>이벤트를 최초 1회만 등록하고 새로운 노드를 추가 시킬 때 새로운 노드에도 이벤트를 유지하고 싶을 때가 있다.</p>
+<p>그때 사용하는 게 이벤트 위임이다.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span>ul <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"item"</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>li<span class="token operator">></span>
+    <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"checkbox"</span><span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>li<span class="token operator">></span>
+  <span class="token operator">&lt;</span>li<span class="token operator">></span>
+    <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"checkbox"</span><span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>li<span class="token operator">></span>
+  <span class="token operator">&lt;</span>li<span class="token operator">></span>
+    <span class="token operator">&lt;</span>input type<span class="token operator">=</span><span class="token string">"checkbox"</span><span class="token operator">/</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>li<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ul<span class="token operator">></span>
+
+document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.item'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>이렇게 하면 하위의 모든 click 이벤트에 이벤트가 위임되는 걸 알 수 있다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/JavaScript/" title="JavaScript">JavaScript</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/05/12/리듀스-Reduce/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">리듀스 (Reduce)</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/11/클로저-Closure/">
+                <div class="wrapper">
+                    <span class="nav-default">클로저 (Closure)</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

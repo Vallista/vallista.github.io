@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>Jenkins - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,Jenkins,DevOps">
+    
+
+    <meta name="description" content="#1 설치 Jenkins  Docker Container로 Jenkins 설치  Github과 Jenkins 연동하기  jenkins 관리 &amp;gt; 플러그인 관리 &amp;gt; 설치가능 탭 &amp;gt; git 검색 &amp;gt; github intergration plugin 다운로드  jenkins 관리 &amp;gt; configure global security &amp;gt;">
+<meta name="keywords" content="Tech,Jenkins,DevOps">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins">
+<meta property="og:url" content="https://vallista.kr/2019/05/28/Jenkins/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="#1 설치 Jenkins  Docker Container로 Jenkins 설치  Github과 Jenkins 연동하기  jenkins 관리 &amp;gt; 플러그인 관리 &amp;gt; 설치가능 탭 &amp;gt; git 검색 &amp;gt; github intergration plugin 다운로드  jenkins 관리 &amp;gt; configure global security &amp;gt;">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://vallista.kr/images/jenkins_1.png">
+<meta property="og:image" content="https://vallista.kr/images/jenkins_2.png">
+<meta property="og:image" content="https://vallista.kr/images/jenkins_3.png">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jenkins">
+<meta name="twitter:description" content="#1 설치 Jenkins  Docker Container로 Jenkins 설치  Github과 Jenkins 연동하기  jenkins 관리 &amp;gt; 플러그인 관리 &amp;gt; 설치가능 탭 &amp;gt; git 검색 &amp;gt; github intergration plugin 다운로드  jenkins 관리 &amp;gt; configure global security &amp;gt;">
+<meta name="twitter:image" content="https://vallista.kr/images/jenkins_1.png">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/28/jenkins/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">Jenkins</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-28</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-설치"><span class="toc-text">#1 설치</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-작업-생성"><span class="toc-text">#2 작업 생성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Jenkins-File로-Pipeline-설정"><span class="toc-text">#3 Jenkins File로 Pipeline 설정</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <h2 id="1-설치"><a href="#1-설치" class="headerlink" title="#1 설치"></a>#1 설치</h2><ol>
+<li><p>Jenkins</p>
+<p> <a href="https://www.leafcats.com/215" target="_blank" rel="noopener">Docker Container로 Jenkins 설치</a></p>
+<p> <a href="https://taetaetae.github.io/2018/02/08/github-with-jenkins/" target="_blank" rel="noopener">Github과 Jenkins 연동하기</a></p>
+</li>
+<li><p>jenkins 관리 &gt; 플러그인 관리 &gt; 설치가능 탭 &gt; git 검색 &gt; github intergration plugin 다운로드</p>
+</li>
+<li><p>jenkins 관리 &gt; configure global security &gt; CSRF Protection &gt; disable</p>
+</li>
+<li><p>jenkins 실행 서버</p>
+<pre><code> $ ssh-keygen -t rsa -f id_rsa</code></pre></li>
+<li><p>Credentials &gt; System &gt; Global Credentials &gt; Add Credentials</p>
+<ul>
+<li>kind - ssh username with private key<ul>
+<li>scope - global</li>
+<li>ID - 유니크 이름</li>
+<li>Description - 설명</li>
+<li>UserName - 유저 이름</li>
+<li>Private Key - jenkins 서버(jenkins가 돌아가는 운영체제) 에서 ssh-keygen으로 입력한 값 중 id_ksa 파일</li>
+<li>Passphrase - 비밀번호</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Github Repository &gt; Settings &gt; Deploy Keys &gt; Add Deploy Key &gt; Title, Key 입력 (key = ssh-keygen 으로 발급받은 id_rsa.pub)</p>
+</li>
+</ol>
+<h2 id="2-작업-생성"><a href="#2-작업-생성" class="headerlink" title="#2 작업 생성"></a>#2 작업 생성</h2><ol>
+<li><p>새로운 Item으로 작업 생성</p>
+</li>
+<li><p>Freestyle Project, Pipeline 용도에 맞게 생성</p>
+</li>
+<li><p>아래의 사진 처럼 셋팅</p>
+<p> <img src="/images/jenkins_1.png" alt></p>
+<p> <img src="/images/jenkins_2.png" alt></p>
+</li>
+<li><p>Pipeline script from SCM (pipeline일 때), SCM → Git, Repository에는 ssh주소를 적어준다. 그리고 만들어놓은 Credentials를 사용.</p>
+<p> <img src="/images/jenkins_3.png" alt></p>
+</li>
+</ol>
+<h2 id="3-Jenkins-File로-Pipeline-설정"><a href="#3-Jenkins-File로-Pipeline-설정" class="headerlink" title="#3 Jenkins File로 Pipeline 설정"></a>#3 Jenkins File로 Pipeline 설정</h2><p><a href="https://medium.com/@dillson/triggering-a-jenkins-pipeline-on-git-push-321d29a98cf3" target="_blank" rel="noopener">Triggering a Jenkins Pipeline on ‘git push’</a></p>
+<blockquote>
+<p>Jenkinsfile 실행 시 cannot connect to the docker daemon issue</p>
+<p><a href="https://stackoverflow.com/questions/38105308/jenkins-cant-connect-to-docker-daemon" target="_blank" rel="noopener">Jenkins: Can’t connect to Docker daemon</a></p>
+<p><a href="https://stackoverflow.com/questions/21871479/docker-cant-connect-to-docker-daemon" target="_blank" rel="noopener">Docker can’t connect to docker daemon</a></p>
+<ol>
+<li><p>docker가 실행되어 있는지 확인</p>
+</li>
+<li><p>docker group 권한 주기</p>
+<pre><code>sudo groupadd docker
+sudo usermod -aG docker $(whoami)</code></pre></li>
+<li><p>sudo service docker start</p>
+</li>
+</ol>
+<p>sudo service docker start 하면 docker 실행되면서 daemon도 실행됨.</p>
+</blockquote>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/Jenkins/" title="Jenkins">Jenkins</a>
+            
+            <a class="tag" href="/tags/DevOps/" title="DevOps">DevOps</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/05/30/Docker-In-Docker-DIND-설정하기/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">Docker In Docker (DIND) 설정하기</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/15/Next에서-Alias-적용하기/">
+                <div class="wrapper">
+                    <span class="nav-default">Next에서 Alias 적용하기</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

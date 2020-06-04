@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>SSR (Server Side Rendering) - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,Web">
+    
+
+    <meta name="description" content="SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Search Engine Optimization)가 가능하다.  페이지마다 렌더링 된 html 파">
+<meta name="keywords" content="Tech,Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSR (Server Side Rendering)">
+<meta property="og:url" content="https://vallista.kr/2019/05/05/SSR-Server-Side-Rendering/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Search Engine Optimization)가 가능하다.  페이지마다 렌더링 된 html 파">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.902Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSR (Server Side Rendering)">
+<meta name="twitter:description" content="SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Search Engine Optimization)가 가능하다.  페이지마다 렌더링 된 html 파">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/05/ssr-server-side-rendering/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">SSR (Server Side Rendering)</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-05</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Search Engine Optimization)가 가능하다. </p>
+<p>페이지마다 렌더링 된 html 파일을 받는 작업은 과거에 전통적으로 사용되던 웹 개발 기법이다. 대표적으로 jsp를 들 수 있다. </p>
+<p>장점은 SPA에 비해서 JavaScript 연산을 통해 HTML을 생성하므로 초기 스타트 비용이 큰 반면, SSR 처리를 하게 되면 완성된 HTML을 받으므로 초기 스타트 비용이 매우 적다. </p>
+<p>단점은 사용자 경험이 매우 좋지 않게 되는데, 페이지 전환마다 깜빡임이 일어날 수 있고, 어플리케이션을 쓰는 느낌을 주기 힘들다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/Web/" title="Web">Web</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/05/06/브라우저-렌더링-과정/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">브라우저 렌더링 과정</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/05/SPA-Single-Page-Application/">
+                <div class="wrapper">
+                    <span class="nav-default">SPA (Single Page Application)</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

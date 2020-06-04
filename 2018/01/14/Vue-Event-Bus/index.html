@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>Vue Event Bus - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,Vue">
+    
+
+    <meta name="description" content="vue에서 component간 통신을 하기 위해서는 상위의 컴포넌트에서 하위로 이벤트를 내려보내고, 하위에서 props로 받아서 전달할 수 밖에 없다. 이러한 특성은 vue는 one-direction data flow (단방향 데이터 플로우)의 형태를 가지기 때문인데, 이러한 형태를 통해서 캡슐화 등, 객체지향의 개념을 접목시킬 수 있다는 장점이 있다. 하">
+<meta name="keywords" content="Tech,Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue Event Bus">
+<meta property="og:url" content="https://vallista.kr/2018/01/14/Vue-Event-Bus/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="vue에서 component간 통신을 하기 위해서는 상위의 컴포넌트에서 하위로 이벤트를 내려보내고, 하위에서 props로 받아서 전달할 수 밖에 없다. 이러한 특성은 vue는 one-direction data flow (단방향 데이터 플로우)의 형태를 가지기 때문인데, 이러한 형태를 통해서 캡슐화 등, 객체지향의 개념을 접목시킬 수 있다는 장점이 있다. 하">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue Event Bus">
+<meta name="twitter:description" content="vue에서 component간 통신을 하기 위해서는 상위의 컴포넌트에서 하위로 이벤트를 내려보내고, 하위에서 props로 받아서 전달할 수 밖에 없다. 이러한 특성은 vue는 one-direction data flow (단방향 데이터 플로우)의 형태를 가지기 때문인데, 이러한 형태를 통해서 캡슐화 등, 객체지향의 개념을 접목시킬 수 있다는 장점이 있다. 하">
+    
+    <link rel="canonical" href="https://vallista.kr/2018/01/14/vue-event-bus/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">Vue Event Bus</h2>
+            <div class="post-meta">
+                <span class="post-time">2018-01-14</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Event-Bus-란"><span class="toc-text">Event Bus 란?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#핵심-함수"><span class="toc-text">핵심 함수</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#on"><span class="toc-text">$on</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#emit"><span class="toc-text">$emit</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#추가"><span class="toc-text">추가</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>vue에서 component간 통신을 하기 위해서는 상위의 컴포넌트에서 하위로 이벤트를 내려보내고, 하위에서 props로 받아서 전달할 수 밖에 없다.</p>
+<p>이러한 특성은 vue는 one-direction data flow (단방향 데이터 플로우)의 형태를 가지기 때문인데, 이러한 형태를 통해서 캡슐화 등, 객체지향의 개념을 접목시킬 수 있다는 장점이 있다.</p>
+<p>하지만 이러한 특성은 상위 컴포넌트로 데이터를 못보낸다는 단점이 존재하는데 이렇게 될 경우 노드 반대쪽에 있는 데이터와는 이벤트 전달을 못하게 된다.</p>
+<p>전달을 못하게 되므로 EventBus라는 꼼수? 테크닉을 사용하기로 하였다.</p>
+<h2 id="Event-Bus-란"><a href="#Event-Bus-란" class="headerlink" title="Event Bus 란?"></a>Event Bus 란?</h2><p>Event Bus는 기본적으로 제작한 vue 컴포넌트에서 새로운 vue instance를 하나 제작하여, 해당 instance를 싱글톤 개념처럼 사용하는 방식이다.</p>
+<p>vue instance를 새로 만들어서 $on으로 이벤트를 만들어주고, $emit으로 호출하면 끝이다. 아래의 예제를 보도록 하자.</p>
+<pre class=" language-javascript"><code class="language-javascript">Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">'button-component'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">'button-component'</span><span class="token punctuation">,</span>
+    template<span class="token punctuation">:</span> <span class="token string">'&lt;button @click="this.clickEvent">Alert Print!&lt;/button>'</span><span class="token punctuation">,</span>
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        clickEvent<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            EventBus<span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">'addAlert'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> description<span class="token punctuation">:</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">'alert-box'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">'alert-box'</span><span class="token punctuation">,</span>
+    props<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        index<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+        description<span class="token punctuation">:</span> <span class="token string">''</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    mounted<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            EventBus<span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">'deleteAlert'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    template<span class="token punctuation">:</span> <span class="token string">'&lt;div :class="`alert-box-${this.index}`" class="alert-box alert-box-start flex-container flex-center-sort flex-column">'</span> <span class="token operator">+</span>
+        <span class="token string">'&lt;div class="title flex-container flex-center-sort flex-column">&lt;div class="title-image-background">&lt;/div>&lt;img class="title-image" src="image.png"/>&lt;/div>'</span> <span class="token operator">+</span>
+        <span class="token string">'&lt;div class="description flex-container flex-center-sort flex-column">{{this.description}}&lt;/div>'</span> <span class="token operator">+</span>
+    <span class="token string">'&lt;/div>'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+Vue<span class="token punctuation">.</span><span class="token function">component</span><span class="token punctuation">(</span><span class="token string">'alert-box-list'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span> <span class="token string">'alert-box-list'</span><span class="token punctuation">,</span>
+    data<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">{</span>
+            alertList<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        addAlert<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">{</span> description <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>alertList<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span> description <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        deleteAlert<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>alertList<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    created<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>alertList <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        EventBus<span class="token punctuation">.</span><span class="token function">$on</span><span class="token punctuation">(</span><span class="token string">'addAlert'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>addAlert<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        EventBus<span class="token punctuation">.</span><span class="token function">$on</span><span class="token punctuation">(</span><span class="token string">'deleteAlert'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>deleteAlert<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    template<span class="token punctuation">:</span> <span class="token string">'&lt;ul>&lt;li v-for="(value, index) in alertList">'</span> <span class="token operator">+</span>
+    <span class="token string">'&lt;alert-box :description="value.description" :index="index" :key="index">'</span> <span class="token operator">+</span>
+    <span class="token string">'&lt;/alert-box>'</span> <span class="token operator">+</span>
+    <span class="token string">'&lt;/li>&lt;/ul>'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> EventBus <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    el<span class="token punctuation">:</span> <span class="token string">'#app'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>해당 소스는 alert-box-list 컴포넌트와 button-component가 통신하는 과정을 보여준다.</p>
+<p>제일 아래에 있는 new Vue와 EventBus를 보면 각각 다른 vue instance를 생성해주었다.</p>
+<p>EventBus의 vue instance는 아무것도 가지고 있지 않으며 new Vue 인스턴스는 element로 app 이라는 이름의 id를 가지고 있다.</p>
+<p>그 다음은 해당 소스코드의 alert-box-list의 methods 부분을 보도록 하자.</p>
+<p>methods 부분에는 addAlert과 deleteAlert이 있다. addAlert은 alertList에 push로 데이터를 넣어주며 deleteAlert은 alertList의 첫번째 인자를 shift를 이용하여 삭제해준다.</p>
+<p>다음은 중요한 created function 부분이다. 해당 component가 life cycle hook 에 있는 created 를 지나게 되면 this.alertList에서 초기화를 하고, EventBus를 호출하여 $on 함수로 등록을 하게 된다. 이름과 함수를 받아서 등록을 하게 되는 소스코드이다.</p>
+<p>다음은 해당 소스코드를 사용하는 button-component의 methods를 보도록 하자.</p>
+<p>해당 clickEvent는 상단의 template에서 button element가 클릭 이벤트를 바인딩 하고 있다. 클릭되면 EventBus.$emit을 통해서 ‘addAlert’ 이벤트를 호출한다. parameter로는 object를 전달한다.</p>
+<p>다음은 alert-box component의 mounted 인데, 이 함수 또한 application life cycle hook 중 하나이며, 생성되고 나서 시간이 2초 지나면 EventBus.$emit을 호출하도록 하였다.</p>
+<h2 id="핵심-함수"><a href="#핵심-함수" class="headerlink" title="핵심 함수"></a>핵심 함수</h2><h4 id="on"><a href="#on" class="headerlink" title="$on"></a>$on</h4><p>target.$on은 target의 상위 객체에 넘긴 함수를 string과 함께 전달한다.</p>
+<h4 id="emit"><a href="#emit" class="headerlink" title="$emit"></a>$emit</h4><p>target.$emit은 $on으로 등록한 이벤트를 실행시키는 역할을 맡는다.</p>
+<h2 id="추가"><a href="#추가" class="headerlink" title="추가"></a>추가</h2><p>사실 vue는 양방향 데이터 바인딩을 지원한다. 이는 $emit을 이용해서 자신의 parent에 보내고 전달을 하면 되기 때문인데, 나는 이러한 구조가 컨트롤과 명시성이 애매해진다고 생각한다.</p>
+<p>그래서 emit 자체를 싱글톤 처럼 하나의 new instance로 만들어줫다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/Vue/" title="Vue">Vue</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2018/01/15/Vue-LifeCycle/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">Vue LifeCycle</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2017/12/25/2017년-회고/">
+                <div class="wrapper">
+                    <span class="nav-default">2017년 회고</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

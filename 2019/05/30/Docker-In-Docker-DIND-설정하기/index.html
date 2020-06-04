@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>Docker In Docker (DIND) 설정하기 - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Docker,DinD,Docker In Docker">
+    
+
+    <meta name="description" content="Docker in Docker를 설정하는 이유 첫 번째로 보안의 위험이 있다. 특히나, Jenkins등의 CI를 사용하는 환경에서 Jenkins가 Docker를 실행할 때, Jenkins나 Docker가 해킹당하면 서버 전체의 권한이 뚫리는거랑 마찬가지이다. 그러므로 소스코드 유출 및 사용자에게 Serve 할 때 문제가 일어나게 된다. 그러므로 Docker">
+<meta name="keywords" content="Docker,DinD,Docker In Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker In Docker (DIND) 설정하기">
+<meta property="og:url" content="https://vallista.kr/2019/05/30/Docker-In-Docker-DIND-설정하기/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="Docker in Docker를 설정하는 이유 첫 번째로 보안의 위험이 있다. 특히나, Jenkins등의 CI를 사용하는 환경에서 Jenkins가 Docker를 실행할 때, Jenkins나 Docker가 해킹당하면 서버 전체의 권한이 뚫리는거랑 마찬가지이다. 그러므로 소스코드 유출 및 사용자에게 Serve 할 때 문제가 일어나게 된다. 그러므로 Docker">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker In Docker (DIND) 설정하기">
+<meta name="twitter:description" content="Docker in Docker를 설정하는 이유 첫 번째로 보안의 위험이 있다. 특히나, Jenkins등의 CI를 사용하는 환경에서 Jenkins가 Docker를 실행할 때, Jenkins나 Docker가 해킹당하면 서버 전체의 권한이 뚫리는거랑 마찬가지이다. 그러므로 소스코드 유출 및 사용자에게 Serve 할 때 문제가 일어나게 된다. 그러므로 Docker">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/30/docker-in-docker-dind-설정하기/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">Docker In Docker (DIND) 설정하기</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-30</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker-In-Docker-dind-설정"><span class="toc-text">Docker In Docker(dind) 설정</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#참고"><span class="toc-text">참고</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>Docker in Docker를 설정하는 이유 첫 번째로 보안의 위험이 있다.</p>
+<p>특히나, Jenkins등의 CI를 사용하는 환경에서 Jenkins가 Docker를 실행할 때, Jenkins나 Docker가 해킹당하면 서버 전체의 권한이 뚫리는거랑 마찬가지이다. 그러므로 소스코드 유출 및 사용자에게 Serve 할 때 문제가 일어나게 된다. 그러므로 Docker로 한번 더 감싸서 Docker Wrapper에 권한을 하나 더 만든다. 그 다음 Docker Wrapper의 가상 환경에 jenkins와 docker 이미지를 만들고 가상 환경의 서버에서 jenkins와 docker 인스턴스를 실행시킨다. 이렇게 되면 jenkins, docker서버가 해킹당하더라도 docker wrapper instance만 해킹이 되기 때문에 안전하다.</p>
+<p>두 번째는 백업이다.</p>
+<p>jenkins와 docker가 단독으로 instance로써 작동할 때 서버가 꺼지거나 하면 백업이 쉽지 않다. 하지만 docker wrapper로 감싸게 되면 백업에 용이하다.</p>
+<h2 id="Docker-In-Docker-dind-설정"><a href="#Docker-In-Docker-dind-설정" class="headerlink" title="Docker In Docker(dind) 설정"></a>Docker In Docker(dind) 설정</h2><p>1) <a href="https://github.com/jpetazzo/dind" target="_blank" rel="noopener">jpetazzo/dind</a><br>2) <a href="http://seapy.com/2083" target="_blank" rel="noopener">Jenkins를 이용한 Docker 빌드</a></p>
+<p>위의 자료를 참고했다. 프로젝트에 아래의 파일들을 적용한다.</p>
+<ul>
+<li>Dockerfile</li>
+</ul>
+<pre class=" language-bash"><code class="language-bash">FROM jenkins:2.60.3
+MAINTAINER jerome.petazzoni@docker.com
+
+USER root
+
+<span class="token comment" spellcheck="true"># Let's start with some basic stuff.</span>
+RUN <span class="token function">apt-get</span> update -qq <span class="token operator">&amp;&amp;</span> <span class="token function">apt-get</span> <span class="token function">install</span> -qqy \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    lxc \
+    iptables \
+    ca-certificates
+
+<span class="token comment" spellcheck="true"># Install Docker from Docker Inc. repositories.</span>
+RUN curl -sSL https://get.docker.com/ <span class="token operator">|</span> sh
+
+<span class="token comment" spellcheck="true"># Install the magic wrapper.</span>
+ADD ./wrapdocker /usr/local/bin/wrapdocker
+RUN <span class="token function">chmod</span> +x /usr/local/bin/wrapdocker
+
+<span class="token comment" spellcheck="true"># Define additional metadata for our image.</span>
+VOLUME /var/lib/docker
+
+ENV JAVA_ARGS -Xms512m -Xmx1024m
+
+CMD <span class="token punctuation">[</span><span class="token string">"/usr/local/bin/wrapdocker"</span><span class="token punctuation">]</span>
+
+ADD jenkins_dind.sh /usr/local/bin/jenkins_dind.sh
+RUN <span class="token function">chmod</span> +x /usr/local/bin/jenkins_dind.sh
+
+CMD <span class="token punctuation">[</span><span class="token string">"/usr/local/bin/jenkins_dind.sh"</span><span class="token punctuation">]</span></code></pre>
+<ul>
+<li>wrapdocker</li>
+</ul>
+<pre class=" language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+
+<span class="token comment" spellcheck="true"># Ensure that all nodes in /dev/mapper correspond to mapped devices currently loaded by the device-mapper kernel driver</span>
+dmsetup mknodes
+
+<span class="token comment" spellcheck="true"># First, make sure that cgroups are mounted correctly.</span>
+CGROUP<span class="token operator">=</span>/sys/fs/cgroup
+<span class="token keyword">:</span> <span class="token punctuation">{</span>LOG:<span class="token operator">=</span>stdio<span class="token punctuation">}</span>
+
+<span class="token punctuation">[</span> -d <span class="token variable">$CGROUP</span> <span class="token punctuation">]</span> <span class="token operator">||</span>
+        <span class="token function">mkdir</span> <span class="token variable">$CGROUP</span>
+
+mountpoint -q <span class="token variable">$CGROUP</span> <span class="token operator">||</span>
+        <span class="token function">mount</span> -n -t tmpfs -o uid<span class="token operator">=</span>0,gid<span class="token operator">=</span>0,mode<span class="token operator">=</span>0755 cgroup <span class="token variable">$CGROUP</span> <span class="token operator">||</span> <span class="token punctuation">{</span>
+                <span class="token keyword">echo</span> <span class="token string">"Could not make a tmpfs mount. Did you use --privileged?"</span>
+                <span class="token keyword">exit</span> 1
+        <span class="token punctuation">}</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -d /sys/kernel/security <span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span> mountpoint -q /sys/kernel/security
+<span class="token keyword">then</span>
+    <span class="token function">mount</span> -t securityfs none /sys/kernel/security <span class="token operator">||</span> <span class="token punctuation">{</span>
+        <span class="token keyword">echo</span> <span class="token string">"Could not mount /sys/kernel/security."</span>
+        <span class="token keyword">echo</span> <span class="token string">"AppArmor detection and --privileged mode might break."</span>
+    <span class="token punctuation">}</span>
+<span class="token keyword">fi</span>
+
+<span class="token comment" spellcheck="true"># Mount the cgroup hierarchies exactly as they are in the parent system.</span>
+<span class="token keyword">for</span> SUBSYS <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d: -f2 /proc/1/cgroup<span class="token variable">)</span></span>
+<span class="token keyword">do</span>
+        <span class="token punctuation">[</span> -d <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span> <span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token function">mkdir</span> <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span>
+        mountpoint -q <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span> <span class="token operator">||</span>
+                <span class="token function">mount</span> -n -t cgroup -o <span class="token variable">$SUBSYS</span> cgroup <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span>
+
+        <span class="token comment" spellcheck="true"># The two following sections address a bug which manifests itself</span>
+        <span class="token comment" spellcheck="true"># by a cryptic "lxc-start: no ns_cgroup option specified" when</span>
+        <span class="token comment" spellcheck="true"># trying to start containers withina container.</span>
+        <span class="token comment" spellcheck="true"># The bug seems to appear when the cgroup hierarchies are not</span>
+        <span class="token comment" spellcheck="true"># mounted on the exact same directories in the host, and in the</span>
+        <span class="token comment" spellcheck="true"># container.</span>
+
+        <span class="token comment" spellcheck="true"># Named, control-less cgroups are mounted with "-o name=foo"</span>
+        <span class="token comment" spellcheck="true"># (and appear as such under /proc/&lt;pid>/cgroup) but are usually</span>
+        <span class="token comment" spellcheck="true"># mounted on a directory named "foo" (without the "name=" prefix).</span>
+        <span class="token comment" spellcheck="true"># Systemd and OpenRC (and possibly others) both create such a</span>
+        <span class="token comment" spellcheck="true"># cgroup. To avoid the aforementioned bug, we symlink "foo" to</span>
+        <span class="token comment" spellcheck="true"># "name=foo". This shouldn't have any adverse effect.</span>
+        <span class="token keyword">echo</span> <span class="token variable">$SUBSYS</span> <span class="token operator">|</span> <span class="token function">grep</span> -q ^name<span class="token operator">=</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">{</span>
+                NAME<span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token keyword">echo</span> $SUBSYS <span class="token operator">|</span> <span class="token function">sed</span> s/^name<span class="token operator">=</span>//<span class="token variable">)</span></span>
+                <span class="token function">ln</span> -s <span class="token variable">$SUBSYS</span> <span class="token variable">$CGROUP</span>/<span class="token variable">$NAME</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment" spellcheck="true"># Likewise, on at least one system, it has been reported that</span>
+        <span class="token comment" spellcheck="true"># systemd would mount the CPU and CPU accounting controllers</span>
+        <span class="token comment" spellcheck="true"># (respectively "cpu" and "cpuacct") with "-o cpuacct,cpu"</span>
+        <span class="token comment" spellcheck="true"># but on a directory called "cpu,cpuacct" (note the inversion</span>
+        <span class="token comment" spellcheck="true"># in the order of the groups). This tries to work around it.</span>
+        <span class="token punctuation">[</span> <span class="token variable">$SUBSYS</span> <span class="token operator">=</span> cpuacct,cpu <span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token function">ln</span> -s <span class="token variable">$SUBSYS</span> <span class="token variable">$CGROUP</span>/cpu,cpuacct
+<span class="token keyword">done</span>
+
+<span class="token comment" spellcheck="true"># Note: as I write those lines, the LXC userland tools cannot setup</span>
+<span class="token comment" spellcheck="true"># a "sub-container" properly if the "devices" cgroup is not in its</span>
+<span class="token comment" spellcheck="true"># own hierarchy. Let's detect this and issue a warning.</span>
+<span class="token function">grep</span> -q :devices: /proc/1/cgroup <span class="token operator">||</span>
+        <span class="token keyword">echo</span> <span class="token string">"WARNING: the 'devices' cgroup should be in its own hierarchy."</span>
+<span class="token function">grep</span> -qw devices /proc/1/cgroup <span class="token operator">||</span>
+        <span class="token keyword">echo</span> <span class="token string">"WARNING: it looks like the 'devices' cgroup is not mounted."</span>
+
+<span class="token comment" spellcheck="true"># Now, close extraneous file descriptors.</span>
+<span class="token function">pushd</span> /proc/self/fd <span class="token operator">></span>/dev/null
+<span class="token keyword">for</span> FD <span class="token keyword">in</span> *
+<span class="token keyword">do</span>
+        <span class="token keyword">case</span> <span class="token string">"<span class="token variable">$FD</span>"</span> <span class="token keyword">in</span>
+        <span class="token comment" spellcheck="true"># Keep stdin/stdout/stderr</span>
+        <span class="token punctuation">[</span>012<span class="token punctuation">]</span><span class="token punctuation">)</span>
+                <span class="token punctuation">;</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true"># Nuke everything else</span>
+        *<span class="token punctuation">)</span>
+                <span class="token function">eval</span> <span class="token function">exec</span> <span class="token string">"<span class="token variable">$FD</span>>&amp;-"</span>
+                <span class="token punctuation">;</span><span class="token punctuation">;</span>
+        esac
+<span class="token keyword">done</span>
+<span class="token function">popd</span> <span class="token operator">></span>/dev/null
+
+
+<span class="token comment" spellcheck="true"># If a pidfile is still around (for example after a container restart),</span>
+<span class="token comment" spellcheck="true"># delete it so that docker can start.</span>
+<span class="token function">rm</span> -rf /var/run/docker.pid
+
+<span class="token comment" spellcheck="true"># If we were given a PORT environment variable, start as a simple daemon;</span>
+<span class="token comment" spellcheck="true"># otherwise, spawn a shell as well</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"<span class="token variable">$PORT</span>"</span> <span class="token punctuation">]</span>
+<span class="token keyword">then</span>
+        <span class="token function">exec</span> dockerd -H 0.0.0.0:<span class="token variable">$PORT</span> -H unix:///var/run/docker.sock \
+                <span class="token variable">$DOCKER_DAEMON_ARGS</span>
+<span class="token keyword">else</span>
+        <span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token string">"<span class="token variable">$LOG</span>"</span> <span class="token operator">==</span> <span class="token string">"file"</span> <span class="token punctuation">]</span>
+        <span class="token keyword">then</span>
+                dockerd <span class="token variable">$DOCKER_DAEMON_ARGS</span> <span class="token operator">&amp;</span><span class="token operator">></span>/var/log/docker.log <span class="token operator">&amp;</span>
+        <span class="token keyword">else</span>
+                dockerd <span class="token variable">$DOCKER_DAEMON_ARGS</span> <span class="token operator">&amp;</span>
+        <span class="token keyword">fi</span>
+        <span class="token variable"><span class="token punctuation">((</span> timeout <span class="token operator">=</span> <span class="token number">60</span> <span class="token operator">+</span> SECONDS <span class="token punctuation">))</span></span>
+        <span class="token keyword">until</span> docker info <span class="token operator">></span>/dev/null 2<span class="token operator">></span><span class="token operator">&amp;</span>1
+        <span class="token keyword">do</span>
+                <span class="token keyword">if</span> <span class="token variable"><span class="token punctuation">((</span> SECONDS <span class="token operator">>=</span> timeout <span class="token punctuation">))</span></span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+                        <span class="token keyword">echo</span> <span class="token string">'Timed out trying to connect to internal docker host.'</span> <span class="token operator">></span><span class="token operator">&amp;</span>2
+                        <span class="token keyword">break</span>
+                <span class="token keyword">fi</span>
+                <span class="token function">sleep</span> 1
+        <span class="token keyword">done</span>
+        <span class="token punctuation">[</span><span class="token punctuation">[</span> <span class="token variable">$1</span> <span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token function">exec</span> <span class="token string">"<span class="token variable">$@</span>"</span>
+        <span class="token function">exec</span> <span class="token function">bash</span> --login
+<span class="token keyword">fi</span></code></pre>
+<ul>
+<li>jenkins_dind.sh</li>
+</ul>
+<pre class=" language-bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+
+CGROUP<span class="token operator">=</span>/sys/fs/cgroup
+
+<span class="token punctuation">[</span> -d <span class="token variable">$CGROUP</span> <span class="token punctuation">]</span> <span class="token operator">||</span>
+  <span class="token function">mkdir</span> <span class="token variable">$CGROUP</span>
+
+mountpoint -q <span class="token variable">$CGROUP</span> <span class="token operator">||</span>
+  <span class="token function">mount</span> -n -t tmpfs -o uid<span class="token operator">=</span>0,gid<span class="token operator">=</span>0,mode<span class="token operator">=</span>0755 cgroup <span class="token variable">$CGROUP</span> <span class="token operator">||</span> <span class="token punctuation">{</span>
+    <span class="token keyword">echo</span> <span class="token string">"Could not make a tmpfs mount. Did you use -privileged?"</span>
+    <span class="token keyword">exit</span> 1
+  <span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true"># Mount the cgroup hierarchies exactly as they are in the parent system.</span>
+<span class="token keyword">for</span> SUBSYS <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d: -f2 /proc/1/cgroup<span class="token variable">)</span></span>
+<span class="token keyword">do</span>
+  <span class="token punctuation">[</span> -d <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span> <span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token function">mkdir</span> <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span>
+  mountpoint -q <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span> <span class="token operator">||</span>
+    <span class="token function">mount</span> -n -t cgroup -o <span class="token variable">$SUBSYS</span> cgroup <span class="token variable">$CGROUP</span>/<span class="token variable">$SUBSYS</span>
+<span class="token keyword">done</span>
+
+<span class="token comment" spellcheck="true"># Now, close extraneous file descriptors.</span>
+<span class="token function">pushd</span> /proc/self/fd
+<span class="token keyword">for</span> FD <span class="token keyword">in</span> *
+<span class="token keyword">do</span>
+  <span class="token keyword">case</span> <span class="token string">"<span class="token variable">$FD</span>"</span> <span class="token keyword">in</span>
+  <span class="token comment" spellcheck="true"># Keep stdin/stdout/stderr</span>
+  <span class="token punctuation">[</span>012<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+  <span class="token comment" spellcheck="true"># Nuke everything else</span>
+  *<span class="token punctuation">)</span>
+    <span class="token function">eval</span> <span class="token function">exec</span> <span class="token string">"<span class="token variable">$FD</span>>&amp;-"</span>
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+  esac
+<span class="token keyword">done</span>
+<span class="token function">popd</span>
+
+docker -d <span class="token operator">&amp;</span>
+<span class="token function">exec</span> /usr/bin/java -jar /usr/share/jenkins/jenkins.war</code></pre>
+<h2 id="참고"><a href="#참고" class="headerlink" title="참고"></a>참고</h2><p>1) <a href="https://nodejs.org/ko/docs/guides/nodejs-docker-webapp/" target="_blank" rel="noopener">Node.js 웹 앱의 도커라이징 | Node.js</a><br>2) <a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">초보를 위한 도커 안내서 - 도커란 무엇인가?</a></p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Docker/" title="Docker">Docker</a>
+            
+            <a class="tag" href="/tags/DinD/" title="DinD">DinD</a>
+            
+            <a class="tag" href="/tags/Docker-In-Docker/" title="Docker In Docker">Docker In Docker</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/07/03/이직을-준비하면서/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">이직을 준비하면서</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/28/Jenkins/">
+                <div class="wrapper">
+                    <span class="nav-default">Jenkins</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>XSS (Cross-Site-Scripting) - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,JavaScript">
+    
+
+    <meta name="description" content="XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사용자가 글을 볼 수 있는 곳에 자신의 서버에 있는 php파일을 실행하는 태그를 작성하여 올">
+<meta name="keywords" content="Tech,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS (Cross-Site-Scripting)">
+<meta property="og:url" content="https://vallista.kr/2019/05/12/XSS-Cross-Site-Scripting/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사용자가 글을 볼 수 있는 곳에 자신의 서버에 있는 php파일을 실행하는 태그를 작성하여 올">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="XSS (Cross-Site-Scripting)">
+<meta name="twitter:description" content="XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사용자가 글을 볼 수 있는 곳에 자신의 서버에 있는 php파일을 실행하는 태그를 작성하여 올">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/12/xss-cross-site-scripting/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">XSS (Cross-Site-Scripting)</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-12</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사용자가 글을 볼 수 있는 곳에 자신의 서버에 있는 php파일을 실행하는 태그를 작성하여 올려둔다. XSS처리를 하지 않은 사이트는 해당 글을 열람한 사용자들이 들어가면 php 파일을 실행하게 되며, 자신의 정보가 해커의 서버에 전송된다. </p>
+<p>XSS를 해결할 수 있는 방법에는 몇 가지가 있는데, 대표적으로 BBCode 사용이 있다. HTML ‘&lt;’와 ‘&gt;’ 태그 대신 대괄호를 사용하는 방법이다. 또, 각종 이벤트 블러킹등으로 막을 수 있다. </p>
+<p>간단하게는 이렇게 막을 수 있으나, 본격적으로 막으려면 네이버등 대기업에서 제공하는 라이브러리를 사용하면 좋다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/JavaScript/" title="JavaScript">JavaScript</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/05/12/CORS-Cross-Origin-Resource-Sharing/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">CORS (Cross Origin Resource Sharing)</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/12/동일-출처-정책-Same-Origin-Policy/">
+                <div class="wrapper">
+                    <span class="nav-default">동일 출처 정책 (Same Origin Policy)</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

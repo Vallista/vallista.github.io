@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>CSSOM (CSS Object Model) - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,CSSOM,Web">
+    
+
+    <meta name="description" content="CSS는 앞서 말한 ‘문맥 자유 문법‘ 이므로 BNF (Backus-Naur Form)로 표현할 수 있다.  웹킷은 CSS 문법 파일로부터 자동으로 파서를 생성하기 위해서 ‘flex’, ‘bison’을 사용한다. (파이어폭스는 직접 작성한 하향식 파서를 사용한다.) 두 경우 모두 각 CSS파일은 스타일시트에 객체로 파싱되며, 각 객체는 CSS 규칙을 포함한">
+<meta name="keywords" content="Tech,CSSOM,Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSSOM (CSS Object Model)">
+<meta property="og:url" content="https://vallista.kr/2019/05/07/CSSOM-CSS-Object-Model/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="CSS는 앞서 말한 ‘문맥 자유 문법‘ 이므로 BNF (Backus-Naur Form)로 표현할 수 있다.  웹킷은 CSS 문법 파일로부터 자동으로 파서를 생성하기 위해서 ‘flex’, ‘bison’을 사용한다. (파이어폭스는 직접 작성한 하향식 파서를 사용한다.) 두 경우 모두 각 CSS파일은 스타일시트에 객체로 파싱되며, 각 객체는 CSS 규칙을 포함한">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-construction.png?hl=ko">
+<meta property="og:image" content="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-tree.png?hl=ko">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.890Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSSOM (CSS Object Model)">
+<meta name="twitter:description" content="CSS는 앞서 말한 ‘문맥 자유 문법‘ 이므로 BNF (Backus-Naur Form)로 표현할 수 있다.  웹킷은 CSS 문법 파일로부터 자동으로 파서를 생성하기 위해서 ‘flex’, ‘bison’을 사용한다. (파이어폭스는 직접 작성한 하향식 파서를 사용한다.) 두 경우 모두 각 CSS파일은 스타일시트에 객체로 파싱되며, 각 객체는 CSS 규칙을 포함한">
+<meta name="twitter:image" content="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-construction.png?hl=ko">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/07/cssom-css-object-model/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">CSSOM (CSS Object Model)</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-07</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-규칙"><span class="toc-text">CSS 규칙</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>CSS는 앞서 말한 ‘<strong>문맥 자유 문법</strong>‘ 이므로 <a href="https://www.notion.so/97878963-961a-4ae6-b6d4-40849fb33020" target="_blank" rel="noopener">BNF (Backus-Naur Form)</a>로 표현할 수 있다. </p>
+<p>웹킷은 CSS 문법 파일로부터 자동으로 파서를 생성하기 위해서 ‘flex’, ‘bison’을 사용한다. (파이어폭스는 직접 작성한 하향식 파서를 사용한다.) 두 경우 모두 각 CSS파일은 스타일시트에 객체로 파싱되며, 각 객체는 CSS 규칙을 포함한다. CSS 규칙 객체는 선택자와 선언 그리고 CSS 문법과 일치하는 다른 객체를 포함한다.</p>
+<hr>
+<p>브라우저가 <a href="https://www.notion.so/05b2fa44-e433-4bb2-9fc3-cd59110f6ddb" target="_blank" rel="noopener">DOM (Document Object Model)</a> 을 생성하는 동안 CSS 스타일시트는 독립적으로 CSS를 처리해서 CSSOM을 만든다. CSSOM은 DOM과 마찬가지로 브라우저가 이해하고 처리할 수 있는 형식으로 변환된다.</p>
+<p>예시:</p>
+<pre><code>body { font-size: 16px }
+p { font-weight: bold }
+span { color: red }
+p span { display: none }
+img { float: right }</code></pre><p>위의 css를 처리하기 위해 아래의 과정을 진행한다. CSSOM을 만드는 작업은<a href="https://www.notion.so/05b2fa44-e433-4bb2-9fc3-cd59110f6ddb" target="_blank" rel="noopener">DOM (Document Object Model)</a> 과 Attachment를 쉽게 하기 위해서 비슷한 과정을 진행하게 된다. </p>
+<p><img src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-construction.png?hl=ko" alt></p>
+<ol>
+<li><strong>변환:</strong> 렌더링 엔진에서 OS의 네트워크 레이어나 디스크를 통해 데이터를 읽어와서 지정한 인코딩으로 (UTF-8) 개별 문자로 변환한다.</li>
+<li><strong>토큰화:</strong> 개별 문자로 변환된 문자열을 <a href="https://www.w3.org/TR/html5/" target="_blank" rel="noopener">W3C 표준</a>에 지정된 고유한 토큰으로 변환한다. 각 토큰은 특별한 의미와 고유한 규칙을 가진다. (ex: ‘html’, ‘head’ 등) </li>
+<li><strong>렉싱</strong>: 변환된 토큰을 속성 및 규칙을 정의하는 ‘객체’로 변환한다. (Node로 만듬)</li>
+<li><strong>CSSOM 에 링크</strong></li>
+</ol>
+<p>CSSOM이 트리 구조를 가지는 이유는 페이지에 있는 최종 스타일을 계산할 때 브라우저는 해당 노드에 적용 가능한 가장 일반적인 규칙 (body의 하위의 경우 모든 body 스타일 적용)으로 시작한 후 더욱 구체적인 규칙을 적용하는 방식으로, ‘하향식’으로 규칙을 적용하는 방식으로 계산된 스타일을 재귀적으로 세분화한다.</p>
+<p>CSS 적용은 <strong>일반적인 CSS 규칙 → 구체적인 CSS 규칙</strong> 순으로 적용된다.</p>
+<h3 id="CSS-규칙"><a href="#CSS-규칙" class="headerlink" title="CSS 규칙"></a>CSS 규칙</h3><hr>
+<p>아래와 같은 스타일이 있다고 하자.</p>
+<pre><code>body { font-size: 16px }
+p { font-weight: bold }
+span { color: red }
+p span { display: none }
+img { float: right }</code></pre><p>CSS를 적용할 때 상위 태그의 모든 하위 태그에는 상위 태그의 스타일이 적용된다. (하향식 적용)</p>
+<p><img src="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/images/cssom-tree.png?hl=ko" alt></p>
+<p>즉, body 영역에 공통으로 사용될 수 있는 property를 적용하면 하위 Element에 모두 적용된다.</p>
+<ul>
+<li>body 태그와 body 태그의 하위 태그에는 font-size: 15px이 하향식으로 적용된다.</li>
+<li>p 태그와 p 태그의 하위 태그에는 font-weight: bold가 하향식으로 적용된다.</li>
+<li>span 태그와 span태그의 하위 태그에는 color: red가 붙는다. 하지만 p 안의 span 태그에는 color: red가 적용되지 않는다.</li>
+<li>p 태그 안에 있는 span 태그는 display: none 속성을 갖는다. 하지만 body 하위의 span 태그는 적용되지 않는다.</li>
+</ul>
+<blockquote>
+<p>모든 브라우저는 ‘사용자 에이전트 스타일’ 이라고 하는 기본 스타일 집합, 즉 개발자가 고유한 스타일을 제공하지 않을 경우 표시되는 스타일을 제공한다.</p>
+</blockquote>
+<p>개발자가 작성하는 스타일은 이러한 기본 스타일 (예: <a href="https://www.iecss.com/" target="_blank" rel="noopener">기본 IE 스타일</a>)을 간단하게 재정의 한다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/CSSOM/" title="CSSOM">CSSOM</a>
+            
+            <a class="tag" href="/tags/Web/" title="Web">Web</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/05/08/렌더-트리-생성/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">렌더 트리 생성</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/07/DOM-Document-Object-Model/">
+                <div class="wrapper">
+                    <span class="nav-default">DOM (Document Object Model)</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>E2E (end to end) Test - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,Testing">
+    
+
+    <meta name="description" content="전체 시스템이 제대로 작동하는지 확인하기 위한 테스트. 시나리오 테스트, 기능 테스트, 통합 테스트, GUI 테스트를 하는데 사용한다. API 연동도 테스트 항목에 포함되므로 일반적인 목(Mock) 스텁(Stub) 등의 테스트 더블을 사용하지 않는다. 테스트 속도가 규모에 따라 느리므로 단위, 기능 테스트를 위한 일반적인 테스트 자동화와 시스템 테스트를 위">
+<meta name="keywords" content="Tech,Testing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="E2E (end to end) Test">
+<meta property="og:url" content="https://vallista.kr/2017/07/01/E2E-end-to-end-Test/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="전체 시스템이 제대로 작동하는지 확인하기 위한 테스트. 시나리오 테스트, 기능 테스트, 통합 테스트, GUI 테스트를 하는데 사용한다. API 연동도 테스트 항목에 포함되므로 일반적인 목(Mock) 스텁(Stub) 등의 테스트 더블을 사용하지 않는다. 테스트 속도가 규모에 따라 느리므로 단위, 기능 테스트를 위한 일반적인 테스트 자동화와 시스템 테스트를 위">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="E2E (end to end) Test">
+<meta name="twitter:description" content="전체 시스템이 제대로 작동하는지 확인하기 위한 테스트. 시나리오 테스트, 기능 테스트, 통합 테스트, GUI 테스트를 하는데 사용한다. API 연동도 테스트 항목에 포함되므로 일반적인 목(Mock) 스텁(Stub) 등의 테스트 더블을 사용하지 않는다. 테스트 속도가 규모에 따라 느리므로 단위, 기능 테스트를 위한 일반적인 테스트 자동화와 시스템 테스트를 위">
+    
+    <link rel="canonical" href="https://vallista.kr/2017/07/01/e2e-end-to-end-test/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">E2E (end to end) Test</h2>
+            <div class="post-meta">
+                <span class="post-time">2017-07-01</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#E2E-테스트-프레임-워크"><span class="toc-text">E2E 테스트 프레임 워크.</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#헤드리스-브라우저-의존"><span class="toc-text">헤드리스 브라우저 의존</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#셀레니움-웹-드라이버-의존"><span class="toc-text">셀레니움 웹 드라이버 의존</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>전체 시스템이 제대로 작동하는지 확인하기 위한 테스트.</p>
+<p>시나리오 테스트, 기능 테스트, 통합 테스트, GUI 테스트를 하는데 사용한다.</p>
+<p>API 연동도 테스트 항목에 포함되므로 일반적인 목(Mock) 스텁(Stub) 등의 테스트 더블을 사용하지 않는다.</p>
+<p>테스트 속도가 규모에 따라 느리므로 단위, 기능 테스트를 위한 일반적인 테스트 자동화와 시스템 테스트를 위함 e2e 테스트 자동화가 함께 구성되는 경우가 많다.</p>
+<h2 id="E2E-테스트-프레임-워크"><a href="#E2E-테스트-프레임-워크" class="headerlink" title="E2E 테스트 프레임 워크."></a>E2E 테스트 프레임 워크.</h2><p>E2E 테스트 프레임워크는 크게 2가지 분류로 나뉜다.</p>
+<h3 id="헤드리스-브라우저-의존"><a href="#헤드리스-브라우저-의존" class="headerlink" title="헤드리스 브라우저 의존"></a>헤드리스 브라우저 의존</h3><p>커맨드라인 명령어로 조작할 수 있는 화면이 없는 브라우저 테스트 도구.</p>
+<p>JSDOM 기반의 좀비(zombie.js), 웹킷 기반의 (pantom.js) 겟코 기반의 슬리머 등이 있다.</p>
+<p>캐스퍼는 팬텀과 슬리머를 조금 더 사용하기 쉽도록 만들어 놓은 유틸리티 도구이다.</p>
+<p>헤드리스 브라우저는 기본적으로 크로스 브라우징 테스트가 되지 않으며 어썰트(assert)도 내장되어 있지 않다.</p>
+<h3 id="셀레니움-웹-드라이버-의존"><a href="#셀레니움-웹-드라이버-의존" class="headerlink" title="셀레니움 웹 드라이버 의존"></a>셀레니움 웹 드라이버 의존</h3><p>셀레니움 : 웹 브라우저를 이용해 웹 어플리케이션을 테스트하는 오픈소스 도구.<br>사람의 손으로 직접 조작하는 것이 아닌, 작성된 스크립트에 따라 자동으로 조작된다. 이러한 방법을 <code>브라우저 자동화</code> 라고 한다.</p>
+<p>웹 드라이버는 셀레니움의 단점을 보완하려고 나온 것인데, 셀레니움은 자체 엔진인 RC를 이용해 브라우저와 여태까지 통신을 했음.</p>
+<p>셀레니움 RC는 스크립트 작성 후 자바스크립트로 트랜스 컴파일 하게 되는데, 이렇게 되면 브라우저의 제약 사항과 자바스크립트의 한계성 때문에 문제가 되었다.</p>
+<p>웹 드라이버는 브라우저 확장 기능 및 OS 기본 기능을 이용하여 브라우저를 조작 할 수 있는 구조로 작성되어 있는데, 이는 셀레니움 RC의 단점을 충족해주는 방식이다.</p>
+<p>그래서 셀레니움은 2.0을 발표할 때 웹 드라이버와 함께 내서 셀레니움 웹 드라이버 라는 이름이 되었다.</p>
+<p>셀레니움 웹 드라이버는 여러 언어를 지원하는데 Javascript 궁합이 별로 좋지 못해서 Javascript로 사용하기 위해서는 셀레니움 웹 드라이버와 Node를 바인딩 하여 나온 <code>nightwatch</code>를 써야 한다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/Testing/" title="Testing">Testing</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2017/07/01/테스트의-종류/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">테스트의 종류</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

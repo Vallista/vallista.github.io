@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>CORS (Cross Origin Resource Sharing) - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,JavaScript">
+    
+
+    <meta name="description" content="CORS는 Cross-Origin Resource Sharing의 약자이다. 기본적으로 HTTP 요청은 Cross-Site HTTP Request가 가능하다. 즉, &amp;lt;script&amp;gt;, &amp;lt;link&amp;gt; 태그를 통해 다양한 사이트의 리소스를 불러오는 작업이 가능하다. 하지만 &amp;lt;script&amp;gt;&amp;lt;/script&amp;gt; 스크립트 태그 내">
+<meta name="keywords" content="Tech,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CORS (Cross Origin Resource Sharing)">
+<meta property="og:url" content="https://vallista.kr/2019/05/12/CORS-Cross-Origin-Resource-Sharing/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="CORS는 Cross-Origin Resource Sharing의 약자이다. 기본적으로 HTTP 요청은 Cross-Site HTTP Request가 가능하다. 즉, &amp;lt;script&amp;gt;, &amp;lt;link&amp;gt; 태그를 통해 다양한 사이트의 리소스를 불러오는 작업이 가능하다. 하지만 &amp;lt;script&amp;gt;&amp;lt;/script&amp;gt; 스크립트 태그 내">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://dev.epiloum.net/wp-content/uploads/2015/03/comparison_between_ajax_and_jsonp.png">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.890Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CORS (Cross Origin Resource Sharing)">
+<meta name="twitter:description" content="CORS는 Cross-Origin Resource Sharing의 약자이다. 기본적으로 HTTP 요청은 Cross-Site HTTP Request가 가능하다. 즉, &amp;lt;script&amp;gt;, &amp;lt;link&amp;gt; 태그를 통해 다양한 사이트의 리소스를 불러오는 작업이 가능하다. 하지만 &amp;lt;script&amp;gt;&amp;lt;/script&amp;gt; 스크립트 태그 내">
+<meta name="twitter:image" content="http://dev.epiloum.net/wp-content/uploads/2015/03/comparison_between_ajax_and_jsonp.png">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/05/12/cors-cross-origin-resource-sharing/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">CORS (Cross Origin Resource Sharing)</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-05-12</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSONP"><span class="toc-text">JSONP</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>CORS는 Cross-Origin Resource Sharing의 약자이다.</p>
+<p>기본적으로 HTTP 요청은 Cross-Site HTTP Request가 가능하다. 즉, <code>&lt;script&gt;</code>, <code>&lt;link&gt;</code> 태그를 통해 다양한 사이트의 리소스를 불러오는 작업이 가능하다.</p>
+<p>하지만 <code>&lt;script&gt;&lt;/script&gt;</code> 스크립트 태그 내부에서 생성된 HTTP Requests는<a href="https://www.notion.so/224ba591-c215-4d50-9f12-e29ad310ebbc" target="_blank" rel="noopener">Same Origin Policy</a> 를 적용 받기에 Cross-site HTTP Request가 불가능하다. </p>
+<p>이는 Node.js 기반의 JavaScript 개발 환경에서 문제가 되는데, Ajax가 널리 쓰여지게 되며 <code>&lt;script&gt;&lt;/script&gt;</code> 내부에서 생성되는 <code>XMLHTTPRequests</code> 도 Cross-site HTTP Request가 가능해야 한다는 요구가 늘어나게 되었다.</p>
+<ul>
+<li><p><code>Access-Control-</code> 계열의 Response Header만 정해주면 서버에서 설정과 Get, Post, HEAD, Put, Delete 등으로 오는 요청의 처리를 알아서 해준다.</p>
+</li>
+<li><p>Simple/Preflight</p>
+</li>
+<li><p>Credentials/Non-Credentials</p>
+</li>
+</ul>
+<h2 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h2><p>해결 방법으로 JSONP 포맷을 이용해서 사용하는 방법도 존재한다.<br>JSONP는 <code>&lt;script&gt;</code>의 다른 스크립트 파일 임베드 기능을 이용해서 사용하는 방법이다.</p>
+<p><img src="http://dev.epiloum.net/wp-content/uploads/2015/03/comparison_between_ajax_and_jsonp.png" alt></p>
+<p><a href="http://dev.epiloum.net/1311" target="_blank" rel="noopener">자바스크립트 예제로 살펴보는 JSONP의 기본원리</a></p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/JavaScript/" title="JavaScript">JavaScript</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/05/13/HTTP-프로토콜에서-HTTPS-URI-가져오기/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">HTTP 프로토콜에서 HTTPS URI 가져오기</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/05/12/XSS-Cross-Site-Scripting/">
+                <div class="wrapper">
+                    <span class="nav-default">XSS (Cross-Site-Scripting)</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

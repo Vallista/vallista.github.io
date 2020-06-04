@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    <url>
+        <loc>https://vallista.kr/tags/JavaScript/</loc>
+        <lastmod>2020-06-04T05:27:53.052Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Tech/</loc>
+        <lastmod>2020-06-04T05:27:53.052Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Parsing/</loc>
+        <lastmod>2020-06-04T05:27:53.051Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Testing/</loc>
+        <lastmod>2020-06-04T05:27:53.051Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Web/</loc>
+        <lastmod>2020-06-04T05:27:53.051Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/%EC%9D%B4%EC%A7%81/</loc>
+        <lastmod>2020-06-04T05:27:53.050Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Base-Skill/</loc>
+        <lastmod>2020-06-04T05:27:53.050Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Generator/</loc>
+        <lastmod>2020-06-04T05:27:53.050Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/PostgreSQL/</loc>
+        <lastmod>2020-06-04T05:27:52.978Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/CSS/</loc>
+        <lastmod>2020-06-04T05:27:52.973Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/HTML/</loc>
+        <lastmod>2020-06-04T05:27:52.973Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/DOM/</loc>
+        <lastmod>2020-06-04T05:27:52.973Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/%EA%B8%80%EB%98%90/</loc>
+        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/</loc>
+        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5/</loc>
+        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/%EA%B8%B0%EB%B3%B8%EA%B8%B0/</loc>
+        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Vue/</loc>
+        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Virtual-DOM/</loc>
+        <lastmod>2020-06-04T05:27:52.907Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/TypeScript/</loc>
+        <lastmod>2020-06-04T05:27:52.903Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4/</loc>
+        <lastmod>2020-06-04T05:27:52.903Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Server/</loc>
+        <lastmod>2020-06-04T05:27:52.901Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/API/</loc>
+        <lastmod>2020-06-04T05:27:52.901Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/REST/</loc>
+        <lastmod>2020-06-04T05:27:52.901Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Docker-In-Docker/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/DinD/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Docker/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Next/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Jest/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Engyme/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/DevOps/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Jenkins/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/React/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Programming/</loc>
+        <lastmod>2020-06-04T05:27:52.891Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/FrontEnd/</loc>
+        <lastmod>2020-06-04T05:27:52.891Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Component/</loc>
+        <lastmod>2020-06-04T05:27:52.891Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/CSSOM/</loc>
+        <lastmod>2020-06-04T05:27:52.890Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/BNF/</loc>
+        <lastmod>2020-06-04T05:27:52.890Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Review/</loc>
+        <lastmod>2020-06-04T05:27:52.868Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+</urlset>
+<!-- XML Sitemap generated by Hexo SEO Friendly Sitemap Generator -->

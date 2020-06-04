@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (상) - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,HTML,CSS">
+    
+
+    <meta name="description" content="다음 포스트모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (중)  서론모바일 웹을 여행하는 사람들이라면 알겠지만, 웹의 중요성이 커지고 있습니다. iOS, Android 앱은 신규 기능을 추가하게 되면 앱 업데이트를 통해서 제공해야 하는데 업데이트를 유도하게 되면 여러가지 문제가 생기기 때문입니다. 가장 큰 문제는 모든 유저가 업데이트를 하지 않는다는">
+<meta name="keywords" content="Tech,HTML,CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (상)">
+<meta property="og:url" content="https://vallista.kr/2019/11/10/모바일-웹뷰를-탐험하는-개발자를-위한-안내서-상/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="다음 포스트모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (중)  서론모바일 웹을 여행하는 사람들이라면 알겠지만, 웹의 중요성이 커지고 있습니다. iOS, Android 앱은 신규 기능을 추가하게 되면 앱 업데이트를 통해서 제공해야 하는데 업데이트를 유도하게 되면 여러가지 문제가 생기기 때문입니다. 가장 큰 문제는 모든 유저가 업데이트를 하지 않는다는">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://i0.wp.com/gaegul.kr/wordpress/wp-content/uploads/1/cfile29.uf.2529523E532F23481C8D5B.jpg">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (상)">
+<meta name="twitter:description" content="다음 포스트모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (중)  서론모바일 웹을 여행하는 사람들이라면 알겠지만, 웹의 중요성이 커지고 있습니다. iOS, Android 앱은 신규 기능을 추가하게 되면 앱 업데이트를 통해서 제공해야 하는데 업데이트를 유도하게 되면 여러가지 문제가 생기기 때문입니다. 가장 큰 문제는 모든 유저가 업데이트를 하지 않는다는">
+<meta name="twitter:image" content="https://i0.wp.com/gaegul.kr/wordpress/wp-content/uploads/1/cfile29.uf.2529523E532F23481C8D5B.jpg">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/11/10/모바일-웹뷰를-탐험하는-개발자를-위한-안내서-상/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (상)</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-11-10</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#서론"><span class="toc-text">서론</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#모바일-기기의-성능-향상"><span class="toc-text">모바일 기기의 성능 향상</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript의-발전"><span class="toc-text">JavaScript의 발전</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPA-Single-Page-Application-의-대두"><span class="toc-text">SPA(Single Page Application)의 대두</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#모바일-대응하기"><span class="toc-text">모바일 대응하기</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS에서-기본-Height를-설정해주지-못했어요"><span class="toc-text">CSS에서 기본 Height를 설정해주지 못했어요!</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flex를-사용하시나요-그렇다면-polyfill을-사용해주세요"><span class="toc-text">Flex를 사용하시나요?! 그렇다면 polyfill을 사용해주세요!</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#비동기-후-데이터-레이아웃이-그려지지-않아요"><span class="toc-text">비동기 후 데이터 레이아웃이 그려지지 않아요!</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IOS-Touch-삭제하기"><span class="toc-text">IOS Touch 삭제하기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#기본-브라우저-스타일-변경"><span class="toc-text">기본 브라우저 스타일 변경</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Button"><span class="toc-text">Button</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Input"><span class="toc-text">Input</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Body"><span class="toc-text">Body</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ul-ol"><span class="toc-text">ul, ol</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Header-p-etc"><span class="toc-text">Header, p, etc..</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Overlay-레이아웃이-있을-때-Body-스크롤-막기"><span class="toc-text">Overlay 레이아웃이 있을 때, Body 스크롤 막기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mobile-Safari-스크롤-흔들림-이슈"><span class="toc-text">Mobile Safari 스크롤 흔들림 이슈</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p><img src="https://i0.wp.com/gaegul.kr/wordpress/wp-content/uploads/1/cfile29.uf.2529523E532F23481C8D5B.jpg" alt="이미지1"></p>
+<blockquote>
+<p>다음 포스트<br><a href="https://vallista.kr/2019/12/28/%EB%AA%A8%EB%B0%94%EC%9D%BC-%EC%9B%B9%EB%B7%B0%EB%A5%BC-%ED%83%90%ED%97%98%ED%95%98%EB%8A%94-%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%95%88%EB%82%B4%EC%84%9C-%EC%A4%91/">모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (중)</a></p>
+</blockquote>
+<h2 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h2><p>모바일 웹을 여행하는 사람들이라면 알겠지만, 웹의 중요성이 커지고 있습니다. iOS, Android 앱은 신규 기능을 추가하게 되면 앱 업데이트를 통해서 제공해야 하는데 업데이트를 유도하게 되면 여러가지 문제가 생기기 때문입니다.</p>
+<p>가장 큰 문제는 모든 유저가 업데이트를 하지 않는다는 것 입니다. 업데이트를 하지 않기 때문에 과거 버전에 대해서 하위 호환성을 생각해야 하며, 이는 거의 영구적입니다. Fade-out을 위해서는 문제가 되는 버전을 사용 중인 고객이 앱을 업데이트 해야 하는데, 이는 현실적으로 힘든일입니다. 그렇기 때문에, 최근에는 웹뷰를 만들어 그 위에서 웹을 띄우는 형식으로 베타 테스트, A,B 테스트, 결제등의 지면에서 활용하고 있습니다. 이 방법은 문제가 생겼을 때, 앱 업데이트 없이 웹만 재배포하여 문제를 해결할 수 있기 때문에 유동성을 확보할 수 있습니다.</p>
+<p>그렇다면, 웹뷰를 사용하는 몇 가지 큰 이유를 보도록 합시다.</p>
+<h3 id="모바일-기기의-성능-향상"><a href="#모바일-기기의-성능-향상" class="headerlink" title="모바일 기기의 성능 향상"></a>모바일 기기의 성능 향상</h3><p>이전 앱 시장에서 웹뷰를 사용하지 않았던 이유는 Native의 강력한 성능 때문이었습니다. 과거 성능이 별로 좋지 못하던 모바일 기기는 웹뷰에 진입하기만 하더라도 랙이 걸렸고, 이는 모바일 기기의 성능 향상으로 허들이 없어지다시피 되었습니다. 당장 갤럭시 3만 하더라도 웹뷰에 진입하면 많은 랙이 걸립니다. 이러한 구형 디바이스 지원을 위해 웹쪽에서는 최적화를 신경써주어야 합니다.</p>
+<h3 id="JavaScript의-발전"><a href="#JavaScript의-발전" class="headerlink" title="JavaScript의 발전"></a>JavaScript의 발전</h3><p>JavaScript는 과거부터 언어자체의 난해함으로 인한 개발의 어려움이 존재했습니다. DOM 조작이나 이런 행동들이 상당히 까다로웠기 때문이죠. JavaScript는 이러한 문제점에서 자유로워지기 위해 계쏙 발전하고 있습니다. 그 중 가장 큰 발전을 이룬 ES2015 이후부터 Modern JavaScript라고 불리우는데, 최신의 언어 스펙을 무장하게 되었습니다. 그래서 웹 개발자는 ES2015 이후의 문법을 사용하여 편리하게 개발을 할 수 있게 되었습니다.</p>
+<h3 id="SPA-Single-Page-Application-의-대두"><a href="#SPA-Single-Page-Application-의-대두" class="headerlink" title="SPA(Single Page Application)의 대두"></a>SPA(Single Page Application)의 대두</h3><p>SPA(Single App Application)의 대두는 위의 모바일 기기 성능 향상으로 함께 이루어진 기술입니다. 쉽게 말하면 기존의 서버사이드에서 HTML을 페이지마다 내려주는 기술에서 탈피해, 하나의 페이지에서 JavaScript로 동적 렌더링을 하겠다는 의미입니다.</p>
+<ul>
+<li>사용자의 사용성이 좋아집니다. 페이지 전환 시 새로운 페이지를 로드하는 개념이 아니므로 애니메이션을 매끄럽게 줄 수 있습니다.</li>
+<li>서버에서 메인 페이지 하나만 로드를 하면 나머지는 JavaScript 내에서 동작하므로 페이지마다 서버 작업을 안해주어도 됩니다.</li>
+<li>HTML, CSS, JavaScript 다운 받는다면 캐시가 남았다는 가정하에, 로컬에서도 동작시킬 수 있습니다.</li>
+<li>JavaScript 기반으로 작업하므로 협업을 더 효율적으로 할 수 있습니다. Component 별로 때서 작업이 가능하기 때문입니다.</li>
+</ul>
+<hr>
+<h2 id="모바일-대응하기"><a href="#모바일-대응하기" class="headerlink" title="모바일 대응하기"></a>모바일 대응하기</h2><p>이러한 장점으로 모바일 웹뷰의 사용이 늘어나면서 다양한 이슈들이 존재합니다. 여러 이슈들에 대해서 알아보고, 어떻게 대처해야 하는지 알아보도록 합시다.</p>
+<h3 id="CSS에서-기본-Height를-설정해주지-못했어요"><a href="#CSS에서-기본-Height를-설정해주지-못했어요" class="headerlink" title="CSS에서 기본 Height를 설정해주지 못했어요!"></a>CSS에서 기본 Height를 설정해주지 못했어요!</h3><p>11 이하의 디바이스에서는 Height값이 기본적으로 잡혀있지 않기 때문에 auto든 100% 키워드를 설정해주어야 해요! 내부 contents의 크기가 유동적이라면 auto! 만약 전체 크기를 가지고 싶다면 100%로 설정해주세요!</p>
+<h3 id="Flex를-사용하시나요-그렇다면-polyfill을-사용해주세요"><a href="#Flex를-사용하시나요-그렇다면-polyfill을-사용해주세요" class="headerlink" title="Flex를 사용하시나요?! 그렇다면 polyfill을 사용해주세요!"></a>Flex를 사용하시나요?! 그렇다면 polyfill을 사용해주세요!</h3><p><a href="https://github.com/postcss/autoprefixer" target="_blank" rel="noopener">Autoprefixer</a>로 polyfill 설정을 해주세요!<br>그 외에도 Autoprefixer는 CSS 관련으로 다양한 일을 수행해준답니다!</p>
+<h3 id="비동기-후-데이터-레이아웃이-그려지지-않아요"><a href="#비동기-후-데이터-레이아웃이-그려지지-않아요" class="headerlink" title="비동기 후 데이터 레이아웃이 그려지지 않아요!"></a>비동기 후 데이터 레이아웃이 그려지지 않아요!</h3><p>그렇다면 비동기 코드를 한번 봐보세요. Promise나 Async Await를 쓰고계시지 않나요? 우리 이 친구들의 polyfill을 추가해주어야 합니다!</p>
+<p><a href="https://www.npmjs.com/package/promise-polyfill" target="_blank" rel="noopener">promise-polyfill</a><br><a href="https://www.npmjs.com/package/promise-polyfill" target="_blank" rel="noopener">es6-promise</a><br><a href="https://www.npmjs.com/package/@babel/polyfill" target="_blank" rel="noopener">@babel/polyfill</a></p>
+<blockquote>
+<p>오우 이런! @babel/polyfill은 deprecated 되었답니다!<br><a href="https://github.com/zloirock/core-js" target="_blank" rel="noopener">core.js</a>를 다운받아서 이 안의 @babel/polyfill을 사용해주세요!</p>
+</blockquote>
+<h3 id="IOS-Touch-삭제하기"><a href="#IOS-Touch-삭제하기" class="headerlink" title="IOS Touch 삭제하기"></a>IOS Touch 삭제하기</h3><p>기본적으로 <code>cursor: pointer</code> 옵션을 주면 모바일에서 터치 시 터치 레이어가 잡혀요! 아래와 같이 CSS를 주세요!</p>
+<pre class=" language-css"><code class="language-css"><span class="token property">-webkit-tap-highlight-color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token property">-webkit-touch-callout</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token property">-webkit-user-select</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token property">-khtml-user-select</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token property">-moz-user-select</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token property">-ms-user-select</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token property">user-select</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span></code></pre>
+<p>위의 옵션에는 모질라 브라우저와 IE 브라우저 옵션까지 함께 들어있습니다.</p>
+<h3 id="기본-브라우저-스타일-변경"><a href="#기본-브라우저-스타일-변경" class="headerlink" title="기본 브라우저 스타일 변경"></a>기본 브라우저 스타일 변경</h3><p>각 브라우저는 브라우저만의 default css 설정값이 있습니다. 이러한 설정값은 도움이 되는 경우도 있지만, 다채로운 스타일을 적용할 때 해가 되는 경우가 많은데요 그 중에 button은 각 브라우저 별로 css를 제공하기 때문에 변경을 해야할 필요가 있습니다.</p>
+<p><a href="https://stackoverflow.com/questions/6867254/browsers-default-css-for-html-elements" target="_blank" rel="noopener">참고 링크</a> 자세한 데이터는 여기를 확인하세요!</p>
+<h4 id="Button"><a href="#Button" class="headerlink" title="Button"></a>Button</h4><pre class=" language-css"><code class="language-css"><span class="token selector">input </span><span class="token punctuation">{</span>
+  <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">outline</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+  <span class="token property">border</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+  <span class="token property">-webkit-appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+  <span class="token property">background</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h4 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h4><pre class=" language-css"><code class="language-css"><span class="token selector">input </span><span class="token punctuation">{</span>
+  <span class="token property">-webkit-appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+  <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">border</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">background</span><span class="token punctuation">:</span> transparent<span class="token punctuation">;</span>
+  <span class="token property">outline</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h4 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h4><pre class=" language-css"><code class="language-css"><span class="token selector">body </span><span class="token punctuation">{</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">-webkit-user-select</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+  <span class="token property">-webkit-tap-highlight-color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">-webkit-text-size-adjust</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h4 id="ul-ol"><a href="#ul-ol" class="headerlink" title="ul, ol"></a>ul, ol</h4><pre class=" language-css"><code class="language-css"><span class="token selector">ul, ol </span><span class="token punctuation">{</span>
+  <span class="token property">list-style</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h4 id="Header-p-etc"><a href="#Header-p-etc" class="headerlink" title="Header, p, etc.."></a>Header, p, etc..</h4><pre class=" language-css"><code class="language-css"><span class="token selector">h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, em, figure, figcaption, address </span><span class="token punctuation">{</span>
+  <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">font</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>많이 쓰는 태그들을 넣었습니다. 이외에도 필요한 게 있다면 위의 링크를 이용해주세요!</p>
+<h3 id="Overlay-레이아웃이-있을-때-Body-스크롤-막기"><a href="#Overlay-레이아웃이-있을-때-Body-스크롤-막기" class="headerlink" title="Overlay 레이아웃이 있을 때, Body 스크롤 막기"></a>Overlay 레이아웃이 있을 때, Body 스크롤 막기</h3><p>모달이나 토스트등의 레이아웃이 나올 때, Body의 스크롤 레이어를 막야아 할 일들이 있습니다. 하지만 수많은 모바일 기기 시장에서 각 디바이스의 브라우저는 css 옵션에 대해서 제각각 설정값을 다르게 해주었기 때문에 우리는 이를 대응해주어야 합니다.</p>
+<p>아주 쉽게 대응할 수 있는 방법은 아래와 같습니다.</p>
+<pre class=" language-css"><code class="language-css"><span class="token selector"><span class="token class">.modal-wrapper</span> </span><span class="token punctuation">{</span>
+  <span class="token property">position</span><span class="token punctuation">:</span> fixed<span class="token punctuation">;</span>
+  <span class="token property">left</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">right</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">top</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">bottom</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token property">background</span><span class="token punctuation">:</span> <span class="token hexcode">#8a8a8a</span>b<span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>모달 layout에 해당과 같은 소스를 적용해주세요. 이렇게 하면 데스크톱에서는 제대로 동작을 하는 걸 볼 수 있어요. 이제 이 소스를 모바일 디바이스에서 구동해보세요. 확인해보시면 알겠지만, 모바일 브라우저에서는 제대로 동작을 하지 않아요! 왜냐하면 <code>position: fixed</code> 옵션은 모바일 디바이스에서 제대로 된 동작을 보장하지 않습니다.</p>
+<p>그러므로 우리는 쉽게 해결을 위해 <a href="https://github.com/willmcpo/body-scroll-lock" target="_blank" rel="noopener">Body Scroll Lock</a> 이 모듈을 사용하도록 해요. 하지만 모달 내에 스크롤 레이어가 필요하다면 옵션을 잘 알고 써야하니 참고해주세요!</p>
+<p><a href="https://bradfrost.com/blog/post/fixed-position/" target="_blank" rel="noopener">이슈 포스팅</a></p>
+<h3 id="Mobile-Safari-스크롤-흔들림-이슈"><a href="#Mobile-Safari-스크롤-흔들림-이슈" class="headerlink" title="Mobile Safari 스크롤 흔들림 이슈"></a>Mobile Safari 스크롤 흔들림 이슈</h3><p>모바일 사파리에서 <code>position: fixed</code>를 주고, fixed Element 위에서 스크롤을 하다보면 스크롤이 흔들리는 이슈가 있습니다. 해당 이슈를 해결하는 방법은 아래와 같습니다.</p>
+<pre class=" language-css"><code class="language-css"><span class="token selector"><span class="token class">.modal-wrapper</span> </span><span class="token punctuation">{</span>
+  <span class="token property">position</span><span class="token punctuation">:</span> fixed<span class="token punctuation">;</span>
+  <span class="token property">-webkit-transform</span><span class="token punctuation">:</span> <span class="token function">translateZ</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token number">...</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<p>위의 이슈 말고도 수많은 css 이슈들이 있으나, 이번 장에서는 많이 나오는 이슈 몇 가지에 대해서 알아봤습니다. 다음 글에서는 조금 더 어려운 대응 이슈를 보도록 하겠습니다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/HTML/" title="HTML">HTML</a>
+            
+            <a class="tag" href="/tags/CSS/" title="CSS">CSS</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/11/25/놓치기-쉬운-HTML-CSS-지식-몰아보기/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">놓치기 쉬운 HTML/CSS 지식 몰아보기</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/08/01/2019년-7월-회고/">
+                <div class="wrapper">
+                    <span class="nav-default">2019년 7월 회고</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

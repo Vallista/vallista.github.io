@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>COPY와 Command를 이용한 Excel Export - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,PostgreSQL">
+    
+
+    <meta name="description" content="회사에서 PostgreSQL에서 Excel 포맷으로 출력 해야하는 일이 생겼습니다. 오프라인에서 물건을 점검하기위해 주문 상황을 체크하고 물건을 걸러내야 했는데 이는 종이로 하는 것이 효율적이기에 출력해야 되는 상황이었습니다. 그래서 PostgreSQL에서 파일 입출력이 가능한가에 대해서 찾아보았습니다. PostgreSQL에서는 쉽게 Excel로 뽑아내는">
+<meta name="keywords" content="Tech,PostgreSQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="COPY와 Command를 이용한 Excel Export">
+<meta property="og:url" content="https://vallista.kr/2019/01/29/COPY와-Command를-이용한-Excel-Export/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="회사에서 PostgreSQL에서 Excel 포맷으로 출력 해야하는 일이 생겼습니다. 오프라인에서 물건을 점검하기위해 주문 상황을 체크하고 물건을 걸러내야 했는데 이는 종이로 하는 것이 효율적이기에 출력해야 되는 상황이었습니다. 그래서 PostgreSQL에서 파일 입출력이 가능한가에 대해서 찾아보았습니다. PostgreSQL에서는 쉽게 Excel로 뽑아내는">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.890Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="COPY와 Command를 이용한 Excel Export">
+<meta name="twitter:description" content="회사에서 PostgreSQL에서 Excel 포맷으로 출력 해야하는 일이 생겼습니다. 오프라인에서 물건을 점검하기위해 주문 상황을 체크하고 물건을 걸러내야 했는데 이는 종이로 하는 것이 효율적이기에 출력해야 되는 상황이었습니다. 그래서 PostgreSQL에서 파일 입출력이 가능한가에 대해서 찾아보았습니다. PostgreSQL에서는 쉽게 Excel로 뽑아내는">
+    
+    <link rel="canonical" href="https://vallista.kr/2019/01/29/copy와-command를-이용한-excel-export/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">COPY와 Command를 이용한 Excel Export</h2>
+            <div class="post-meta">
+                <span class="post-time">2019-01-29</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#사용방법"><span class="toc-text">사용방법</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#실제-사용"><span class="toc-text">실제 사용</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#COPY-TO"><span class="toc-text">COPY ~ TO ~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COPY-FROM"><span class="toc-text">COPY ~ FROM ~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#컬럼-필터링-및-순서-변경"><span class="toc-text">컬럼 필터링 및 순서 변경</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#복잡한-쿼리를-나타내기"><span class="toc-text">복잡한 쿼리를 나타내기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#권한-없는-문제-해결"><span class="toc-text">권한 없는 문제 해결</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#컬럼-이름으로-헤더-설정"><span class="toc-text">컬럼 이름으로 헤더 설정</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#데이터의-구분문자로-구분하기"><span class="toc-text">데이터의 구분문자로 구분하기</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>회사에서 <code>PostgreSQL</code>에서 Excel 포맷으로 출력 해야하는 일이 생겼습니다. 오프라인에서 물건을 점검하기위해 주문 상황을 체크하고 물건을 걸러내야 했는데 이는 종이로 하는 것이 효율적이기에 출력해야 되는 상황이었습니다.</p>
+<p>그래서 PostgreSQL에서 파일 입출력이 가능한가에 대해서 찾아보았습니다. PostgreSQL에서는 쉽게 Excel로 뽑아내는 커맨드를 제공합니다. 바로 <code>COPY</code> 라는 커맨드인데요. 이 커맨드를 이용해서 한번 파일 출력을 해보겠습니다.</p>
+<h2 id="사용방법"><a href="#사용방법" class="headerlink" title="사용방법"></a>사용방법</h2><pre class=" language-sql"><code class="language-sql">COPY table_name <span class="token punctuation">[</span> <span class="token punctuation">(</span> column_name <span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token punctuation">)</span> <span class="token punctuation">]</span>
+    <span class="token keyword">FROM</span> { <span class="token string">'filename'</span> <span class="token operator">|</span> STDIN }
+    <span class="token punctuation">[</span> <span class="token punctuation">[</span> <span class="token keyword">WITH</span> <span class="token punctuation">]</span> <span class="token punctuation">(</span> <span class="token keyword">option</span> <span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token punctuation">)</span> <span class="token punctuation">]</span>
+
+COPY { table_name <span class="token punctuation">[</span> <span class="token punctuation">(</span> column_name <span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token punctuation">)</span> <span class="token punctuation">]</span> <span class="token operator">|</span> <span class="token punctuation">(</span> query <span class="token punctuation">)</span> }
+    <span class="token keyword">TO</span> { <span class="token string">'filename'</span> <span class="token operator">|</span> STDOUT }
+    <span class="token punctuation">[</span> <span class="token punctuation">[</span> <span class="token keyword">WITH</span> <span class="token punctuation">]</span> <span class="token punctuation">(</span> <span class="token keyword">option</span> <span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span> <span class="token punctuation">)</span> <span class="token punctuation">]</span></code></pre>
+<pre class=" language-plain"><code class="language-plain">where option can be one of:
+
+    FORMAT format_name
+    OIDS [ boolean ]
+    DELIMITER 'delimiter_character'
+    NULL 'null_string'
+    HEADER [ boolean ]
+    QUOTE 'quote_character'
+    ESCAPE 'escape_character'
+    FORCE_QUOTE { ( column_name [, ...] ) | * }
+    FORCE_NOT_NULL ( column_name [, ...] )
+    ENCODING 'encoding_name'</code></pre>
+<blockquote>
+<p>파일 타입은 csv 뿐만 아니라 다른 텍스트 포멧으로 나타낼 수 있습니다.  </p>
+</blockquote>
+<p>COPY를 사용하는 방법은 FROM과 TO로 나눌 수 있습니다.</p>
+<h2 id="실제-사용"><a href="#실제-사용" class="headerlink" title="실제 사용"></a>실제 사용</h2><p>사용 방법을 보니 사용되는 문법이 두 가지 있습니다.</p>
+<h3 id="COPY-TO"><a href="#COPY-TO" class="headerlink" title="COPY ~ TO ~"></a>COPY ~ TO ~</h3><pre class=" language-sql"><code class="language-sql">postgresql<span class="token operator">></span> COPY order_item <span class="token keyword">to</span> <span class="token string">'~/app/test.csv'</span></code></pre>
+<pre class=" language-plain"><code class="language-plain">0 Apple 2019/01/17 1000    
+1 Juice 2019/01/13 2000    
+2 Candy 2019/01/11 3000    
+3 Grape 2019/01/10 4000</code></pre>
+<p>COPY ~ TO ~ 는 테이블에 있는 내용을 파일화 시키는 커맨드 입니다. 그래서 order_item 테이블을 <code>~/app/test.csv</code> 이름으로 액셀 파일로 만들어서 넣었습니다.</p>
+<h3 id="COPY-FROM"><a href="#COPY-FROM" class="headerlink" title="COPY ~ FROM ~"></a>COPY ~ FROM ~</h3><pre class=" language-plain"><code class="language-plain">~/app/test.csv
+
+Apple 2019/01/17 1000
+Juice 2019/01/13 2000
+Candy 2019/01/11 3000
+Grape 2019/01/10 4000</code></pre>
+<pre class=" language-sql"><code class="language-sql">postgresql<span class="token operator">></span> COPY order_item <span class="token keyword">from</span> <span class="token string">'~/app/test.csv'</span></code></pre>
+<pre class=" language-plain"><code class="language-plain">| id | name  | created_at | payment
+---------------------------------
+| 0  | Apple | 2019/01/17 | 1000
+| 1  | Juice | 2019/01/13 | 2000
+| 2  | Candy | 2019/01/11 | 3000
+| 3  | Grape | 2019/01/10 | 4000
+---------------------------------</code></pre>
+<p>COPY ~ FROM ~ 는 테이블에 내용을 import 하는 기능입니다.<br>order_item 테이블에 <code>~/app/test.csv</code> 파일을 import 했습니다.</p>
+<h3 id="컬럼-필터링-및-순서-변경"><a href="#컬럼-필터링-및-순서-변경" class="headerlink" title="컬럼 필터링 및 순서 변경"></a>컬럼 필터링 및 순서 변경</h3><pre class=" language-sql"><code class="language-sql">postgresql<span class="token operator">></span> COPY order_item<span class="token punctuation">(</span>created_at<span class="token punctuation">,</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> payment<span class="token punctuation">)</span> <span class="token keyword">to</span> <span class="token string">'~/app/importFile.csv'</span></code></pre>
+<pre class=" language-plain"><code class="language-plain">2019/01/17 0 Apple 1000
+2019/01/13 1 Juice 2000
+2019/01/11 2 Candy 3000
+2019/01/10 3 Grape 4000</code></pre>
+<p>컬럼명을 명시하므로써 순서 및 출력할 컬럼만 추가 할 수 있습니다.</p>
+<h3 id="복잡한-쿼리를-나타내기"><a href="#복잡한-쿼리를-나타내기" class="headerlink" title="복잡한 쿼리를 나타내기"></a>복잡한 쿼리를 나타내기</h3><p>현재 구문으로는 한 가지의 테이블에 대한 데이터만 나타 낼 수 있는 것 같습니다.<br>그렇다면 JOIN이나 WHERE등의 커맨드가 붙어야 할 때는 어떻게 해야할까요?  </p>
+<p><code>()</code> 괄호를 열어주시면 됩니다.</p>
+<pre class=" language-sql"><code class="language-sql">postgresql<span class="token operator">></span> COPY <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span>
+    order_item<span class="token punctuation">.</span>created_at<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>payment<span class="token punctuation">,</span>
+    item<span class="token punctuation">.</span>item_code<span class="token punctuation">,</span>
+  <span class="token keyword">FROM</span> order_item
+  <span class="token keyword">WHERE</span> order_item<span class="token punctuation">.</span>id <span class="token operator">></span> <span class="token number">1</span>
+  <span class="token keyword">JOIN</span> item <span class="token keyword">ON</span> order_item<span class="token punctuation">.</span>id <span class="token operator">=</span> item<span class="token punctuation">.</span>order_id
+<span class="token punctuation">)</span> <span class="token keyword">to</span> <span class="token string">'~/app/importFile.csv'</span></code></pre>
+<pre class=" language-plain"><code class="language-plain">2019/01/13 1 Juice 2000 100_0000_01
+2019/01/11 2 Candy 3000 100_0000_02
+2019/01/10 3 Grape 4000 100_0000_03</code></pre>
+<h3 id="권한-없는-문제-해결"><a href="#권한-없는-문제-해결" class="headerlink" title="권한 없는 문제 해결"></a>권한 없는 문제 해결</h3><p>COPY 커맨드를 사용할 때 권한이 없는 에러를 뱉는 경우가 있습니다.</p>
+<pre class=" language-sql"><code class="language-sql">postgresql<span class="token operator">></span> \COPY <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span>
+    order_item<span class="token punctuation">.</span>created_at<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>payment<span class="token punctuation">,</span>
+    item<span class="token punctuation">.</span>item_code<span class="token punctuation">,</span>
+  <span class="token keyword">FROM</span> order_item
+  <span class="token keyword">WHERE</span> order_item<span class="token punctuation">.</span>id <span class="token operator">></span> <span class="token number">1</span>
+  <span class="token keyword">JOIN</span> item <span class="token keyword">ON</span> order_item<span class="token punctuation">.</span>id <span class="token operator">=</span> item<span class="token punctuation">.</span>order_id
+<span class="token punctuation">)</span> <span class="token keyword">to</span> <span class="token string">'~/app/importFile.csv'</span></code></pre>
+<p>그럴때는 COPY 앞에 <code>\</code>를 붙여주면 됩니다.</p>
+<h3 id="컬럼-이름으로-헤더-설정"><a href="#컬럼-이름으로-헤더-설정" class="headerlink" title="컬럼 이름으로 헤더 설정"></a>컬럼 이름으로 헤더 설정</h3><p>컬럼 이름이 전혀 연관이 없는 이상한 이름으로 나오는 경우가 있습니다. 설정을 안하면 대다수의 파일이 그렇게 출력되는데요. 아래의 구문을 추가해주면 제대로 나옵니다.</p>
+<pre class=" language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">// With CSV HEADER 추가</span>
+
+postgresql<span class="token operator">></span> \COPY <span class="token punctuation">(</span>
+  <span class="token keyword">SELECT</span>
+    order_item<span class="token punctuation">.</span>created_at<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+    order_item<span class="token punctuation">.</span>payment<span class="token punctuation">,</span>
+    item<span class="token punctuation">.</span>item_code<span class="token punctuation">,</span>
+  <span class="token keyword">FROM</span> order_item
+  <span class="token keyword">WHERE</span> order_item<span class="token punctuation">.</span>id <span class="token operator">></span> <span class="token number">1</span>
+  <span class="token keyword">JOIN</span> item <span class="token keyword">ON</span> order_item<span class="token punctuation">.</span>id <span class="token operator">=</span> item<span class="token punctuation">.</span>order_id
+<span class="token punctuation">)</span> <span class="token keyword">to</span> <span class="token string">'~/app/importFile.csv'</span> <span class="token keyword">With</span> CSV HEADER</code></pre>
+<p>열어서 파일을 확인해 보세요.</p>
+<h3 id="데이터의-구분문자로-구분하기"><a href="#데이터의-구분문자로-구분하기" class="headerlink" title="데이터의 구분문자로 구분하기"></a>데이터의 구분문자로 구분하기</h3><p>데이터를 넣을 때 구분문자가 있어야 데이터를 구분할 것 입니다.</p>
+<pre class=" language-plain"><code class="language-plain">~/app/test.csv
+
+0, Apple, 2019/01/17, 1000
+1, Juice, 2019/01/13, 2000
+2, Candy, 2019/01/11, 3000
+3, Grape, 2019/01/10, 4000
+
+postgresql> \COPY order_item(created_at, id, name, payment) FROM '~/app/importFile.csv' With DELIMITER ',';
+
+id | name  | created_at | payment
+---------------------------------
+0  | Apple | 2019/01/17 | 1000
+1  | Juice | 2019/01/13 | 2000
+2  | Candy | 2019/01/11 | 3000
+3  | Grape | 2019/01/10 | 4000
+---------------------------------</code></pre>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/PostgreSQL/" title="PostgreSQL">PostgreSQL</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/02/25/백앤드에서-받은-데이터를-어떻게-하면-가공없이-클라이언트에-적용할-수-있을까/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">백앤드에서 받은 데이터를 어떻게 하면 가공없이 클라이언트에 적용할 수 있을까?</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2019/01/05/2018년-회고/">
+                <div class="wrapper">
+                    <span class="nav-default">2018년 회고</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

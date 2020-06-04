@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>Vue LifeCycle - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,Vue">
+    
+
+    <meta name="description" content="참고 자료Jeong Woo Ahn 그림그리는 프로그래머 insta@younmydrawing님의 자료 Understanding Vue.js Lifecycle Hooks - Joshua Bemenderfer 렌더링 전, 후 이벤트를 나눠야할 때, 어떠한 행위가 변경될 때 업데이트 해주어야 할 때 등경우에 따라 변수를 만들어서 넣어주고 사용하고 해야하는 경우가">
+<meta name="keywords" content="Tech,Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue LifeCycle">
+<meta property="og:url" content="https://vallista.kr/2018/01/15/Vue-LifeCycle/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="참고 자료Jeong Woo Ahn 그림그리는 프로그래머 insta@younmydrawing님의 자료 Understanding Vue.js Lifecycle Hooks - Joshua Bemenderfer 렌더링 전, 후 이벤트를 나눠야할 때, 어떠한 행위가 변경될 때 업데이트 해주어야 할 때 등경우에 따라 변수를 만들어서 넣어주고 사용하고 해야하는 경우가">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://kr.vuejs.org/images/lifecycle.png">
+<meta property="og:updated_time" content="2020-06-04T05:27:52.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue LifeCycle">
+<meta name="twitter:description" content="참고 자료Jeong Woo Ahn 그림그리는 프로그래머 insta@younmydrawing님의 자료 Understanding Vue.js Lifecycle Hooks - Joshua Bemenderfer 렌더링 전, 후 이벤트를 나눠야할 때, 어떠한 행위가 변경될 때 업데이트 해주어야 할 때 등경우에 따라 변수를 만들어서 넣어주고 사용하고 해야하는 경우가">
+<meta name="twitter:image" content="https://kr.vuejs.org/images/lifecycle.png">
+    
+    <link rel="canonical" href="https://vallista.kr/2018/01/15/vue-lifecycle/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">Vue LifeCycle</h2>
+            <div class="post-meta">
+                <span class="post-time">2018-01-15</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#참고-자료"><span class="toc-text">참고 자료</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#컴포넌트-초기화"><span class="toc-text">컴포넌트 초기화</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#렌더링"><span class="toc-text">렌더링</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM-삽입"><span class="toc-text">DOM 삽입</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Diff-및-재-렌더링-단계"><span class="toc-text">Diff 및 재 렌더링 단계</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#해체-단계"><span class="toc-text">해체 단계</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <h2 id="참고-자료"><a href="#참고-자료" class="headerlink" title="참고 자료"></a>참고 자료</h2><p><a href="https://medium.com/witinweb/vue-js-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-7780cdd97dd4" target="_blank" rel="noopener">Jeong Woo Ahn 그림그리는 프로그래머 insta@younmydrawing님의 자료</a></p>
+<p><a href="https://alligator.io/vuejs/component-lifecycle/" target="_blank" rel="noopener">Understanding Vue.js Lifecycle Hooks - Joshua Bemenderfer</a></p>
+<p>렌더링 전, 후 이벤트를 나눠야할 때, 어떠한 행위가 변경될 때 업데이트 해주어야 할 때 등<br>경우에 따라 변수를 만들어서 넣어주고 사용하고 해야하는 경우가 있다.</p>
+<p>vue.js 에서 생성부터 파괴 될 때 까지의 한 사이클을 돌아가는 사이에<br>해당 컴포넌트에서 그 사이클에 돌아가는 시점에 호출 가능한 함수 호출하여 거기에 구동되도록 구현부를 만들 수 있다.</p>
+<hr>
+<p><img src="https://kr.vuejs.org/images/lifecycle.png" alt="vue 라이프 사이클"></p>
+<p>위의 이미지는 vue에서의 생명주기 표이다. 양쪽에 있는 빨간색 폰트들이 component에서 사용할 수 있는 함수들이고 가운데 flow 막대를 따라서 아래로 내려가는 것이 뷰 라이프 사이클 전체 흐름이다.</p>
+<hr>
+<h3 id="컴포넌트-초기화"><a href="#컴포넌트-초기화" class="headerlink" title="컴포넌트 초기화"></a>컴포넌트 초기화</h3><p>아래의 섹션은 컴포넌트를 초기화 하는 섹션이다. 컴포넌트들이 돔에 추가되어 있지 않으며, 서버사이드 렌더링에서 지원되는 섹션이다.</p>
+<p>클라이언트, 서버 렌더링 단에서 처리해야할 일이 있다면 이 곳에서 처리하면 된다.</p>
+<ul>
+<li>new Vue()</li>
+</ul>
+<p>Vue Instance를 생성하는 단계이다.</p>
+<ul>
+<li>Init (Events &amp; Lifecycle)</li>
+</ul>
+<p>Event와 Lifecycle을 초기화 하는 단계.</p>
+<ul>
+<li><strong>beforeCreate</strong></li>
+</ul>
+<p>가장 처음으로 가져다 쓸 수 있는 함수이다.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span>
+  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    <span class="token function">beforeCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// not es6</span>
+    beforeCreate<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span></code></pre>
+<ul>
+<li>Init (injections &amp; reactivity)</li>
+</ul>
+<p>주입하고 반응하는 단계.</p>
+<ul>
+<li><strong>created</strong></li>
+</ul>
+<p>데이터, 이벤트 등이 주입되어 반응이 되었다.<br>template과 virtual DOM은 아직 mount 및 rendering 되지 않은 상황이라서 사용했다간 에러를 뱉는다.</p>
+<pre class=" language-javascript"><code class="language-javascript">  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+    <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// not es6</span>
+    created<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span></code></pre>
+<hr>
+<h3 id="렌더링"><a href="#렌더링" class="headerlink" title="렌더링"></a>렌더링</h3><ul>
+<li>Has “el” option?, Has ‘template’ option?</li>
+</ul>
+<p>new Vue를 작성시 instance 안에 el option으로 아이디나 클래스를 통해서 element를 가져왔으면 template이 있는가로 넘어간다.<br>만약 없을 경우 vm.$mount(el)을 통해서 mount 시킨다.</p>
+<p>그 다음 템플릿 옵션이 있으면, 렌더 함수안에 템플릿을 컴파일 한다.<br>혹은 없을 경우 el의 outerHTML에 컴파일한다.</p>
+<hr>
+<h3 id="DOM-삽입"><a href="#DOM-삽입" class="headerlink" title="DOM 삽입"></a>DOM 삽입</h3><p>처음 시작 후, 렌더링 직전에 코드를 넣을 수 있다.<br><strong>컴포넌트 초기에 세팅되어야 할 데이터는 Created에서 처리하는게 좋다.</strong></p>
+<p>서버사이드 렌더링시 호출되지 않는다.</p>
+<ul>
+<li>beforeMount</li>
+</ul>
+<p>렌더링 전 최초 1회 실행하는 함수.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token function">beforeMount</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token punctuation">}</span>
+
+  <span class="token comment" spellcheck="true">// not es6</span>
+  beforeMount<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>Create vm.$el and replace “el” with it</li>
+</ul>
+<p>vm.$el을 아까 컴파일 한 대상으로 만들고, el을 교체한다.</p>
+<ul>
+<li>mounted</li>
+</ul>
+<p>렌더링 후 실행하는 함수, 컴포넌트, 템플릿, 렌더링 된 돔에 접근 할 수 있다. 근데 확실히 모든 컴포넌트의 마운트된 상태를 보장하진 않는다. vm.$nextTick을 사용하여 전체가 렌더링된 상태를 보장할 수 있다.</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token function">mounted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$nextTick</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 전체가 렌더링 된 상태 보장.</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="Diff-및-재-렌더링-단계"><a href="#Diff-및-재-렌더링-단계" class="headerlink" title="Diff 및 재 렌더링 단계"></a>Diff 및 재 렌더링 단계</h3><p>컴포넌트에서 사용되는 반응형 속성들이 변경되거나 어떤 이유로 재 렌더링이 발생되면 생김.</p>
+<p>서버렌더링 시에는 호출되지 않음.</p>
+<ul>
+<li>beforeUpdate<br>컴포넌트의 데이터가 변하여 업데이트 사이클이 시작될 때 실행됨.<br>돔이 재 렌더링되고 패치 직전 실행. 바로 전의 데이터들을 얻을 수 있어서 많은 변경이 가능해짐. 다만 여기서의 변경은 적용되지 않음.</li>
+</ul>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token function">beforeUpdate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$nextTick</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 전체가 렌더링 된 상태 보장.</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>updated<br>재 렌더링이 일어난 후에 실행되는 훅.<br>DOM이 업데이트 되었으므로 돔 종속적인 연산이 가능.<br>mount와 마찬가지로 vm.$nextTick을 사용해서 렌더링 확정을 걸 수 있다.</li>
+</ul>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token function">updated</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$nextTick</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment" spellcheck="true">// 전체가 렌더링 된 상태 보장.</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<h3 id="해체-단계"><a href="#해체-단계" class="headerlink" title="해체 단계"></a>해체 단계</h3><p>서버 렌더링시 호출되지 않는다.</p>
+<ul>
+<li>beforeDestroy</li>
+</ul>
+<p>이 훅은 뷰 인스턴스 제거 직전에 호출됨.<br>reactive subscription을 제거하고자 한다면 이 훅에 담으면 좋음.</p>
+<ul>
+<li>destroyed</li>
+</ul>
+<p>이 훅은 해체 된 후에 호출된다. Vue 인스턴스의 모든 디렉티브가 바인딩 해제되고 모든 이벤트 리스너가 제거 및 모든 하위 vue 인스턴스도 삭제된다.</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/Vue/" title="Vue">Vue</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2019/01/05/2018년-회고/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">2018년 회고</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2018/01/14/Vue-Event-Bus/">
+                <div class="wrapper">
+                    <span class="nav-default">Vue Event Bus</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>

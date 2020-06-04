@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    
+    
+
+    <title>테스트의 종류 - Today I Learned</title>
+
+     
+        <meta name="keywords" content="Tech,Testing">
+    
+
+    <meta name="description" content="테스트는 규모에 따라 단위, 통합, 시스템, 인수 4가지의 테스트로 나뉜다. 단위 테스트모듈이나 애플리케이션 안에 있는 개별적인 코드 단위가 예상대로 작동하는지 확인하는 반복적인 행위. 통합 테스트통합 테스팅에서 각각의 소프트웨어 모듈들이 논리적으로 통합되고 그룹으로 테스트된다. 일반적인 소프트웨어 프로젝트는 다른 프로그래머들이 코딩한 여러 소프트웨어 모듈">
+<meta name="keywords" content="Tech,Testing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="테스트의 종류">
+<meta property="og:url" content="https://vallista.kr/2017/07/01/테스트의-종류/index.html">
+<meta property="og:site_name" content="Today I Learned">
+<meta property="og:description" content="테스트는 규모에 따라 단위, 통합, 시스템, 인수 4가지의 테스트로 나뉜다. 단위 테스트모듈이나 애플리케이션 안에 있는 개별적인 코드 단위가 예상대로 작동하는지 확인하는 반복적인 행위. 통합 테스트통합 테스팅에서 각각의 소프트웨어 모듈들이 논리적으로 통합되고 그룹으로 테스트된다. 일반적인 소프트웨어 프로젝트는 다른 프로그래머들이 코딩한 여러 소프트웨어 모듈">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-06-04T05:27:53.051Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="테스트의 종류">
+<meta name="twitter:description" content="테스트는 규모에 따라 단위, 통합, 시스템, 인수 4가지의 테스트로 나뉜다. 단위 테스트모듈이나 애플리케이션 안에 있는 개별적인 코드 단위가 예상대로 작동하는지 확인하는 반복적인 행위. 통합 테스트통합 테스팅에서 각각의 소프트웨어 모듈들이 논리적으로 통합되고 그룹으로 테스트된다. 일반적인 소프트웨어 프로젝트는 다른 프로그래머들이 코딩한 여러 소프트웨어 모듈">
+    
+    <link rel="canonical" href="https://vallista.kr/2017/07/01/테스트의-종류/">
+    
+    <meta name="naver-site-verification" content="981dd449900e4abd0f5aa265ce6849776b41a9c2">
+    <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="57x57" href="/css/images/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/css/images/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/css/images/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/css/images/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/css/images/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/css/images/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/css/images/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/css/images/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/css/images/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/css/images/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/css/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/css/images/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/css/images/favicon-16x16.png">
+    <link rel="manifest" href="/css/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/css/images/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143764638-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', "UA-143764638-1");
+    </script>
+
+
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css" rel="stylesheet" type="text/css">
+    <link href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/css/prism-darcula.css" type="text/css"></head>
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                홈
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                포스트
+            </a>
+            
+
+            <a href="/resume" class="header-nav-link">
+                이력서
+            </a>
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">홈</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">포스트</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/resume" class="mobile-nav-link">이력서</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="main">
+    <div class="content-inner">
+        <div class="post">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">테스트의 종류</h2>
+            <div class="post-meta">
+                <span class="post-time">2017-07-01</span>
+                
+                <span class="post-visit"> 방문：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">목차</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#단위-테스트"><span class="toc-text">단위 테스트</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#통합-테스트"><span class="toc-text">통합 테스트</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#시스템-테스트-end-to-end-E2E"><span class="toc-text">시스템 테스트 (end to end, E2E)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#인수-테스트"><span class="toc-text">인수 테스트</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">처음으로</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p>테스트는 규모에 따라 단위, 통합, 시스템, 인수 4가지의 테스트로 나뉜다.</p>
+<h2 id="단위-테스트"><a href="#단위-테스트" class="headerlink" title="단위 테스트"></a>단위 테스트</h2><p>모듈이나 애플리케이션 안에 있는 개별적인 코드 단위가 예상대로 작동하는지 확인하는 반복적인 행위.</p>
+<h2 id="통합-테스트"><a href="#통합-테스트" class="headerlink" title="통합 테스트"></a>통합 테스트</h2><p>통합 테스팅에서 각각의 소프트웨어 모듈들이 논리적으로 통합되고 그룹으로 테스트된다.</p>
+<p>일반적인 소프트웨어 프로젝트는 다른 프로그래머들이 코딩한 여러 소프트웨어 모듈로 구성되어 있다.<br>통합 테스팅은 이러한 모듈들 사이의 데이터 통신(communication)을 확인하는 데에 초점을 맞춘다.</p>
+<h2 id="시스템-테스트-end-to-end-E2E"><a href="#시스템-테스트-end-to-end-E2E" class="headerlink" title="시스템 테스트 (end to end, E2E)"></a>시스템 테스트 (end to end, E2E)</h2><p>전체 시스템이 제대로 작동하는지 확인하기 위한 테스트</p>
+<p>시나리오 테스트, 기능 테스트, 통합 테스트, GUI 테스트를 하는데 사용.</p>
+<h2 id="인수-테스트"><a href="#인수-테스트" class="headerlink" title="인수 테스트"></a>인수 테스트</h2><p>사용자 요구사항 처리에 대한 검증으로 사용자가 요구기능을 입력하고 기능이 정확하게 수행하는지 확인</p>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/Tech/" title="Tech">Tech</a>
+            
+            <a class="tag" href="/tags/Testing/" title="Testing">Testing</a>
+            
+        </div>
+        
+    </article>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vallista-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2017/12/25/2017년-회고/">
+                <div class="wrapper">
+                    <i class="iconfont icon-prev"></i>
+                    <
+                    <span class="nav-default">2017년 회고</span>
+                    <span class="nav-mobile">이전글</span>
+                </div>
+            </a>
+        
+        
+            <a class="next" href="/2017/07/01/E2E-end-to-end-Test/">
+                <div class="wrapper">
+                    <span class="nav-default">E2E (end to end) Test</span>
+                    <span class="nav-mobile">다음글</span>
+                    >
+                    <i class="iconfont icon-next"></i>
+                </div>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+
+    
+
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+            2020
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://github.com/vallista">Vallista</a>
+        </p>
+        <p class="theme-info">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme -
+            <a target="_blank" href="https://github.com/">Vallista</a>
+        </p>
+    </div>
+</footer>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    
+
+</script>
+</html>
