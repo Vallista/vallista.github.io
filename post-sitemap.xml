@@ -8,6 +8,14 @@
     </url>
 
     <url>
+        <loc>https://vallista.kr/2020/07/20/TypeScript%EC%97%90%EC%84%9C-Redux-Redux-Saga-%EC%95%84%EB%A6%84%EB%8B%B5%EA%B2%8C-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0/</loc>
+        <lastmod>2020-07-19T17:24:31.791Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://vallista.kr/2020/07/11/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/</loc>
         <lastmod>2020-07-11T14:57:59.660Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -72,7 +80,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/11/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B2%84%EB%B8%94%EB%A7%81-%EC%BA%A1%EC%B3%90%EB%A7%81-%EC%9C%84%EC%9E%84/</loc>
+        <loc>https://vallista.kr/2019/07/03/%EC%9D%B4%EC%A7%81%EC%9D%84-%EC%A4%80%EB%B9%84%ED%95%98%EB%A9%B4%EC%84%9C/</loc>
         <lastmod>2020-06-04T05:27:53.050Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -80,7 +88,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/07/03/%EC%9D%B4%EC%A7%81%EC%9D%84-%EC%A4%80%EB%B9%84%ED%95%98%EB%A9%B4%EC%84%9C/</loc>
+        <loc>https://vallista.kr/2019/05/11/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B2%84%EB%B8%94%EB%A7%81-%EC%BA%A1%EC%B3%90%EB%A7%81-%EC%9C%84%EC%9E%84/</loc>
         <lastmod>2020-06-04T05:27:53.050Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -200,7 +208,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2018/01/15/Vue-LifeCycle/</loc>
+        <loc>https://vallista.kr/2018/01/14/Vue-Event-Bus/</loc>
         <lastmod>2020-06-04T05:27:52.908Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -208,7 +216,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2018/01/14/Vue-Event-Bus/</loc>
+        <loc>https://vallista.kr/2018/01/15/Vue-LifeCycle/</loc>
         <lastmod>2020-06-04T05:27:52.908Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -224,7 +232,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2020/03/01/%EA%B8%80%EB%98%90-4%EA%B8%B0%EB%A5%BC-%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B4%EC%84%9C/</loc>
+        <loc>https://vallista.kr/2019/05/01/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/</loc>
         <lastmod>2020-06-04T05:27:52.908Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -232,7 +240,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/01/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/</loc>
+        <loc>https://vallista.kr/2020/03/01/%EA%B8%80%EB%98%90-4%EA%B8%B0%EB%A5%BC-%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B4%EC%84%9C/</loc>
         <lastmod>2020-06-04T05:27:52.908Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -288,14 +296,6 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/10/SEO-Search-Engine-Optimization/</loc>
-        <lastmod>2020-06-04T05:27:52.901Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://vallista.kr/2019/05/02/RESTFUL-API/</loc>
         <lastmod>2020-06-04T05:27:52.901Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -304,8 +304,8 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/30/Docker-In-Docker-DIND-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/</loc>
-        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <loc>https://vallista.kr/2019/05/10/SEO-Search-Engine-Optimization/</loc>
+        <lastmod>2020-06-04T05:27:52.901Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -328,6 +328,14 @@
     </url>
 
     <url>
+        <loc>https://vallista.kr/2019/05/30/Docker-In-Docker-DIND-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://vallista.kr/2019/05/28/Jenkins/</loc>
         <lastmod>2020-06-04T05:27:52.900Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -336,7 +344,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/13/Jest-enzyme%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%ED%85%8C%EC%8A%A4%ED%8C%85-%ED%99%98%EA%B2%BD/</loc>
+        <loc>https://vallista.kr/2019/05/15/Next%EC%97%90%EC%84%9C-Alias-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</loc>
         <lastmod>2020-06-04T05:27:52.900Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -344,7 +352,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/15/Next%EC%97%90%EC%84%9C-Alias-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0/</loc>
+        <loc>https://vallista.kr/2019/05/13/Jest-enzyme%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%ED%85%8C%EC%8A%A4%ED%8C%85-%ED%99%98%EA%B2%BD/</loc>
         <lastmod>2020-06-04T05:27:52.900Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -376,7 +384,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/01/29/COPY%EC%99%80-Command%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Excel-Export/</loc>
+        <loc>https://vallista.kr/2019/05/12/CORS-Cross-Origin-Resource-Sharing/</loc>
         <lastmod>2020-06-04T05:27:52.890Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -384,7 +392,7 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/05/12/CORS-Cross-Origin-Resource-Sharing/</loc>
+        <loc>https://vallista.kr/2019/01/29/COPY%EC%99%80-Command%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Excel-Export/</loc>
         <lastmod>2020-06-04T05:27:52.890Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -408,14 +416,6 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/12/29/2019%EB%85%84-%ED%9A%8C%EA%B3%A0/</loc>
-        <lastmod>2020-06-04T05:27:52.868Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>https://vallista.kr/2019/07/10/2019%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/</loc>
         <lastmod>2020-06-04T05:27:52.868Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -424,8 +424,8 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/2019/08/01/2019%EB%85%84-7%EC%9B%94-%ED%9A%8C%EA%B3%A0/</loc>
-        <lastmod>2020-06-04T05:27:52.867Z</lastmod>
+        <loc>https://vallista.kr/2019/12/29/2019%EB%85%84-%ED%9A%8C%EA%B3%A0/</loc>
+        <lastmod>2020-06-04T05:27:52.868Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -433,6 +433,14 @@
 
     <url>
         <loc>https://vallista.kr/2017/12/25/2017%EB%85%84-%ED%9A%8C%EA%B3%A0/</loc>
+        <lastmod>2020-06-04T05:27:52.867Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/2019/08/01/2019%EB%85%84-7%EC%9B%94-%ED%9A%8C%EA%B3%A0/</loc>
         <lastmod>2020-06-04T05:27:52.867Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>

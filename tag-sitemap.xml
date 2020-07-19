@@ -4,7 +4,7 @@
 
     <url>
         <loc>https://vallista.kr/tags/Tech/</loc>
-        <lastmod>2020-07-11T14:57:59.660Z</lastmod>
+        <lastmod>2020-07-19T17:24:31.791Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -87,6 +87,13 @@
     </url>
 
     <url>
+        <loc>https://vallista.kr/tags/%EA%B8%80%EB%98%90/</loc>
+        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
         <loc>https://vallista.kr/tags/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/</loc>
         <lastmod>2020-06-04T05:27:52.908Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -102,13 +109,6 @@
 
     <url>
         <loc>https://vallista.kr/tags/%EA%B8%B0%EB%B3%B8%EA%B8%B0/</loc>
-        <lastmod>2020-06-04T05:27:52.908Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://vallista.kr/tags/%EA%B8%80%EB%98%90/</loc>
         <lastmod>2020-06-04T05:27:52.908Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -164,13 +164,6 @@
     </url>
 
     <url>
-        <loc>https://vallista.kr/tags/Next/</loc>
-        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://vallista.kr/tags/Jest/</loc>
         <lastmod>2020-06-04T05:27:52.900Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -179,6 +172,20 @@
 
     <url>
         <loc>https://vallista.kr/tags/Engyme/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/React/</loc>
+        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://vallista.kr/tags/Next/</loc>
         <lastmod>2020-06-04T05:27:52.900Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -214,13 +221,6 @@
 
     <url>
         <loc>https://vallista.kr/tags/Docker/</loc>
-        <lastmod>2020-06-04T05:27:52.900Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://vallista.kr/tags/React/</loc>
         <lastmod>2020-06-04T05:27:52.900Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
