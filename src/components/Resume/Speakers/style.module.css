@@ -1,0 +1,23 @@
+.speakers .title {
+  margin: 0;
+  margin-bottom: 24px;
+}
+
+
+.speakers .speaker {
+  border: none;
+  outline: none;
+  text-decoration: none;
+
+}
+
+.speakers .speaker .text {
+  transition: color 0.3s;
+  font-weight: 400;
+  color: #ff847c;
+
+}
+
+.speakers .speaker .text:hover {
+  color: #e84a5f;
+}

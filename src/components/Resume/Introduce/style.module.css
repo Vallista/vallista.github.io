@@ -1,0 +1,52 @@
+.introduce {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+
+}
+
+.introduce .title1 {
+  font-size: 1.5rem;
+}
+
+.introduce .title2 {
+  font-size: 1.7rem;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.introduce .descriptions {
+  margin-bottom: 24px;
+
+}
+
+.introduce .descriptions .description {
+  margin: 0;
+}
+
+.introduce .iconWrap {
+  display: flex;
+  align-items: center;
+
+}
+
+.introduce .iconWrap .link {
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+
+  margin-right: 12px;
+}
+
+.introduce .iconWrap .link2 {
+  width: 28px;
+  height: 28px;
+  box-sizing: border-box;
+
+  margin-right: 12px;
+}
+
+.introduce .iconWrap .img {
+  width: 100%;
+  height: 100%;
+}

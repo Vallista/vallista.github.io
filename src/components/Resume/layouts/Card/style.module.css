@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  box-sizing: border-box;
+  padding: 36px;
+  width: 100%;
+  height: auto;
+  box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.1);
+}
+
+.card>.header {
+  display: flex;
+
+}
+
+.card>.header>.title {
+  margin: 0;
+  font-size: 3rem;
+  margin-right: 4px;
+}
+
+.card>.header>.point {
+  font-size: 3rem;
+  color: #e84a5f;
+  margin: 0;
+}
+
+.card>.blank {
+  margin-bottom: 36px;
+}
+
+.card>.contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}

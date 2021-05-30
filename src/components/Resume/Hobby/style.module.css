@@ -1,0 +1,47 @@
+.hobbies {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+
+}
+
+.hobbies .hobby {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  margin-bottom: 24px;
+}
+
+.hobbies .hobby:last-child {
+  margin-bottom: 0;
+}
+
+.hobbies .hobby .link {
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.hobbies .hobby .title {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+}
+
+.hobbies .hobby .active {}
+
+.hobbies .hobby .active .title {
+  transition: color 0.3s;
+  font-weight: 400;
+  color: #ff847c;
+
+}
+
+.hobbies .hobby .active .title:hover {
+  color: #e84a5f;
+}
+
+.hobbies .hobby .descriptions {
+  margin-bottom: 16px;
+}
+
+.hobbies .hobby .descriptions .description {}

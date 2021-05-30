@@ -1,0 +1,21 @@
+.skills {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+}
+
+.skills .skill>.title {
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.skills .skill>.descriptions .description>.title {
+  font-size: 1.0rem;
+}
+
+.skills .skill>.descriptions .description>.subTitles>.subTitle {
+  font-size: 0.9rem;
+  color: #888;
+}

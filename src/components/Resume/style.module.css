@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  max-width: 50rem;
+  margin: auto;
+  padding-top: 12px;
+
+}
+
+.container .item {
+  margin-bottom: 24px;
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    max-width: 60rem;
+  }
+}

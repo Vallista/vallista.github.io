@@ -1,0 +1,300 @@
+.careers {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+
+}
+
+.careers .career {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 48px;
+  width: 100%;
+  position: relative;
+}
+
+.careers .career .fold {
+  position: absolute;
+  left: -50px;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background-color: #e84a5f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.careers .career .fold::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border: 5px solid #fff;
+  border-left: none;
+  border-top: none;
+  transform: rotateZ(-135deg) translate(-1px, -1px);
+  transition: transform 0.3s ease-out;
+}
+
+.careers .career .foldActive {
+  animation: Breathe 1s ease-in-out infinite;
+}
+
+.careers .career .foldActive::before {
+  transform: rotateZ(45deg) translate(-2px, -2px);
+}
+
+@keyframes Breathe {
+  0% {
+    transform: scale(1.0, 1.0);
+  }
+
+  30% {
+    transform: scale(1.05, 1.05);
+  }
+
+  70% {
+    transform: scale(0.95, 0.95);
+  }
+
+  80% {
+    transform: scale(1.05, 1.05)
+  }
+
+  100% {
+    transform: scale(1.0, 1.0)
+  }
+}
+
+.careers .career .headerWrapper {}
+
+.careers .career .headerWrapper .intro {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+
+}
+
+.careers .career .headerWrapper .intro>.title {
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+.careers .career .headerWrapper .intro>.department {
+  font-size: 1.2rem;
+}
+
+.careers .career .headerWrapper .intro>.position {
+  font-size: 1rem;
+}
+
+.careers .career .headerWrapper .date {
+  margin-bottom: 16px;
+
+}
+
+.careers .career .headerWrapper .date>.start {
+  margin-right: 0.3rem;
+  color: #888;
+}
+
+.careers .career .headerWrapper .date>.end {
+  color: #888;
+}
+
+.careers .career .headerWrapper .descriptions {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 32px;
+
+}
+
+.careers .career .headerWrapper .descriptions>.description {
+  color: #666;
+}
+
+.careers .career .projects {
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  padding-left: 12px;
+  border-left: 4px solid #2a363b;
+}
+
+.careers .career .foldActiveProject {
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+
+.careers .career .foldActiveProject::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: transparent;
+  background: linear-gradient(0, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 100%);
+}
+
+.careers .career .foldActiveProject::after {
+  content: '해당 프로젝트는 접혀있습니다! 왼쪽의 버튼을 눌러주세요!';
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+  padding: 24px;
+  width: 200px;
+  background-color: #fff;
+  border: 2px solid #e84a5f;
+  border-radius: 6px;
+}
+
+.careers .career .projects .project {}
+
+.careers .career .projects .project>.title {
+  font-weight: 400;
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.careers .career .projects .project>.wrap {}
+
+.careers .career .projects .project .wrap>.descriptions {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+
+}
+
+.careers .career .projects .project .wrap>.descriptions>.description {}
+
+.careers .career .projects .project .wrap>.date {}
+
+.careers .career .projects .project .wrap .date>.start {
+  margin-right: 0.3rem;
+  color: #888;
+}
+
+.careers .career .projects .project .wrap .date>.end {
+  color: #888;
+}
+
+.careers .career .projects .project>.whiches {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+
+}
+
+.careers .career .projects .project .whiches .which {
+  color: #666;
+}
+
+.careers .career .projects .project>.techStacks {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.careers .career .projects .project .techStacks>.techStack {
+  background-color: #e84a5f;
+  color: #fff;
+  padding: 6px 10px 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 400px) {
+  .careers {
+    padding: 36px 24px 36px 24px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .careers {}
+
+  .careers .career {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+  }
+
+  .careers .career .headerWrapper {
+    flex: 1;
+
+  }
+
+  .careers .career .headerWrapper .intro {
+    margin-bottom: 0;
+    font-size: 6px;
+  }
+
+  .careers .career .headerWrapper .date {
+    margin-bottom: 24px;
+  }
+
+  .careers .career .headerWrapper .descriptions {}
+
+  .careers .career .headerWrapper .descriptions .description {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+  }
+
+  .careers .career .projects {
+    padding-left: 48px;
+    flex: 2;
+    border-left: none;
+
+  }
+
+  .careers .career .projects .project {}
+
+  .careers .career .projects .project>.title {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .careers .career .projects .project>.wrap {
+    display: flex;
+    flex-direction: column-reverse;
+
+  }
+
+  .careers .career .projects .project .wrap>.descriptions {}
+
+  .careers .career .projects .project .wrap .descriptions>.description {
+    font-size: 0.9rem;
+  }
+
+  .careers .career .projects .project>.wrap>.date {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .careers .career .projects .project>.whiches {
+    margin-bottom: 24px;
+
+  }
+
+  .careers .career .projects .project>.whiches>.which {
+    font-size: 0.9rem;
+  }
+
+  .careers .career .projects .project>.techStacks {}
+
+  .careers .career .projects .project .techStacks>.techStack {
+    font-size: 0.9rem;
+  }
+}
