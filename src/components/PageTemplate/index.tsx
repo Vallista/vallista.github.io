@@ -240,7 +240,6 @@ const Loading = styled.div<{ isLoading: boolean }>`
 
     80% {
       background-color: transparent;
-      
     }
 
     100% {
@@ -343,6 +342,8 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
       ? true
       : false
 
+  // isProfile이 true인 상황에서, prevSelectTag가 '' 이고 saveLocked가 false 일 때 
+
   // 이전 선택한 태그가 있으면 현재 페이지가 이전 태그에 있는지 확인 필요
   const hasPrevSelectTagInPost = markdownRemark?.frontmatter.tags.includes(prevSelectTag) ?? null
 
@@ -359,7 +360,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
         : findCategory.fieldValue
   )
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [isLocked, setLocked] = useState<boolean>(saveLocked)
+  const [isLocked, setLocked] = useState<boolean>(isProfile && !prevSelectTag && saveLocked === false ? false : true)
   const [isSelectProfile, setSelectProfile] = useState<boolean>(isProfile)
 
   useEffect(() => {
@@ -367,9 +368,12 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
       secondCategoryRef.current?.scrollTo(0, Number(prevScrollPos))
     }
 
-    console.log(window.location.pathname)
-
-    if (window.location.pathname === '' || window.location.pathname === '/') setLocked(false)
+    if (window.location.pathname === '' || window.location.pathname === '/') {
+      setLocked(false)
+      sessionStorage.setItem(SAVE_LOCKED, String(false))
+    } else {
+      setLocked(saveLocked)
+    }
 
     setLoading(true)
   }, [])
@@ -399,17 +403,18 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   }
 
   const onMoveIndex = () => {
-    setLocked(false)
+    // setLocked(false)
     setSelectProfile(true)
     setSelectTag('')
-    sessionStorage.setItem(SAVE_LOCKED, String(false))
+    // sessionStorage.setItem(SAVE_LOCKED, String(false))
     sessionStorage.setItem(SAVE_PROFILE_SELECT, String(true))
+    sessionStorage.setItem(SAVE_SELECT_TAG, '')
     navigate('/')
   }
 
   return (
     <Layout flexDirection='row'>
-      <Layout width='auto'>
+      <Layout width='unset'>
         <FirstCategoryWrapper >
           <div style={{ width: '100%', height: 'calc(100% - 100px)' }}>
             <ProfileBadge selected={isSelectProfile} onMoveIndex={onMoveIndex} />
