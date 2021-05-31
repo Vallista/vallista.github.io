@@ -43,11 +43,14 @@ li>p {
   margin: 0;
 }
 
-li code {
+li code,
+p code {
   background-color: #e84a5f;
   color: #f6f6f6;
   padding: 0.25rem 0.5rem;
   border-radius: 2px;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
 hr {
