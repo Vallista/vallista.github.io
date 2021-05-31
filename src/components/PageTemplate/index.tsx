@@ -403,10 +403,12 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   }
 
   const onMoveIndex = () => {
-    // setLocked(false)
+    if (window.location.pathname === '' || window.location.pathname === '/') {
+      setLocked(false)
+      sessionStorage.setItem(SAVE_LOCKED, String(false))
+    }
     setSelectProfile(true)
     setSelectTag('')
-    // sessionStorage.setItem(SAVE_LOCKED, String(false))
     sessionStorage.setItem(SAVE_PROFILE_SELECT, String(true))
     sessionStorage.setItem(SAVE_SELECT_TAG, '')
     navigate('/')

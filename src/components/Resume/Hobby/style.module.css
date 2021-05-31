@@ -44,4 +44,6 @@
   margin-bottom: 16px;
 }
 
-.hobbies .hobby .descriptions .description {}
+.hobbies .hobby .descriptions .description {
+  font-size: 1.0rem;
+}
