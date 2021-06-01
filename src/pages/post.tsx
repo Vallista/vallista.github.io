@@ -32,6 +32,11 @@ interface IDataProps {
       slug: string
     }
     timeToRead: number
+    headings: {
+      id: string
+      value: string
+      depth: number
+    }[]
     frontmatter: {
       title: string
       date: string
@@ -110,8 +115,8 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
 
   return (
     <PageTemplate {...data}>
-      <Layout justifyContent='center' overflow='auto' padding='0 48px'>
-        <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900}>
+      <Layout justifyContent='center' overflow='auto' padding='0 48px' scrollBehavior='smooth' id='contents'>
+        <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900} maxWidth='960px'>
           <PostHeader backgroundImage={image?.publicURL}>
             <div>
               <h1>{title}</h1>
@@ -182,6 +187,11 @@ export const pageQuery = graphql`
       html
       fields {
         slug
+      }
+      headings {
+        id
+        value
+        depth
       }
       timeToRead
       frontmatter {

@@ -160,11 +160,12 @@ h6 {
 
 p {
   font-size: 1rem;
-  letter-spacing: -0.003em;
+  letter-spacing: -0.033em;
   line-height: 1.625;
   --baseline-multiplier: 0.179;
   --x-height-multiplier: 0.35;
   word-break: break-word;
+  color: #222;
 }
 
 table {

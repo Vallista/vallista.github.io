@@ -16,13 +16,14 @@ const Box = styled.div`
 `
 
 interface IProps extends React.CSSProperties {
+  id?: string
 }
 
 const Layout: React.FC<IProps> = (props) => {
-  const { children, ...otherProps } = props
+  const { children, id, ...otherProps } = props
 
   return (
-    <Box style={otherProps}>
+    <Box style={otherProps} id={id}>
       {children}
     </Box>
   )

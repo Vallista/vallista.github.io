@@ -9,6 +9,7 @@ import LoadingSvg from '../../assets/svgs/loading.svg'
 import TempImage from '../../../profile/assets/profile.jpg'
 
 import ProfileBadge from '../ProfileBadge'
+import PostNavigator from "../PostNavigator"
 
 const FirstCategoryWrapper = styled.div`
   width: 100px;
@@ -311,6 +312,11 @@ interface IDataProps {
     fields: {
       slug: string
     }
+    headings: {
+      id: string
+      value: string
+      depth: number
+    }[]
     frontmatter: {
       title: string
       date: string
@@ -323,6 +329,13 @@ interface IDataProps {
   }
 }
 
+function resizingAllHighlighter(): void {
+  const elements: HTMLCollectionOf<HTMLDivElement> = document.getElementsByClassName('gatsby-highlight') as HTMLCollectionOf<HTMLDivElement>;
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].style.width = `${window.innerWidth - 244}px`;
+  }
+}
+
 const SAVE_SELECT_TAG = 'select-tag'
 const SAVE_SCROLL_POS = 'post-scroll-pos'
 const SAVE_LOCKED = 'locked'
@@ -332,17 +345,13 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   const { edges, group } = allMarkdownRemark
   const secondCategoryRef = useRef<HTMLUListElement>(null)
 
+  const isIndexPage = (window.location.pathname === '' || window.location.pathname === '/')
+
   // 이전 선택한 태그
   const prevSelectTag = sessionStorage.getItem(SAVE_SELECT_TAG) || null
   const prevScrollPos = sessionStorage.getItem(SAVE_SCROLL_POS) || null
-  const saveLocked = sessionStorage.getItem(SAVE_LOCKED) === 'true' ? true : false
-  const isProfile =
-    sessionStorage.getItem(SAVE_PROFILE_SELECT) === 'true'
-      || (window.location.pathname === '' || window.location.pathname === '/')
-      ? true
-      : false
-
-  // isProfile이 true인 상황에서, prevSelectTag가 '' 이고 saveLocked가 false 일 때 
+  const saveLocked = sessionStorage.getItem(SAVE_LOCKED) === 'true'
+  const isProfile = sessionStorage.getItem(SAVE_PROFILE_SELECT) === 'true' || isIndexPage
 
   // 이전 선택한 태그가 있으면 현재 페이지가 이전 태그에 있는지 확인 필요
   const hasPrevSelectTagInPost = markdownRemark?.frontmatter.tags.includes(prevSelectTag) ?? null
@@ -363,17 +372,40 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   const [isLocked, setLocked] = useState<boolean>(isProfile && !prevSelectTag && saveLocked === false ? false : true)
   const [isSelectProfile, setSelectProfile] = useState<boolean>(isProfile)
 
-  useEffect(() => {
-    if (selectTag === prevSelectTag) {
-      secondCategoryRef.current?.scrollTo(0, Number(prevScrollPos))
+  const handleSelectTag = (flag: string, savingStorage = true): void => {
+    setSelectTag(flag)
+    if (savingStorage) sessionStorage.setItem(SAVE_SELECT_TAG, flag)
+  }
+
+  const handleLocked = (flag: boolean, savingStorage = true): void => {
+    setLocked(flag)
+    if (savingStorage) sessionStorage.setItem(SAVE_LOCKED, String(flag))
+  }
+
+  const handleSelectProfile = (flag: boolean, savingStorage = true, action = true): void => {
+    if (action) setSelectProfile(flag)
+    if (savingStorage) sessionStorage.setItem(SAVE_PROFILE_SELECT, String(flag))
+  }
+
+  window.addEventListener('resize', (e) => {
+    if ((e.currentTarget as Window).innerWidth < 1380) {
+      setTimeout(() => {
+        handleLocked(false)
+      }, 0)
     }
 
-    if (window.location.pathname === '' || window.location.pathname === '/') {
-      setLocked(false)
-      sessionStorage.setItem(SAVE_LOCKED, String(false))
-    } else {
-      setLocked(saveLocked)
-    }
+    resizingAllHighlighter();
+  });
+
+  useEffect(() => {
+    resizingAllHighlighter();
+  })
+
+  useEffect(() => {
+    if (selectTag === prevSelectTag) secondCategoryRef.current?.scrollTo(0, Number(prevScrollPos))
+
+    if (isIndexPage) handleLocked(false)
+    else handleLocked(saveLocked, false)
 
     setLoading(true)
   }, [])
@@ -381,36 +413,28 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   const filteredEdge = useMemo(() => edges.filter(it => it.node.frontmatter.tags.includes(selectTag)), [edges, selectTag])
 
   const onMoveCategory = (value: string) => {
-    sessionStorage.setItem(SAVE_SELECT_TAG, value)
-    setSelectTag(value)
-    setLocked(true)
-    setSelectProfile(false)
+    handleSelectTag(value)
+    handleLocked(true, false);
+    handleSelectProfile(false, false);
   }
 
   const onMoveLocation = (value: string) => {
-    setLocked(true)
+    handleLocked(true)
     sessionStorage.setItem(SAVE_SCROLL_POS, String(secondCategoryRef.current.scrollTop))
-    sessionStorage.setItem(SAVE_PROFILE_SELECT, String(false))
-    sessionStorage.setItem(SAVE_LOCKED, String(true))
+    handleSelectProfile(false, true, false)
     navigate(value)
   }
 
   const onLocked = () => {
-    setLocked((prev) => {
-      sessionStorage.setItem(SAVE_LOCKED, String(!prev))
-      return !prev
-    })
+    handleLocked(!saveLocked)
   }
 
   const onMoveIndex = () => {
-    if (window.location.pathname === '' || window.location.pathname === '/') {
-      setLocked(false)
-      sessionStorage.setItem(SAVE_LOCKED, String(false))
+    if (isIndexPage) {
+      handleLocked(false)
     }
-    setSelectProfile(true)
-    setSelectTag('')
-    sessionStorage.setItem(SAVE_PROFILE_SELECT, String(true))
-    sessionStorage.setItem(SAVE_SELECT_TAG, '')
+    handleSelectProfile(true)
+    handleSelectTag('')
     navigate('/')
   }
 
@@ -488,6 +512,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
         </SecondCategoryWrapper>
       </Layout>
       {children}
+      <PostNavigator headings={markdownRemark?.headings || []} />
     </Layout>
   )
 }
