@@ -51,7 +51,7 @@ exports.onCreateNode = async ({
       // Generated value based on filepath with "blog" prefix. you
       // don't need a separating "/" before the value because
       // createFilePath returns a path with the leading "/".
-      value: `/posts${value}`,
+      value: `${value}`,
     })
 
     // console.log(node)
@@ -92,9 +92,16 @@ exports.createPages = async function ({
     }
   `)
 
+  const getTime = (date) => {
+    const translate = date.split(/[\-\+ :T]/)
+    return [translate[0] || 0, translate[1] || 0, translate[2] || 0]
+  }
 
   result.data.allMarkdownRemark.edges.forEach(edge => {
-    const slug = edge.node.fields.slug
+    const [year, month, day] = getTime(edge.node.frontmatter.date)
+
+    const slug = `/${year}/${month}/${day}${edge.node.fields.slug}`.slice(0, -1)
+
     actions.createPage({
       path: slug,
       component: require.resolve('./src/pages/post.tsx'),

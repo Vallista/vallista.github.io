@@ -123,6 +123,12 @@ module.exports = {
         name: `profile`,
         path: `${__dirname}/profile`,
       },
+    }, {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `tags`,
+        path: `${__dirname}/src/assets/tags`,
+      },
     },
     'gatsby-plugin-styled-components'
     // this (optional) plugin enables Progressive Web App + Offline functionality

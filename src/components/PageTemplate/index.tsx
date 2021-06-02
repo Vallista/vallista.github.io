@@ -11,6 +11,8 @@ import TempImage from '../../../profile/assets/profile.jpg'
 import ProfileBadge from '../ProfileBadge'
 import PostNavigator from "../PostNavigator"
 
+import tags from '../../assets/tags'
+
 const FirstCategoryWrapper = styled.div`
   width: 100px;
   height: 100vh;
@@ -284,7 +286,11 @@ const LockIcon = styled.div<{ locked: boolean; isProfile: boolean }>`
       transform: rotateY(180deg);
     ` : ``}
   }
+`
 
+const TabIconImage = styled.img`
+  width: 24px;
+  height: 24px;
 `
 
 interface IDataProps {
@@ -332,8 +338,17 @@ interface IDataProps {
 function resizingAllHighlighter(): void {
   const elements: HTMLCollectionOf<HTMLDivElement> = document.getElementsByClassName('gatsby-highlight') as HTMLCollectionOf<HTMLDivElement>;
   for (let i = 0; i < elements.length; i++) {
-    elements[i].style.width = `${window.innerWidth - 244}px`;
+    const contents = document.getElementById('contents') as HTMLDivElement
+    const innerContents = contents.firstChild as HTMLDivElement
+
+    const calculate = window.innerWidth > 960 ? innerContents.clientWidth - 100 : window.innerWidth - 244
+    elements[i].style.width = `${calculate}px`;
   }
+}
+
+const getTime = (date: string): [string, string, string] => {
+  const translate = date.split(/[\-\+ :T]/)
+  return [translate[0] || '0', translate[1] || '0', translate[2] || '0']
 }
 
 const SAVE_SELECT_TAG = 'select-tag'
@@ -418,11 +433,13 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     handleSelectProfile(false, false);
   }
 
-  const onMoveLocation = (value: string) => {
+  const onMoveLocation = (value: string, date: string) => {
     handleLocked(true)
     sessionStorage.setItem(SAVE_SCROLL_POS, String(secondCategoryRef.current.scrollTop))
     handleSelectProfile(false, true, false)
-    navigate(value)
+
+    const [year, month, day] = getTime(date)
+    navigate(`/${year}/${month}/${day}${value}`)
   }
 
   const onLocked = () => {
@@ -438,6 +455,16 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     navigate('/')
   }
 
+  const IconElement: React.VFC<{ target: string, isSelect: boolean }> = ({ target, isSelect }) => {
+    const findTarget = tags.find(it => it.name === target)
+
+    if (!findTarget) return <Text>{target}</Text>
+
+    return (
+      <findTarget.component width="24px" height="24px" fill={isSelect ? Color.GRAY_100 : Color.GRAY_900} />
+    )
+  }
+
   return (
     <Layout flexDirection='row'>
       <Layout width='unset'>
@@ -450,7 +477,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
                   group.map(({ fieldValue }) => (
                     <FirstCategoryItem key={fieldValue}>
                       <Button selected={selectTag === fieldValue} onClick={() => onMoveCategory(fieldValue)}>
-                        <Text>{fieldValue}</Text>
+                        <IconElement target={fieldValue} isSelect={selectTag === fieldValue} />
                       </Button>
                     </FirstCategoryItem>
                   ))
@@ -482,7 +509,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
                     backgroundSize: 'cover'
                   }}
                 >
-                  <SecondButton onClick={() => onMoveLocation(node.fields.slug)} style={{ display: 'block', width: '100%', height: '100%' }}>
+                  <SecondButton onClick={() => onMoveLocation(node.fields.slug, node.frontmatter.date)} style={{ display: 'block', width: '100%', height: '100%' }}>
                     {/* <Link to={node.fields.slug} style={{ display: 'block', width: '100%', height: '100%' }}> */}
                     <SecondCategoryContents orderIndex={idx}>
                       <SecondCategoryTitle
