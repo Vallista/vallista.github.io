@@ -341,7 +341,7 @@ function resizingAllHighlighter(): void {
     const contents = document.getElementById('contents') as HTMLDivElement
     const innerContents = contents.firstChild as HTMLDivElement
 
-    const calculate = window.innerWidth > 960 ? innerContents.clientWidth - 100 : window.innerWidth - 244
+    const calculate = window.innerWidth > 1080 ? innerContents.clientWidth - 100 : window.innerWidth - 244
     elements[i].style.width = `${calculate}px`;
   }
 }
