@@ -111,4 +111,12 @@ exports.createPages = async function ({
       }
     })
   })
+
+  actions.createPage({
+    path: '/resume',
+    component: require.resolve('./src/pages/index.tsx'),
+    context: {
+      slug: '/resume'
+    }
+  })
 }

@@ -259,7 +259,7 @@ DOCTYPE은 브라우저에게 문서의 형식을 어떤 형식으로 사용할 
 <br/>
 
 > viewport 설정에서 사이즈를 고정하고 싶다면 아래와 같이 해보세요!
-> <meta name="viewport" content="width=600, initial-scale=1, viewport-fit=cover"/>
+> `<meta name="viewport" content="width=600, initial-scale=1, viewport-fit=cover"/>`
 > 이렇게 사용하게 되면 width를 660px로 고정시켜버리고, cover fit으로 설정하게 됩니다. (가득차게 됨)
 > 하지만 이렇게 되면 gmail에서 제대로 반응하지 않으므로 조심하세요!
 > P.S 일반적으로 600이상 800미만을 지키는게 좋습니다.
@@ -300,13 +300,12 @@ DOCTYPE은 브라우저에게 문서의 형식을 어떤 형식으로 사용할 
 <br/>
 
 > `<table border="0" cellpadding="0" cellspacing="0" width="800"></table>`
-> -
+> 
 > 기본적으로 위 옵션 형태로 코딩하는 걸 권장 드립니다. 기본 값을 초기화하지 않아 생기는 문제에 대해서 해결할 수 있습니다.
-> -
-> border: 보더
-> cellpadding: cell내의 패딩값
-> cellspacing: cell의 간격
-> width: 너비
+> - border: 보더
+> - cellpadding: cell내의 패딩값
+> - cellspacing: cell의 간격
+> - width: 너비
 
 이렇게 코딩을 하게 되면 굉장히 가독성이 안좋아지므로 칸을 한 칸씩 띄워주시는 것과 div마다 고유한 id를 넣어주셔서 depth 표기를 명확히 해주는 걸 추천드립니다.
 

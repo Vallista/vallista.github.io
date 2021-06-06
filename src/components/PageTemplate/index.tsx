@@ -13,6 +13,7 @@ import PostNavigator from "../PostNavigator"
 
 import tags from '../../assets/tags'
 import HamburgerIcon from '../../assets/svgs/hamburger.svg';
+import HomeIcon from '../../assets/svgs/home.svg';
 
 const FirstCategoryWrapper = styled.div`
   width: 100px;
@@ -615,7 +616,23 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     <Layout flexDirection='row'>
       <TopNavBar id="top-nav-bar" isOverScrollHeader={isActiveScrollHeader} isSelectNavList={isSelectNavList}>
         <TopNavHeader isOverScrollHeader={isOverScrollHeader}>
-          <p style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{isActiveScrollHeader && markdownRemark.frontmatter.title}</p>
+          {
+            isActiveScrollHeader ? (
+              !isSelectNavList
+                ? (
+                  <p style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {markdownRemark.frontmatter.title}
+                  </p>
+                ) : (
+                  <div
+                    style={{ backgroundColor: Color.GRAY_900, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '6px', cursor: 'pointer' }}
+                    onClick={() => navigate('/')}
+                  >
+                    <HomeIcon width="30" height="30" fill={Color.GRAY_300} />
+                  </div>
+                )
+            ) : <span></span>
+          }
           <div
             style={{ backgroundColor: Color.GRAY_900, padding: '6px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '6px', cursor: 'pointer' }}
             onClick={() => setSelectNavList((prev) => !prev)}
@@ -629,7 +646,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
               onClick={() => onMoveLocation(it.node.fields.slug, it.node.frontmatter.date)}
               isSelect={markdownRemark?.frontmatter.title === it.node.frontmatter.title}
             >
-              <p>
+              <p style={{ color: `${markdownRemark?.frontmatter.title === it.node.frontmatter.title ? Color.RED_100 : Color.GRAY_100}` }}>
                 {it.node.frontmatter.title}
               </p>
             </TopNavContent>
