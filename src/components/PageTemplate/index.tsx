@@ -318,7 +318,7 @@ const TopNavHeader = styled.section<{ isOverScrollHeader: boolean }>`
 const TopNavContents = styled.section`
   width: 100%;
   height: calc(100% - 50px);
-  padding: 24px 60px 24px 24px;
+  padding: 24px 60px 100px 24px;
   overflow: scroll;
 
   & ul {
@@ -381,44 +381,6 @@ const TopNavContent = styled.li<{ isSelect: boolean }>`
   `}
 `
 
-// const NavList = styled.section<{ isOverScrollHeader: boolean, isSelectNavList: boolean }>`
-//   position: absolute;
-//   z-index: -1;
-//   bottom: 51px;
-//   left: 0;
-//   width: 100%;
-//   height: 100vh;
-//   background-color: ${Color.GRAY_900};
-//   transition: transform 0.3s;
-//   ${props => props.isOverScrollHeader && 'transform: translate(0, calc(100vh));'}
-//   padding: 50px 24px 24px;
-//   overflow: hidden;
-
-//   ${props => props.isSelectNavList ? 'animation: fold 0.2s forwards;' : 'animation: unfold 0.2s forwards;'}
-
-//   @keyframes fold {
-//     from {
-//       transform: translate(0, 0);
-//       overflow: hidden;
-//     }
-
-//     to {
-//       transform: translate(0, 100vh);
-//       overflow: auto;
-//     }
-//   }
-
-//   @keyframes unfold {
-//     from {
-//       transform: translate(0, 100vh);
-//       overflow: hidden;
-//     }
-
-//     to {
-//       transform: translate(0, 0);
-//     }
-//   }
-// `
 interface IDataProps {
   allMarkdownRemark: {
     edges: Array<{
@@ -563,6 +525,15 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
 
     resizingAllHighlighter();
   }, [])
+
+  useEffect(() => {
+    const contents = document.getElementById('contents')
+    if (isSelectNavList) {
+      contents.style.overflow = 'hidden'
+    } else {
+      contents.style.overflow = 'auto'
+    }
+  }, [isSelectNavList])
 
   useEffect(() => {
     if (selectTag === prevSelectTag) secondCategoryRef.current?.scrollTo(0, Number(prevScrollPos))
