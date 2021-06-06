@@ -9,13 +9,15 @@ const Lectures = ({ className }) => {
 
   return (
     <Card title='강연' className={className}>
-      <>
+      <ul style={{paddingLeft: '24px'}}>
         {lectures.list.map((lecture, index) => (
-          <span key={`lecture-${index}`}>
+          <li>
+          <span key={`lecture-${index}`} style={{fontSize: '16px'}}>
             {lecture.title}
           </span>
+        </li>
         ))}
-      </>
+      </ul>
     </Card>
   )
 }

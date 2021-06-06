@@ -160,7 +160,7 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
 export default Post
 
 export const pageQuery = graphql`
-  query BlogPostQuery($id: String!) {
+  query BlogPostQuery($id: String) {
     allMarkdownRemark(
       sort: {fields: [frontmatter___date], order: DESC }
       filter: { frontmatter: { draft: { eq: false } } }

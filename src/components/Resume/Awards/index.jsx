@@ -11,11 +11,15 @@ const Awards = ({ className }) => {
 
   return (
     <Card title='수상' className={classProps}>
+      <ul style={{paddingLeft: '24px'}}>
       {awards.list.map((award, index) => (
-        <span key={`award-${index}`}>
-          {award.title}
-        </span>
+        <li>
+          <span key={`award-${index}`} style={{fontSize: '16px'}}>
+            {award.title}
+          </span>
+        </li>
       ))}
+      </ul>
     </Card>
   )
 }

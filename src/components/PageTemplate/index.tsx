@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from "react"
 import { navigate } from "gatsby"
+import { useLocation } from "@reach/router"
 import styled from 'styled-components'
 
 import Layout from '../Layout'
@@ -489,16 +490,18 @@ const SAVE_LOCKED = 'locked'
 const SAVE_PROFILE_SELECT = 'profile-select'
 
 const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark, children }) => {
+  const { pathname } = useLocation()
+
   const { edges, group } = allMarkdownRemark
   const secondCategoryRef = useRef<HTMLUListElement>(null)
 
-  const isIndexPage = (window.location.pathname === '' || window.location.pathname === '/')
+  const isIndexPage = (pathname === '' || pathname === '/')
 
   // 이전 선택한 태그
-  const prevSelectTag = sessionStorage.getItem(SAVE_SELECT_TAG) || null
-  const prevScrollPos = sessionStorage.getItem(SAVE_SCROLL_POS) || null
-  const saveLocked = sessionStorage.getItem(SAVE_LOCKED) === 'true'
-  const isProfile = sessionStorage.getItem(SAVE_PROFILE_SELECT) === 'true' || isIndexPage
+  const prevSelectTag = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(SAVE_SELECT_TAG) || null : null
+  const prevScrollPos = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(SAVE_SCROLL_POS) || null : null
+  const saveLocked = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(SAVE_LOCKED) === 'true' : false
+  const isProfile = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(SAVE_PROFILE_SELECT) === 'true' || isIndexPage : isIndexPage
 
   // 이전 선택한 태그가 있으면 현재 페이지가 이전 태그에 있는지 확인 필요
   const hasPrevSelectTagInPost = markdownRemark?.frontmatter.tags.includes(prevSelectTag) ?? null

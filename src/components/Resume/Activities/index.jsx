@@ -11,11 +11,15 @@ const Activities = ({ className }) => {
 
   return (
     <Card title='활동' className={classProps}>
+      <ul style={{paddingLeft: '24px'}}>
       {activities.list.map((activity, index) => (
-        <span key={`activity-${index}`}>
-          {activity.title}
-        </span>
+        <li>
+          <span key={`activity-${index}`} style={{fontSize: '16px'}}>
+            {activity.title}
+          </span>
+        </li>
       ))}
+      </ul>
     </Card>
   )
 }
