@@ -108,6 +108,23 @@ const PostContents = styled.section`
   padding: 24px 50px;
 `
 
+const Tags = styled.div`
+
+`
+
+const Tag = styled.span`
+  width: auto;
+  background-color: ${Color.RED_100};
+  border-radius: 12px;
+  padding: 5px 8px 6px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  display: inline-block;
+  color: ${Color.GRAY_900};
+  font-weight: 600;
+  font-size: 14;
+`
+
 const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
   const { markdownRemark } = data
   const { html, frontmatter } = markdownRemark
@@ -139,23 +156,13 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
                   <h1>{title}</h1>
                   <p style={{ marginTop: '6px', marginBottom: '0' }}>{year}.{month}.{day} - 읽는데 약 {markdownRemark.timeToRead}분 걸려요!</p>
                   <p style={{ marginTop: '-2px' }}>글쓴이 - <Link to='/' style={{ fontWeight: 600 }}>@Vallista</Link></p>
-                  <p>
+                  <Tags>
                     {tags.map(it => (
-                      <div style={{
-                        backgroundColor: Color.RED_100,
-                        borderRadius: '12px',
-                        padding: '5px 8px 6px',
-                        marginRight: '6px',
-                        marginBottom: '6px',
-                        display: 'inline-block',
-                        color: Color.GRAY_900,
-                        fontWeight: 600,
-                        fontSize: 14,
-                      }}>
+                      <Tag>
                         {it}
-                      </div>
+                      </Tag>
                     ))}
-                  </p>
+                  </Tags>
                 </div>
               </>
             </PostHeader>
