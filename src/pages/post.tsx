@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react'
 import { graphql, Link, PageProps } from 'gatsby';
+import { Disqus, CommentCount, CommentEmbed } from 'gatsby-plugin-disqus'
 import PageTemplate from '../components/PageTemplate';
 import styled from 'styled-components';
 import Layout from '../components/Layout';
 import { Color, toDate } from '../utils';
 
 import SEO from '../components/seo'
+import { useLocation } from '@reach/router';
 
 interface IDataProps {
   allMarkdownRemark: {
@@ -110,11 +112,20 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
   const { markdownRemark } = data
   const { html, frontmatter } = markdownRemark
   const { title, date, image, tags } = frontmatter
+  const { pathname } = useLocation()
 
   const translateDateFormat = useMemo(() => toDate(date), [date])
   const year = translateDateFormat.getFullYear()
   const month = (translateDateFormat.getMonth() + 1).toString().padStart(2, '0')
   const day = translateDateFormat.getDate().toString().padStart(2, '0')
+
+  const disqusConfig = {
+    url: `https://vallista.kr${pathname}`,
+    identifier: markdownRemark.fields.slug,
+    title: markdownRemark.frontmatter.title,
+  }
+
+  console.log(disqusConfig)
 
   return (
     <>
@@ -148,7 +159,13 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
                 </div>
               </>
             </PostHeader>
-            <PostContents id="post-contents" dangerouslySetInnerHTML={{ __html: html }} />
+            <PostContents id="post-contents">
+              <div dangerouslySetInnerHTML={{ __html: html }} />
+              <hr style={{ marginTop: '36px' }} />
+              <div style={{ marginTop: '36px' }}>
+                <Disqus config={disqusConfig} />
+              </div>
+            </PostContents>
             <div style={{ paddingBottom: '30vh' }} />
           </Layout>
         </Layout>

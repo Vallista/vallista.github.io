@@ -9,7 +9,13 @@ module.exports = {
     image: "/images/profile.jpg",
     twitterUsername: ""
   },
-  plugins: [
+  plugins: [{
+      resolve: `gatsby-plugin-disqus`,
+      options: {
+        shortname: `vallista-1`
+      }
+    },
+    'gatsby-plugin-sitemap',
     'gatsby-transformer-yaml',
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
