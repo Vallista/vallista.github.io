@@ -318,7 +318,7 @@ const TopNavHeader = styled.section<{ isOverScrollHeader: boolean }>`
 const TopNavContents = styled.section`
   width: 100%;
   height: calc(100% - 50px);
-  padding: 24px 60px 100px 24px;
+  padding: 24px 60px 160px 24px;
   overflow: scroll;
 
   & ul {
@@ -527,16 +527,18 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   }, [])
 
   useEffect(() => {
-    const contents = document.getElementById('contents')
+    const contents = document.getElementById('contents') || document.getElementById('index-content')
     if (isSelectNavList) {
       if (contents) {
         contents.style.overflow = 'hidden'
         contents.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+        contents.addEventListener('touchend', e => e.preventDefault(), { passive: false })
       }
     } else {
       if (contents) {
         contents.style.overflow = 'auto'
         contents.removeEventListener('touchmove', e => e.preventDefault())
+        contents.removeEventListener('touchend', e => e.preventDefault())
       }
     }
   }, [isSelectNavList])
