@@ -35,6 +35,10 @@ async function processCall() {
       recursive: true
     })
 
+    await fs.mkdirSync(`${filePath}/assets`, {
+      recursive: true
+    })
+
     await fs.writeFileSync(`${filePath}/index.md`, textArray.join('\n'))
 
     console.log('스크립트 생성을 완료 했습니다!')
