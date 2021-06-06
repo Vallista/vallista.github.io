@@ -529,11 +529,15 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   useEffect(() => {
     const contents = document.getElementById('contents')
     if (isSelectNavList) {
-      contents.style.overflow = 'hidden'
-      contents.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+      if (contents) {
+        contents.style.overflow = 'hidden'
+        contents.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+      }
     } else {
-      contents.style.overflow = 'auto'
-      contents.removeEventListener('touchmove', e => e.preventDefault())
+      if (contents) {
+        contents.style.overflow = 'auto'
+        contents.removeEventListener('touchmove', e => e.preventDefault())
+      }
     }
   }, [isSelectNavList])
 
