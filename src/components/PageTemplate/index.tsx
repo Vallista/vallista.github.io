@@ -530,8 +530,10 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     const contents = document.getElementById('contents')
     if (isSelectNavList) {
       contents.style.overflow = 'hidden'
+      contents.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
     } else {
       contents.style.overflow = 'auto'
+      contents.removeEventListener('touchmove', e => e.preventDefault())
     }
   }, [isSelectNavList])
 
