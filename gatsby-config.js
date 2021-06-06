@@ -1,9 +1,13 @@
 module.exports = {
   siteMetadata: {
     title: "'Vallista's Log",
-    siteUrl: 'https://vallista.kr',
+    titleTemplate: "%s · Vallista",
+    siteUrl: "https://vallista.kr",
     description: 'Vallista의 블로그',
     author: `@vallista`,
+    url: "https://vallista.kr",
+    image: "/images/profile.jpg",
+    twitterUsername: ""
   },
   plugins: [
     'gatsby-transformer-yaml',
@@ -25,7 +29,7 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `static/images/profile.jpg`, // This path is relative to the root of the site.
       },
     },
     `gatsby-plugin-gatsby-cloud`,

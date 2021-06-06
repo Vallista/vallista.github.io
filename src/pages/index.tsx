@@ -5,15 +5,20 @@ import Resume from '../components/Resume'
 import Layout from "../components/Layout"
 import { Color } from "../utils"
 
+import SEO from '../components/seo'
+
 const IndexPage: React.VFC<PageProps> = ({ data }) => {
   return (
-    <PageTemplate {...data as any}>
-      <Layout id="index-content" justifyContent='center' overflow='auto' padding='0 48px'>
-        <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900}>
-          <Resume />
+    <>
+      <SEO />
+      <PageTemplate {...data as any}>
+        <Layout id="index-content" justifyContent='center' overflow='auto' padding='0 48px'>
+          <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900}>
+            <Resume />
+          </Layout>
         </Layout>
-      </Layout>
-    </PageTemplate>
+      </PageTemplate>
+    </>
   )
 }
 
