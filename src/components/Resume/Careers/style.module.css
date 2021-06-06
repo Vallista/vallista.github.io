@@ -69,6 +69,12 @@
   }
 }
 
+@media screen and (max-width: 420px) {
+  .careers .career .fold {
+    display: none;
+  }
+}
+
 .careers .career .headerWrapper {}
 
 .careers .career .headerWrapper .intro {

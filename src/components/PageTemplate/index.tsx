@@ -12,6 +12,7 @@ import ProfileBadge from '../ProfileBadge'
 import PostNavigator from "../PostNavigator"
 
 import tags from '../../assets/tags'
+import HamburgerIcon from '../../assets/svgs/hamburger.svg';
 
 const FirstCategoryWrapper = styled.div`
   width: 100px;
@@ -288,11 +289,134 @@ const LockIcon = styled.div<{ locked: boolean; isProfile: boolean }>`
   }
 `
 
-const TabIconImage = styled.img`
-  width: 24px;
-  height: 24px;
+const TopNavBar = styled.section<{ isOverScrollHeader: boolean, isSelectNavList: boolean }>`
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: ${props => props.isSelectNavList ? '100vh' : 'auto'};
+  background-color: ${props => props.isOverScrollHeader ? `${Color.GRAY_900}` : 'transparent'};
+  transition: background-color 0.3s ease-in-out;
 `
 
+const TopNavHeader = styled.section<{ isOverScrollHeader: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  padding: 0 12px;
+  ${props => props.isOverScrollHeader && `border-bottom: 1px solid ${Color.GRAY_700};`}
+`
+
+const TopNavContents = styled.section`
+  width: 100%;
+  height: calc(100% - 50px);
+  padding: 24px 60px 24px 24px;
+  overflow: scroll;
+
+  & ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+`
+
+const TopNavContent = styled.li<{ isSelect: boolean }>`
+  position: relative;
+  line-height: 1.2;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  ${props => props.isSelect ? 'cursor: default;' : 'cursor: pointer;'}
+
+  &:before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background-color: ${Color.RED_100};
+    border-radius: 6px;
+    margin-right: 12px;
+  }
+
+  & p {
+    width: calc(100% - 12px);
+  }
+
+  ${props => props.isSelect && `
+    &:after {
+      content: '';
+      position: absolute;
+      right: -30px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border: 6px solid ${Color.RED_100};
+      border-top: none;
+      border-right: none;
+      transform: translate(-50%, -50%) rotateZ(45deg);
+      animation: BreatheIcon 0.5s ease-in-out infinite;
+    }
+
+    @keyframes BreatheIcon {
+      0% {
+        transform: translate(-50%, -50%) rotateZ(45deg);
+      }
+
+      50% {
+        transform: translate(-30%, -50%) rotateZ(45deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotateZ(45deg);
+      }
+    }
+  `}
+`
+
+// const NavList = styled.section<{ isOverScrollHeader: boolean, isSelectNavList: boolean }>`
+//   position: absolute;
+//   z-index: -1;
+//   bottom: 51px;
+//   left: 0;
+//   width: 100%;
+//   height: 100vh;
+//   background-color: ${Color.GRAY_900};
+//   transition: transform 0.3s;
+//   ${props => props.isOverScrollHeader && 'transform: translate(0, calc(100vh));'}
+//   padding: 50px 24px 24px;
+//   overflow: hidden;
+
+//   ${props => props.isSelectNavList ? 'animation: fold 0.2s forwards;' : 'animation: unfold 0.2s forwards;'}
+
+//   @keyframes fold {
+//     from {
+//       transform: translate(0, 0);
+//       overflow: hidden;
+//     }
+
+//     to {
+//       transform: translate(0, 100vh);
+//       overflow: auto;
+//     }
+//   }
+
+//   @keyframes unfold {
+//     from {
+//       transform: translate(0, 100vh);
+//       overflow: hidden;
+//     }
+
+//     to {
+//       transform: translate(0, 0);
+//     }
+//   }
+// `
 interface IDataProps {
   allMarkdownRemark: {
     edges: Array<{
@@ -341,7 +465,14 @@ function resizingAllHighlighter(): void {
     const contents = document.getElementById('contents') as HTMLDivElement
     const innerContents = contents.firstChild as HTMLDivElement
 
-    const calculate = window.innerWidth > 1080 ? innerContents.clientWidth - 100 : window.innerWidth - 244
+    const calculate = window.innerWidth > 1080
+      ? innerContents.clientWidth - 100
+      : window.innerWidth > 639
+        ? window.innerWidth - 244
+        : window.innerWidth > 419
+          ? window.innerWidth - 144
+          : window.innerWidth - 48
+
     elements[i].style.width = `${calculate}px`;
   }
 }
@@ -386,6 +517,8 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   const [isLoading, setLoading] = useState<boolean>(false)
   const [isLocked, setLocked] = useState<boolean>(isProfile && !prevSelectTag && saveLocked === false ? false : true)
   const [isSelectProfile, setSelectProfile] = useState<boolean>(isProfile)
+  const [isOverScrollHeader, setOverScrollHeader] = useState<boolean>(false)
+  const [isSelectNavList, setSelectNavList] = useState<boolean>(false)
 
   const handleSelectTag = (flag: string, savingStorage = true): void => {
     setSelectTag(flag)
@@ -402,19 +535,30 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     if (savingStorage) sessionStorage.setItem(SAVE_PROFILE_SELECT, String(flag))
   }
 
-  window.addEventListener('resize', (e) => {
-    if ((e.currentTarget as Window).innerWidth < 1380) {
-      setTimeout(() => {
-        handleLocked(false)
-      }, 0)
-    }
-
-    resizingAllHighlighter();
-  });
-
   useEffect(() => {
+    window.addEventListener('resize', (e) => {
+      if ((e.currentTarget as Window).innerWidth < 1380) {
+        setTimeout(() => {
+          handleLocked(false)
+        }, 0)
+      }
+
+      resizingAllHighlighter();
+    });
+
+    document.getElementById('contents')?.addEventListener('scroll', (e) => {
+      const scrollY = (e.currentTarget as HTMLDivElement).scrollTop
+      const headerHeight = document.getElementById('post-header').clientHeight
+
+      if (scrollY > headerHeight) {
+        if (!isOverScrollHeader) setOverScrollHeader(true)
+      } else if (scrollY <= headerHeight) {
+        setOverScrollHeader(false)
+      }
+    })
+
     resizingAllHighlighter();
-  })
+  }, [])
 
   useEffect(() => {
     if (selectTag === prevSelectTag) secondCategoryRef.current?.scrollTo(0, Number(prevScrollPos))
@@ -465,9 +609,35 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     )
   }
 
+  const isActiveScrollHeader = isOverScrollHeader || isSelectNavList
+
   return (
     <Layout flexDirection='row'>
-      <Layout width='unset'>
+      <TopNavBar id="top-nav-bar" isOverScrollHeader={isActiveScrollHeader} isSelectNavList={isSelectNavList}>
+        <TopNavHeader isOverScrollHeader={isOverScrollHeader}>
+          <p style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{isActiveScrollHeader && markdownRemark.frontmatter.title}</p>
+          <div
+            style={{ backgroundColor: Color.GRAY_900, padding: '6px', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '6px', cursor: 'pointer' }}
+            onClick={() => setSelectNavList((prev) => !prev)}
+          >
+            <HamburgerIcon width="18" height="18" fill={Color.GRAY_300} />
+          </div>
+        </TopNavHeader>
+        {isSelectNavList && <TopNavContents>
+          <ul>
+            {edges.map((it) => <TopNavContent
+              onClick={() => onMoveLocation(it.node.fields.slug, it.node.frontmatter.date)}
+              isSelect={markdownRemark?.frontmatter.title === it.node.frontmatter.title}
+            >
+              <p>
+                {it.node.frontmatter.title}
+              </p>
+            </TopNavContent>
+            )}
+          </ul>
+        </TopNavContents>}
+      </TopNavBar>
+      <Layout width='unset' id='sidebar'>
         <FirstCategoryWrapper >
           <div style={{ width: '100%', height: 'calc(100% - 100px)' }}>
             <ProfileBadge selected={isSelectProfile} onMoveIndex={onMoveIndex} />
@@ -510,7 +680,6 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
                   }}
                 >
                   <SecondButton onClick={() => onMoveLocation(node.fields.slug, node.frontmatter.date)} style={{ display: 'block', width: '100%', height: '100%' }}>
-                    {/* <Link to={node.fields.slug} style={{ display: 'block', width: '100%', height: '100%' }}> */}
                     <SecondCategoryContents orderIndex={idx}>
                       <SecondCategoryTitle
                         orderIndex={idx}
@@ -523,7 +692,6 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
                         </SecondCategoryDescription>
                       )}
                     </SecondCategoryContents>
-                    {/* </Link> */}
                   </SecondButton>
                 </SecondCategoryItem>
               ))

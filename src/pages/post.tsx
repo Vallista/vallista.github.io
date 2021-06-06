@@ -117,30 +117,33 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
     <PageTemplate {...data}>
       <Layout justifyContent='center' overflow='auto' padding='0 48px' scrollBehavior='smooth' id='contents'>
         <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900} maxWidth='960px'>
-          <PostHeader backgroundImage={image?.publicURL}>
-            <div>
-              <h1>{title}</h1>
-              <p style={{ marginTop: '6px', marginBottom: '0' }}>{year}.{month}.{day} - 읽는데 약 {markdownRemark.timeToRead}분 걸려요!</p>
-              <p style={{ marginTop: '-2px' }}>글쓴이 - <Link to='/' style={{ fontWeight: 600 }}>@Vallista</Link></p>
-              <p>
-                {tags.map(it => (
-                  <div style={{
-                    backgroundColor: Color.RED_100,
-                    borderRadius: '12px',
-                    padding: '5px 8px 6px',
-                    marginRight: '6px',
-                    display: 'inline-block',
-                    color: Color.GRAY_900,
-                    fontWeight: 600,
-                    fontSize: 14,
-                  }}>
-                    {it}
-                  </div>
-                ))}
-              </p>
-            </div>
+          <PostHeader id='post-header' backgroundImage={image?.publicURL}>
+            <>
+              <div>
+                <h1>{title}</h1>
+                <p style={{ marginTop: '6px', marginBottom: '0' }}>{year}.{month}.{day} - 읽는데 약 {markdownRemark.timeToRead}분 걸려요!</p>
+                <p style={{ marginTop: '-2px' }}>글쓴이 - <Link to='/' style={{ fontWeight: 600 }}>@Vallista</Link></p>
+                <p>
+                  {tags.map(it => (
+                    <div style={{
+                      backgroundColor: Color.RED_100,
+                      borderRadius: '12px',
+                      padding: '5px 8px 6px',
+                      marginRight: '6px',
+                      marginBottom: '6px',
+                      display: 'inline-block',
+                      color: Color.GRAY_900,
+                      fontWeight: 600,
+                      fontSize: 14,
+                    }}>
+                      {it}
+                    </div>
+                  ))}
+                </p>
+              </div>
+            </>
           </PostHeader>
-          <PostContents dangerouslySetInnerHTML={{ __html: html }} />
+          <PostContents id="post-contents" dangerouslySetInnerHTML={{ __html: html }} />
           <div style={{ paddingBottom: '30vh' }} />
         </Layout>
       </Layout>

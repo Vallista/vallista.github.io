@@ -15,7 +15,7 @@ const Lectures = ({ className }) => {
   const Description = (description) => <span className={styles.description}>{description}</span>
 
   return (
-    <Card title='취미는 올곧게' className={classProps}>
+    <Card title='취미' className={classProps}>
       {hobby.list.map((ho, index) => (
         <div className={styles.hobby}>
           {!!ho.url ? (

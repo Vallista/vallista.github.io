@@ -152,7 +152,7 @@ const PostNavigator: React.FC<IProps> = ({ headings }) => {
   }
 
   return (
-    <Position>
+    <Position id='post-navigator'>
       <TouchableArea />
       <Line>
         {headings.map((it, idx) => (

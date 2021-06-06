@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useDB from '../hooks/useDB'
 import classNames from 'classnames'
 
@@ -25,11 +25,19 @@ const Project = ({ name, description, startDate, endDate, which, techStacks }) =
       </div>
     </div>
     <ul className={styles.whiches}>
-      {which?.map((w, index) => (
-        <li className={styles.which} key={`which-${index}`}>
-          {w}
-        </li>
-      ))}
+      {which?.map((w, index) => {
+        return <>{
+          typeof w === 'object' ? (
+              <li className={styles.which} key={`which-${index}`}>
+                <a href={w.link}>{w.text}</a>
+              </li>
+            ) : (
+            <li className={styles.which} key={`which-${index}`}>
+              {w}
+            </li>
+          )
+      }</>
+      })}
     </ul>
     <div className={styles.techStacks}>
       {techStacks?.map((ts, index) => (
@@ -43,6 +51,10 @@ const Project = ({ name, description, startDate, endDate, which, techStacks }) =
 
 const Career = ({ name, department, position, startDate, endDate, description, projects, fold = false }) => {
   const [isFold, setFold] = React.useState(fold)
+
+  useEffect(() => {
+    setFold(fold)
+  }, [fold])
 
   return (
     <Section className={styles.career}>
@@ -65,7 +77,9 @@ const Career = ({ name, department, position, startDate, endDate, description, p
           ))}
         </div>
       </div>
-      <div className={classNames(styles.projects, isFold && styles.foldActiveProject)}>{!!projects && projects.map((project, index) => Project(project))}</div>
+      <div className={classNames(styles.projects, isFold && styles.foldActiveProject)}>
+        {!!projects && projects.map((project, index) => <Project {...project} key={`project-${index}`} />)}
+      </div>
     </Section>
   )
 }
@@ -75,9 +89,29 @@ const Careers = ({ className }) => {
 
   const { careers } = useDB()
 
+  const [foldLevel, setFoldLevel] = useState(0)
+
+  useEffect(() => {
+    if (window.innerWidth < 420) setFoldLevel(2)
+    else setFoldLevel(1)
+
+    window.addEventListener('resize', (e) => {
+      if (window.innerWidth < 420) setFoldLevel(2)
+      else setFoldLevel(1)
+    })
+  }, [])
+
+  const getFold = (fold) => {
+    return foldLevel === 2
+      ? false
+      : foldLevel < 2
+        ? !!fold
+        : false
+  }
+
   return (
-    <Card className={classProps} title={careers.title}>
-      {careers.list.map((career, index) => <Career {...career} key={index} />)}
+    <Card id="career-wrapper" className={classProps} title={careers.title}>
+      {careers.list.map((career, index) => <Career {...career} fold={getFold(career.fold)} key={`career-${index}`} />)}
     </Card>
   )
 }

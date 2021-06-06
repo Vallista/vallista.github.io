@@ -8,7 +8,7 @@ import { Color } from "../utils"
 const IndexPage: React.VFC<PageProps> = ({ data }) => {
   return (
     <PageTemplate {...data as any}>
-      <Layout justifyContent='center' overflow='auto' padding='0 48px'>
+      <Layout id="index-content" justifyContent='center' overflow='auto' padding='0 48px'>
         <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900}>
           <Resume />
         </Layout>
@@ -22,7 +22,7 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query BlogIndexQuery {
-    allMarkdownRemark(
+    allMarkdownRemark (
       sort: {fields: [frontmatter___date], order: DESC }
       filter: { frontmatter: { draft: { eq: false } } }
     ) {

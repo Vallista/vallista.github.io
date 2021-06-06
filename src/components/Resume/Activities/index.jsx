@@ -10,7 +10,7 @@ const Activities = ({ className }) => {
   const { activities } = useDB()
 
   return (
-    <Card title='다양한 활동' className={classProps}>
+    <Card title='활동' className={classProps}>
       {activities.list.map((activity, index) => (
         <span key={`activity-${index}`}>
           {activity.title}
