@@ -13,7 +13,7 @@ const IndexPage: React.VFC<PageProps> = ({ data }) => {
       <SEO />
       <PageTemplate {...data as any}>
         <Layout id="index-content" justifyContent='center' overflow='auto' padding='0 48px'>
-          <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900}>
+          <Layout flexDirection='column' width='auto' height='auto'>
             <Resume />
           </Layout>
         </Layout>

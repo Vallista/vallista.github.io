@@ -62,6 +62,7 @@ const PostHeader = styled.header<{ backgroundImage: string }>`
   color: ${Color.GRAY_400};
   padding: 24px 50px;
   border-bottom: 1px solid #e2e8f0;
+  background-color: ${Color.GRAY_900};
 
   ${(props) => props.backgroundImage ? `
   position: relative;
