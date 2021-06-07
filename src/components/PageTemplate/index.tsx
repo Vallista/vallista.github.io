@@ -423,6 +423,9 @@ interface IDataProps {
   }
 }
 
+function onTouchMove(e: TouchEvent) { e.preventDefault() }
+function onTouchEnd(e: TouchEvent) { e.preventDefault() }
+
 function resizingAllHighlighter(): void {
   const elements: HTMLCollectionOf<HTMLDivElement> = document.getElementsByClassName('gatsby-highlight') as HTMLCollectionOf<HTMLDivElement>;
   for (let i = 0; i < elements.length; i++) {
@@ -528,17 +531,18 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
 
   useEffect(() => {
     const contents = document.getElementById('contents') || document.getElementById('index-content')
+
     if (isSelectNavList) {
       if (contents) {
         contents.style.overflow = 'hidden'
-        contents.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
-        contents.addEventListener('touchend', e => e.preventDefault(), { passive: false })
+        contents.addEventListener('touchmove', onTouchMove, true)
+        contents.addEventListener('touchend', onTouchEnd, true)
       }
     } else {
       if (contents) {
         contents.style.overflow = 'auto'
-        contents.removeEventListener('touchmove', e => e.preventDefault())
-        contents.removeEventListener('touchend', e => e.preventDefault())
+        contents.removeEventListener('touchmove', onTouchMove, true)
+        contents.removeEventListener('touchend', onTouchEnd, true)
       }
     }
   }, [isSelectNavList])
