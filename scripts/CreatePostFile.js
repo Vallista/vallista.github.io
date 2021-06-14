@@ -8,17 +8,16 @@ async function processCall() {
       throw new Error('파일명을 입력해주세요.')
     }
 
-    const date = new Date()
-
     const title = arg[0]
     const tags = arg[1] ? arg[1].split(',').length === 0 ? ['Programming'] : arg[1].split(',') : ['Programming']
+    const date = new Date()
 
     const textArray = [
       '---',
       `title: ${title}`,
       'tags:',
       tags.map(it => `- ${it}`).join('\n'),
-      `date: ${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDay().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
+      `date: ${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`,
       `draft: true`,
       '---'
     ]
