@@ -141,6 +141,19 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
       initialWidth()
       setScrollBarPos((scrollY / document?.getElementById('content')?.scrollHeight) * lineHeight)
     })
+
+    setInterval(() => {
+      const content = document.getElementById('content');
+
+      if (window.innerWidth > 1200) {
+        content.style.marginLeft = '-250px';
+        return;
+      } else {
+        content.style.marginLeft = '0'
+      }
+
+      initialWidth()
+    }, 100)
   }, [])
 
   useEffect(() => {
@@ -157,9 +170,6 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
     const content = document.getElementById('content');
     if (!content) return
     if (content.getBoundingClientRect().right === pos) return
-
-    if (isVisible) content.style.marginLeft = '-250px';
-    else content.style.marginLeft = '0';
 
     setPos(content.getBoundingClientRect().right)
   }
@@ -182,10 +192,6 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
     setInterval(() => {
       initialHeight()
     }, 1000)
-
-    setInterval(() => {
-      initialWidth()
-    }, 100)
   }, [innerHeight])
 
   return isVisible && (
