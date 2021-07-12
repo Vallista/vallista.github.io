@@ -126,7 +126,9 @@ interface Props {
 const TopNavBar: React.VFC<Props> = (props) => {
   const { isOverScrollHeader, isActiveScrollHeader, isSelectNavList, setSelectNavList, navigate, onMoveLocation, frontmatter, edges } = props
 
-  const isHome = (window?.location.href ?? false) === 'https://vallista.kr' ||
+  const isHome = typeof window === 'undefined' ?
+    false :
+    (window?.location.href ?? false) === 'https://vallista.kr' ||
     (window?.location.href ?? false) === 'http://localhost:8000'
 
   return (
