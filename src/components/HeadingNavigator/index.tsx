@@ -145,6 +145,7 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
     setInterval(() => {
       const content = document.getElementById('content');
 
+      if (!content) return
       if (window.innerWidth > 1200) {
         content.style.marginLeft = '-250px';
         return;
