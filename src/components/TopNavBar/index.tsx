@@ -126,11 +126,14 @@ interface Props {
 const TopNavBar: React.VFC<Props> = (props) => {
   const { isOverScrollHeader, isActiveScrollHeader, isSelectNavList, setSelectNavList, navigate, onMoveLocation, frontmatter, edges } = props
 
+  const isHome = (window?.location.href ?? false) === 'https://vallista.kr' ||
+    (window?.location.href ?? false) === 'http://localhost:8000'
+
   return (
     <Wrapper id="top-nav-bar" isOverScrollHeader={isActiveScrollHeader} isSelectNavList={isSelectNavList}>
       <Header isOverScrollHeader={isOverScrollHeader}>
         {
-          isActiveScrollHeader ? (
+          (isActiveScrollHeader && isHome) ? (
             !isSelectNavList
               ? (
                 <p style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
