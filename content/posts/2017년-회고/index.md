@@ -1,6 +1,7 @@
 ---
 title: 2017년 회고
 tags:
+  - All
   - 회고
 date: 2017-12-25 18:00:55
 draft: false

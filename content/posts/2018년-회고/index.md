@@ -1,6 +1,7 @@
 ---
 title: 2018년 회고
 tags:
+  - All
   - 회고
 date: 2019-01-05 18:02:10
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: E2E (end to end) Test
 tags:
-  - Programming
+  - All
   - Testing
 date: 2017-07-01 18:41:35
 draft: false

@@ -1,9 +1,8 @@
 ---
 title: Vue Event Bus
 tags:
-  - Programming
+  - All
   - FrontEnd
-  - Vue
 date: 2018-01-14 18:38:29
 draft: false
 info: false

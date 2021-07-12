@@ -2,6 +2,7 @@
 title: 2019년 회고
 image: ./assets/image1.png
 tags:
+  - All
   - 회고
 date: 2019-12-29 18:24:03
 draft: false

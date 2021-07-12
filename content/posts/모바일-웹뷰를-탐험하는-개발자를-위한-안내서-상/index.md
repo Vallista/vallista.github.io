@@ -2,7 +2,7 @@
 title: 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 (상)
 image: ./assets/image1.jpg
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-11-10 14:35:28
 draft: false

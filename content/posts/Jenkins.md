@@ -1,7 +1,7 @@
 ---
 title: Jenkins
 tags:
-  - Programming
+  - All
 date: 2019-05-28 11:11:30
 draft: false
 info: false

@@ -21,7 +21,7 @@
   height: 30px;
   border-radius: 20px;
   box-sizing: border-box;
-  background-color: #e84a5f;
+  background-color: #b793c1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,7 +159,7 @@
   padding: 24px;
   width: 200px;
   background-color: #fff;
-  border: 2px solid #e84a5f;
+  border: 2px solid #b793c1;
   border-radius: 6px;
 }
 
@@ -212,7 +212,7 @@
 }
 
 .careers .career .projects .project .techStacks>.techStack {
-  background-color: #e84a5f;
+  background-color: #b793c1;
   color: #fff;
   padding: 6px 10px 6px 10px;
   border-radius: 6px;

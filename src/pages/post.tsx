@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import { graphql, Link, PageProps } from 'gatsby';
-import { Disqus, CommentCount, CommentEmbed } from 'gatsby-plugin-disqus'
-import PageTemplate from '../components/PageTemplate';
+import { Disqus } from 'gatsby-plugin-disqus'
 import styled from 'styled-components';
-import Layout from '../components/Layout';
-import { Color, toDate } from '../utils';
 
 import SEO from '../components/seo'
+import PageTemplate from '../components/PageTemplate';
+import Layout from '../components/Layout';
+import { Color, MAXIMUM_WIDTH, toDate } from '../utils';
 import { useLocation } from '@reach/router';
 
 interface IDataProps {
@@ -56,7 +56,7 @@ interface IDataProps {
 
 const PostHeader = styled.header<{ backgroundImage: string }>`
   width: 100%;
-  max-width: 960px;
+  max-width: ${MAXIMUM_WIDTH}px;
   min-height: 240px;
   height: auto;
   color: ${Color.GRAY_400};
@@ -78,7 +78,7 @@ const PostHeader = styled.header<{ backgroundImage: string }>`
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 1;
   }
 
@@ -103,27 +103,30 @@ const PostHeader = styled.header<{ backgroundImage: string }>`
 
 const PostContents = styled.section`
   width: 100%;
-  max-width: 960px;
+  max-width: ${MAXIMUM_WIDTH}px;
   height: auto;
   box-sizing: border-box;
   padding: 24px 50px;
 `
 
-const Tags = styled.div`
-
-`
+const Tags = styled.div``
 
 const Tag = styled.span`
   width: auto;
-  background-color: ${Color.RED_100};
+  background-color: ${Color.PURPLE_200};
   border-radius: 12px;
-  padding: 5px 8px 6px;
+  padding: 2px 8px 3px;
   margin-right: 6px;
   margin-bottom: 6px;
   display: inline-block;
   color: ${Color.GRAY_900};
   font-weight: 600;
-  font-size: 14;
+  font-size: 0.8rem;
+`
+
+const PostHeaderText = styled.h1`
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
 `
 
 const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
@@ -143,29 +146,25 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
     title: markdownRemark.frontmatter.title,
   }
 
-  console.log(disqusConfig)
-
   return (
     <>
       <SEO title={markdownRemark.frontmatter.title} description={markdownRemark.excerpt} article={markdownRemark.html} />
       <PageTemplate {...data}>
         <Layout justifyContent='center' overflow='auto' padding='0 48px' scrollBehavior='smooth' id='contents'>
-          <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900} maxWidth='960px'>
+          <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900} maxWidth={`${MAXIMUM_WIDTH}px`} id='content'>
             <PostHeader id='post-header' backgroundImage={image?.publicURL}>
-              <>
-                <div>
-                  <h1>{title}</h1>
-                  <p style={{ marginTop: '6px', marginBottom: '0' }}>{year}.{month}.{day} - 읽는데 약 {markdownRemark.timeToRead}분 걸려요!</p>
-                  <p style={{ marginTop: '-2px' }}>글쓴이 - <Link to='/' style={{ fontWeight: 600 }}>@Vallista</Link></p>
-                  <Tags>
-                    {tags.map(it => (
-                      <Tag>
-                        {it}
-                      </Tag>
-                    ))}
-                  </Tags>
-                </div>
-              </>
+              <div>
+                <PostHeaderText>{title}</PostHeaderText>
+                <p style={{ marginTop: '6px', marginBottom: '0' }}>{year}.{month}.{day} - <Link to='/' style={{ fontWeight: 600 }}>@Vallista</Link></p>
+                <p style={{ marginTop: '-2px' }}>읽는데 약 {markdownRemark.timeToRead}분 걸려요!</p>
+                <Tags>
+                  {tags.map((it, index) => (
+                    <Tag key={index}>
+                      {it}
+                    </Tag>
+                  ))}
+                </Tags>
+              </div>
             </PostHeader>
             <PostContents id="post-contents">
               <div dangerouslySetInnerHTML={{ __html: html }} />

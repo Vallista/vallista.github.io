@@ -25,7 +25,7 @@ const Profile = styled.div`
     }
 
     & > p {
-      color: ${Color.RED_100};
+      color: ${Color.PURPLE_100};
     }
   }
 `
@@ -72,7 +72,7 @@ const OverlayText = styled.p<{ selected: boolean }>`
   transition: color 0.6s ease-in;
 
   ${props => props.selected ? `
-    color: ${Color.RED_100};
+    color: ${Color.PURPLE_100};
   ` : ``}
 `
 

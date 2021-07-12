@@ -1,10 +1,9 @@
 import React from "react"
 import { graphql, PageProps } from "gatsby"
+
 import PageTemplate from "../components/PageTemplate"
 import Resume from '../components/Resume'
 import Layout from "../components/Layout"
-import { Color } from "../utils"
-
 import SEO from '../components/seo'
 
 const IndexPage: React.VFC<PageProps> = ({ data }) => {

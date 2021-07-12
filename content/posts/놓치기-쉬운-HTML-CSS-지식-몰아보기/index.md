@@ -2,7 +2,7 @@
 title: 놓치기 쉬운 HTML/CSS 지식 몰아보기
 image: ./assets/image1.png
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-11-25 01:28:52
 draft: false

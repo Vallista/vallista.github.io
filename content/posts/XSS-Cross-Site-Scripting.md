@@ -1,7 +1,7 @@
 ---
 title: XSS (Cross-Site-Scripting)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-12 11:03:57
 draft: false

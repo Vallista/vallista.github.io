@@ -1,7 +1,7 @@
 ---
 title: Docker In Docker (DIND) 설정하기
 tags:
-  - Programming
+  - All
 date: 2019-05-30 16:33:52
 draft: false
 info: false

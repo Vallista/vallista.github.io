@@ -1,7 +1,7 @@
 ---
 title: CORS (Cross Origin Resource Sharing)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-12 11:04:45
 draft: false

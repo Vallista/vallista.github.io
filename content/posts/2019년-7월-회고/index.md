@@ -1,6 +1,7 @@
 ---
 title: 2019년 7월 회고
 tags:
+  - All
   - 회고
 date: 2019-08-01 17:20:29
 draft: false

@@ -88,12 +88,12 @@ const Circle = styled.div<{ y: number; level: number; text: string }>`
 
   &:hover {
     &:before {
-      background-color: ${Color.RED_100};
+      background-color: ${Color.PURPLE_100};
     }
 
     &:after {
       transform: translate(-110%, -50%) scale(1.2, 1.2);
-      color: ${Color.RED_100};
+      color: ${Color.PURPLE_100};
       font-weight: 600;
     }
   }
@@ -120,7 +120,7 @@ const TouchableArea = styled.section`
     height: 0; 
     border-top: 24px solid transparent;
     border-bottom: 24px solid transparent;
-    border-right: 24px solid ${Color.RED_100};
+    border-right: 24px solid ${Color.PURPLE_100};
     margin-left: 26px;
     transition: opacity 0.2s;
   }

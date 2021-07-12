@@ -1,7 +1,7 @@
 ---
 title: 리듀스 (Reduce)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-12 11:01:13
 draft: false

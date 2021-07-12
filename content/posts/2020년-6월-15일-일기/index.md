@@ -1,7 +1,8 @@
 ---
 title: 2020년 6월 15일 일기
 tags:
-- diary
+  - All
+  - diary
 image: ./assets/1.jpeg
 date: 2021-06-16 01:24:06
 draft: true

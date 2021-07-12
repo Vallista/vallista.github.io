@@ -2,8 +2,7 @@
 title: TypeScript 디자인 패턴 - 옵저버 패턴
 image: ./assets/0.jpg
 tags:
-  - Programming
-  - TypeScript
+  - All
   - Design Pattern
 date: 2020-05-22 20:30:33
 draft: false

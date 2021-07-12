@@ -1,7 +1,7 @@
 ---
 title: CSSOM (CSS Object Model)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-07 19:12:24
 draft: false

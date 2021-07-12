@@ -1,7 +1,7 @@
 ---
 title: BNF (Backus-Naur Form)
 tags:
-  - Programming
+  - All
 date: 2019-05-02 19:00:34
 draft: false
 info: false

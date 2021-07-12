@@ -2,6 +2,7 @@
 title: 우아한형제들 헤커톤- 제 1회 우아톤 2019 후기
 image: ./assets/icon.jpg
 tags:
+  - All
   - 잡담
 date: 2019-12-10 00:51:35
 draft: false

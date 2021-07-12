@@ -1,7 +1,7 @@
 ---
 title: DOM (Document Object Model)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-07 19:11:27
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: 동일 출처 정책 (Same Origin Policy)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-12 11:03:24
 draft: false

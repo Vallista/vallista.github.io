@@ -9,7 +9,7 @@ async function processCall() {
     }
 
     const title = arg[0]
-    const tags = arg[1] ? arg[1].split(',').length === 0 ? ['Programming'] : arg[1].split(',') : ['Programming']
+    const tags = arg[1] ? arg[1].split(',').length === 0 ? ['All'] : arg[1].split(',') : ['All']
     const date = new Date()
 
     const textArray = [

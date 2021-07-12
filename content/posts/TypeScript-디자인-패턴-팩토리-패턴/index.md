@@ -3,8 +3,7 @@ title: TypeScript 디자인 패턴 - 팩토리 패턴
 date: 2020-05-05 20:44:56
 image: ./assets/0.jpg
 tags:
-  - Programming
-  - TypeScript
+  - All
   - Design Pattern
 draft: false
 info: false

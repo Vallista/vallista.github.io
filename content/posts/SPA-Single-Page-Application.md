@@ -1,7 +1,7 @@
 ---
 title: SPA (Single Page Application)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-05 19:06:21
 draft: false

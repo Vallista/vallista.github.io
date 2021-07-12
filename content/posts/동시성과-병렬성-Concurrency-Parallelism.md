@@ -1,7 +1,7 @@
 ---
 title: 동시성과 병렬성 (Concurrency & Parallelism)
 tags:
-  - Programming
+  - All
 date: 2019-12-28 16:42:00
 draft: false
 info: false

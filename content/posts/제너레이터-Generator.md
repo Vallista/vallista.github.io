@@ -1,7 +1,7 @@
 ---
 title: 제너레이터 (Generator)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-07-12 12:05:15
 draft: false

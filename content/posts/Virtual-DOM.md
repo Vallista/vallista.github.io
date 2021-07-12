@@ -1,7 +1,7 @@
 ---
 title: Virtual DOM
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-04 19:04:34
 draft: false

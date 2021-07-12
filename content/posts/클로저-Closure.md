@@ -1,7 +1,7 @@
 ---
 title: 클로저 (Closure)
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-11 10:55:07
 draft: false

@@ -2,8 +2,7 @@
 title: TypeScript 디자인 패턴 - 메멘토 패턴
 image: ./assets/0.jpg
 tags:
-  - Programming
-  - TypeScript
+  - All
   - Design Pattern
 date: 2020-06-07 18:41:05
 draft: false

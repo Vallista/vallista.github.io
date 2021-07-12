@@ -1,7 +1,7 @@
 ---
 title: Next에서 Alias 적용하기
 tags:
-  - Programming
+  - All
   - FrontEnd
 date: 2019-05-15 11:17:29
 draft: false

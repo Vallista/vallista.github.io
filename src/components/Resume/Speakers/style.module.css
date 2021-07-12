@@ -15,9 +15,8 @@
   transition: color 0.3s;
   font-weight: 400;
   color: #ff847c;
-
 }
 
 .speakers .speaker .text:hover {
-  color: #e84a5f;
+  color: #b793c1;
 }

@@ -9,8 +9,12 @@ export enum Color {
   GRAY_650 = '#ddd',
   GRAY_700 = '#eeeeee',
   GRAY_800 = '#f6f6f6',
-  GRAY_900 = '#ffffff'
+  GRAY_900 = '#ffffff',
+  PURPLE_100 = '#b793c1',
+  PURPLE_200 = '#bdb9ca',
 }
+
+export const MAXIMUM_WIDTH = 780;
 
 export const SPLIT_DATE_FORMAT = /[\-\+ :T]/
 
