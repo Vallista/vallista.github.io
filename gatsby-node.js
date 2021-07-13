@@ -77,7 +77,7 @@ exports.setFieldsOnGraphQLNodeType = ({
           `published` is always true in development
               so both drafts and finished posts are built
           */
-          if (process.env.NODE_ENV !== 'production') {
+          if (process.env.NODE_ENV === 'production') {
             return true
           }
           /*
@@ -102,7 +102,7 @@ exports.createPages = async function ({
     query {
       allMarkdownRemark(
         sort: { fields: [frontmatter___date, id], order: DESC }
-        filter: { published: { eq: true } }
+        filter: { published: { eq: false } }
         limit: 1000
       ) {
         edges {
