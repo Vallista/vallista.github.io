@@ -183,11 +183,14 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
 
 export default Post
 
+// const isDraft = process.env.DRAFT === 'true'
+// filter: { frontmatter: { draft: { eq: false } } }
+
 export const pageQuery = graphql`
   query BlogPostQuery($id: String) {
     allMarkdownRemark(
       sort: {fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { draft: { eq: false } } }
+      filter: { published: { eq: true } }
     ) {
       edges {
         node {

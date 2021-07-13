@@ -7,6 +7,10 @@ const {
   createFilePath
 } = require("gatsby-source-filesystem")
 
+const {
+  GraphQLBoolean
+} = require('gatsby/graphql')
+
 // const fs = require('fs')
 // const path = require('path')
 
@@ -58,6 +62,36 @@ exports.onCreateNode = async ({
   }
 }
 
+exports.setFieldsOnGraphQLNodeType = ({
+  type
+}) => {
+  // if the node is a markdown file, add the `published` field
+  if ('MarkdownRemark' === type.name) {
+    return {
+      published: {
+        type: GraphQLBoolean,
+        resolve: ({
+          frontmatter
+        }) => {
+          /*
+          `published` is always true in development
+              so both drafts and finished posts are built
+          */
+          if (process.env.NODE_ENV !== 'production') {
+            return true
+          }
+          /*
+          return the opposite of the `draft` value,
+          i.e. if draft = true : published = false
+          */
+          return !frontmatter.draft
+        },
+      },
+    }
+  }
+  return {}
+}
+
 // You can delete this file if you're not using it
 exports.createPages = async function ({
   node,
@@ -81,6 +115,7 @@ exports.createPages = async function ({
             fields {
               slug
             }
+            published
             frontmatter {
               title
               date
@@ -101,6 +136,8 @@ exports.createPages = async function ({
     const [year, month, day] = getTime(edge.node.frontmatter.date)
 
     const slug = `/${year}/${month}/${day}${edge.node.fields.slug}`.slice(0, -1)
+
+    if (!edge.node.published) return
 
     actions.createPage({
       path: slug,
