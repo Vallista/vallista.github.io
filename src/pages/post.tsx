@@ -17,6 +17,7 @@ interface IDataProps {
         fields: {
           slug: string
         },
+        published: boolean
         frontmatter: {
           title: string
           date: string
@@ -42,6 +43,7 @@ interface IDataProps {
       value: string
       depth: number
     }[]
+    published: boolean
     frontmatter: {
       title: string
       date: string
@@ -198,6 +200,7 @@ export const pageQuery = graphql`
           fields {
             slug
           }
+          published
           frontmatter {
             title
             date
@@ -218,7 +221,7 @@ export const pageQuery = graphql`
         totalCount
       }
     }
-    markdownRemark(id: { eq: $id }) {
+    markdownRemark(published: { eq: true }, id: { eq: $id }) {
       id
       html
       excerpt
@@ -231,6 +234,7 @@ export const pageQuery = graphql`
         depth
       }
       timeToRead
+      published
       frontmatter {
         title
         tags

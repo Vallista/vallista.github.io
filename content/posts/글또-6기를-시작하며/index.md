@@ -1,5 +1,6 @@
 ---
 title: 글또 6기를 시작하며
+image: ./assets/1.png
 tags:
   - All
   - Talk

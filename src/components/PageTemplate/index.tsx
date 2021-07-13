@@ -19,6 +19,7 @@ interface IDataProps {
         fields: {
           slug: string
         },
+        published: boolean;
         frontmatter: {
           title: string
           date: string
@@ -41,6 +42,7 @@ interface IDataProps {
       value: string
       depth: number
     }[]
+    published: boolean
     frontmatter: {
       title: string
       date: string
@@ -215,6 +217,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
   }, [])
 
   const filteredEdge = useMemo(() => edges.filter(it => it.node.frontmatter.tags.includes(selectTag)), [edges, selectTag])
+  const filteredTopNavEdge = useMemo(() => edges.filter(it => it.node.published), [edges])
 
   const onMoveCategory = (value: string) => {
     handleSelectTag(value)
@@ -228,7 +231,8 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     handleSelectProfile(false, true, false)
 
     const [year, month, day] = getTime(date)
-    navigate(`/${year}/${month}/${day}${value}`)
+    const lastValue = value[value.length - 1] === '/' ? value.slice(0, value.length - 1) : value
+    navigate(`/${year}/${month}/${day}${lastValue}`)
   }
 
   const onLocked = () => {
@@ -252,7 +256,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
         isActiveScrollHeader={isActiveScrollHeader}
         isSelectNavList={isSelectNavList}
         isOverScrollHeader={isOverScrollHeader}
-        edges={edges}
+        edges={filteredTopNavEdge}
         navigate={navigate}
         onMoveLocation={onMoveLocation}
         frontmatter={markdownRemark?.frontmatter}
