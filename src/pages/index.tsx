@@ -28,7 +28,7 @@ export const pageQuery = graphql`
   query BlogIndexQuery {
     allMarkdownRemark (
       sort: {fields: [frontmatter___date], order: DESC }
-      filter: { published: { eq: true } }
+      filter: { frontmatter: { draft: { eq: false } } }
     ) {
       edges {
         node {
@@ -36,6 +36,7 @@ export const pageQuery = graphql`
           fields {
             slug
           }
+          published
           frontmatter {
             title
             date

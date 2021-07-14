@@ -102,7 +102,6 @@ exports.createPages = async function ({
     query {
       allMarkdownRemark(
         sort: { fields: [frontmatter___date, id], order: DESC }
-        filter: { published: { eq: true } }
         limit: 1000
       ) {
         edges {

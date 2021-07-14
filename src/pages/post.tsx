@@ -192,7 +192,7 @@ export const pageQuery = graphql`
   query BlogPostQuery($id: String) {
     allMarkdownRemark(
       sort: {fields: [frontmatter___date], order: DESC }
-      filter: { published: { eq: true } }
+      filter: { frontmatter: { draft: { eq: false } } }
     ) {
       edges {
         node {
@@ -221,7 +221,7 @@ export const pageQuery = graphql`
         totalCount
       }
     }
-    markdownRemark(published: { eq: true }, id: { eq: $id }) {
+    markdownRemark(id: { eq: $id }) {
       id
       html
       excerpt
