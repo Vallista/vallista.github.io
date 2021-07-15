@@ -170,7 +170,7 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
               </div>
             </PostHeader>
             <PostContents id="post-contents">
-              <Series posts={[]} />
+              {/* <Series posts={[]} /> */}
               <div dangerouslySetInnerHTML={{ __html: html }} />
               <hr style={{ marginTop: '36px' }} />
               <div style={{ marginTop: '36px' }}>
