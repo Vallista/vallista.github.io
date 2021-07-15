@@ -94,10 +94,11 @@ interface Props {
     value: string
     depth: number
   }[]
+  isLocked: boolean
 }
 
 const HeadingNavigator: React.VFC<Props> = (props) => {
-  const { scrollY, innerWidth, innerHeight, headings: propHeadings } = props
+  const { scrollY, innerWidth, innerHeight, headings: propHeadings, isLocked } = props
 
   const [pos, setPos] = useState<number>(-9999);
 
@@ -177,7 +178,7 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
 
   useEffect(() => {
     initialWidth()
-  }, [innerWidth]);
+  }, [innerWidth, isLocked]);
 
   useEffect(() => {
     setScrollBarPos(calculateScrollPos());

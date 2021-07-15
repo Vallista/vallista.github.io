@@ -171,6 +171,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
     });
 
     document.getElementById('contents')?.addEventListener('scroll',
+      // @ts-ignore
       throttle((e) => {
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (!isMobile) setScrollY((e.currentTarget as HTMLDivElement).scrollTop)
@@ -282,6 +283,7 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
       </Layout>
       {children}
       <HeadingNavigator
+        isLocked={isLocked}
         scrollY={scrollY}
         innerWidth={innerWidth}
         innerHeight={innerHeight}
