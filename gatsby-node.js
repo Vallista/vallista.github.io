@@ -11,27 +11,6 @@ const {
   GraphQLBoolean
 } = require('gatsby/graphql')
 
-// const fs = require('fs')
-// const path = require('path')
-
-// exports.createSchemaCustomization = ({
-//   actions
-// }) => {
-//   const {
-//     createTypes
-//   } = actions
-
-//   createTypes(`
-//     type MarkdownRemark implements Node {
-//       frontmatter: Frontmatter!
-//     }
-
-//     type Frontmatter {
-//       title: String!
-//     }
-//   `)
-// }
-
 exports.onCreateNode = async ({
   node,
   actions,
@@ -57,8 +36,6 @@ exports.onCreateNode = async ({
       // createFilePath returns a path with the leading "/".
       value: `${value}`,
     })
-
-    // console.log(node)
   }
 }
 

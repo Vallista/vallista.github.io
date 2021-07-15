@@ -173,7 +173,8 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
     if (!content) return
     if (content.getBoundingClientRect().right === pos) return
 
-    setPos(content.getBoundingClientRect().right)
+    clearTimeout();
+    setTimeout(() => setPos(content.getBoundingClientRect().right))
   }
 
   useEffect(() => {

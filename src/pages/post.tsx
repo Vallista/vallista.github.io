@@ -2,12 +2,13 @@ import React, { useMemo } from 'react'
 import { graphql, Link, PageProps } from 'gatsby';
 import { Disqus } from 'gatsby-plugin-disqus'
 import styled from 'styled-components';
+import { useLocation } from '@reach/router';
 
 import SEO from '../components/seo'
 import PageTemplate from '../components/PageTemplate';
 import Layout from '../components/Layout';
 import { Color, MAXIMUM_WIDTH, toDate } from '../utils';
-import { useLocation } from '@reach/router';
+import Series from '../components/Series';
 
 interface IDataProps {
   allMarkdownRemark: {
@@ -142,11 +143,11 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
   const month = (translateDateFormat.getMonth() + 1).toString().padStart(2, '0')
   const day = translateDateFormat.getDate().toString().padStart(2, '0')
 
-  const disqusConfig = {
+  const disqusConfig = useMemo(() => ({
     url: `https://vallista.kr${pathname}`,
     identifier: markdownRemark.fields.slug,
     title: markdownRemark.frontmatter.title,
-  }
+  }), [pathname, markdownRemark])
 
   return (
     <>
@@ -169,6 +170,7 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
               </div>
             </PostHeader>
             <PostContents id="post-contents">
+              <Series posts={[]} />
               <div dangerouslySetInnerHTML={{ __html: html }} />
               <hr style={{ marginTop: '36px' }} />
               <div style={{ marginTop: '36px' }}>
