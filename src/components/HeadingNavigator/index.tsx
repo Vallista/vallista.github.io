@@ -97,7 +97,7 @@ interface Props {
   isLocked: boolean
 }
 
-const HeadingNavigator: React.VFC<Props> = (props) => {
+const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
   const { scrollY, innerWidth, innerHeight, headings: propHeadings, isLocked } = props
 
   const [pos, setPos] = useState<number>(-9999);
@@ -126,6 +126,8 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
           it.tagName === 'H5' ||
           it.tagName === 'H6'
       })
+
+    console.log(propHeadings)
 
     setHeadings(
       [
@@ -192,6 +194,7 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
   useEffect(() => {
     initialHeight()
 
+    clearInterval()
     setInterval(() => {
       initialHeight()
     }, 1000)
@@ -240,6 +243,6 @@ const HeadingNavigator: React.VFC<Props> = (props) => {
   function isScrollEnd() {
     return (nowHeading?.index ?? 0) === headings.length - 1
   }
-}
+})
 
 export default HeadingNavigator

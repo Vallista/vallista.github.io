@@ -183,7 +183,7 @@ interface Props {
   onMoveLocation: (name: string, date: string) => void
 }
 
-const PostCategory: React.VFC<Props> = (props) => {
+const PostCategory: React.VFC<Props> = React.memo((props) => {
   const {
     isLocked,
     isLoading,
@@ -233,6 +233,6 @@ const PostCategory: React.VFC<Props> = (props) => {
       }
     </Wrapper>
   )
-}
+})
 
 export default PostCategory

@@ -19,7 +19,7 @@ interface IProps extends React.CSSProperties {
   id?: string
 }
 
-const Layout: React.FC<IProps> = (props) => {
+const Layout: React.FC<IProps> = React.memo((props) => {
   const { children, id, ...otherProps } = props
 
   return (
@@ -27,6 +27,6 @@ const Layout: React.FC<IProps> = (props) => {
       {children}
     </Box>
   )
-}
+})
 
 export default Layout

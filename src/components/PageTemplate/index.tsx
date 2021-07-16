@@ -86,7 +86,7 @@ const SAVE_SCROLL_POS = 'post-scroll-pos'
 const SAVE_LOCKED = 'locked'
 const SAVE_PROFILE_SELECT = 'profile-select'
 
-const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark, children }) => {
+const PageTemplate: React.FC<IDataProps> = React.memo(({ allMarkdownRemark, markdownRemark, children }) => {
   const { pathname } = useLocation()
 
   const { edges, group: tempGroup } = allMarkdownRemark
@@ -291,6 +291,6 @@ const PageTemplate: React.FC<IDataProps> = ({ allMarkdownRemark, markdownRemark,
       />
     </Layout>
   )
-}
+})
 
 export default PageTemplate

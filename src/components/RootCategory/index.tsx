@@ -175,7 +175,7 @@ const IconElement: React.VFC<{ target: string, isSelect: boolean }> = ({ target,
   )
 }
 
-const RootCategory: React.VFC<Props> = (props) => {
+const RootCategory: React.VFC<Props> = React.memo((props) => {
   const {
     isSelectProfile,
     group,
@@ -209,6 +209,6 @@ const RootCategory: React.VFC<Props> = (props) => {
       </LockWrapper>
     </CategoryWrapper>
   )
-}
+})
 
 export default RootCategory

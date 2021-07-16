@@ -123,7 +123,7 @@ interface Props {
   }[]
 }
 
-const TopNavBar: React.VFC<Props> = (props) => {
+const TopNavBar: React.VFC<Props> = React.memo((props) => {
   const { isOverScrollHeader, isActiveScrollHeader, isSelectNavList, setSelectNavList, navigate, onMoveLocation, frontmatter, edges } = props
 
   const isHome = typeof window === 'undefined' ?
@@ -173,6 +173,6 @@ const TopNavBar: React.VFC<Props> = (props) => {
       </Contents>}
     </Wrapper>
   )
-}
+})
 
 export default TopNavBar
