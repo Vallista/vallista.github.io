@@ -7,6 +7,8 @@ tags:
 date: 2020-06-07 18:41:05
 draft: false
 info: false
+series: TypeScript 디자인 패턴
+seriesPriority: 3
 ---
 
 

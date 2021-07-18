@@ -7,6 +7,8 @@ tags:
 date: 2019-11-10 14:35:28
 draft: false
 info: false
+series: 모바일 웹뷰를 탐험하는 개발자를 위한 안내서
+seriesPriority: 1
 ---
 
 ![이미지1](https://i0.wp.com/gaegul.kr/wordpress/wp-content/uploads/1/cfile29.uf.2529523E532F23481C8D5B.jpg)

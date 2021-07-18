@@ -9,7 +9,8 @@ import tags from '../../assets/tags'
 import HeadingNavigator from "../HeadingNavigator"
 import TopNavBar from '../TopNavBar';
 import RootCategory from '../RootCategory';
-import PostCategory from '../PostCategory/index';
+import PostCategory from '../PostCategory';
+import { getTime } from "../../utils"
 
 interface IDataProps {
   allMarkdownRemark: {
@@ -27,9 +28,14 @@ interface IDataProps {
           image?: {
             publicURL: string
           }
+          series: string
+          seriesPriority: number
         }
       }
     }>
+    group: Array<{ fieldValue: string; totalCount: number }>
+  }
+  seriesGroup: {
     group: Array<{ fieldValue: string; totalCount: number }>
   }
   markdownRemark?: {
@@ -50,6 +56,7 @@ interface IDataProps {
       image?: {
         publicURL: string
       }
+      series: string
     }
     timeToRead: number
   }
@@ -76,17 +83,18 @@ function resizingAllHighlighter(): void {
   }
 }
 
-const getTime = (date: string): [string, string, string] => {
-  const translate = date.split(/[\-\+ :T]/)
-  return [translate[0] || '0', translate[1] || '0', translate[2] || '0']
-}
-
 const SAVE_SELECT_TAG = 'select-tag'
 const SAVE_SCROLL_POS = 'post-scroll-pos'
 const SAVE_LOCKED = 'locked'
 const SAVE_PROFILE_SELECT = 'profile-select'
 
-const PageTemplate: React.FC<IDataProps> = React.memo(({ allMarkdownRemark, markdownRemark, children }) => {
+const PageTemplate: React.FC<IDataProps> = React.memo((props) => {
+  const {
+    allMarkdownRemark,
+    markdownRemark,
+    children,
+  } = props
+
   const { pathname } = useLocation()
 
   const { edges, group: tempGroup } = allMarkdownRemark

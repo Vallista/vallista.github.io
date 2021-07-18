@@ -9,6 +9,7 @@ import PageTemplate from '../components/PageTemplate';
 import Layout from '../components/Layout';
 import { Color, MAXIMUM_WIDTH, toDate } from '../utils';
 import Series from '../components/Series';
+import useSeries from '../hooks/useSeries';
 
 interface IDataProps {
   allMarkdownRemark: {
@@ -17,7 +18,7 @@ interface IDataProps {
         excerpt: string
         fields: {
           slug: string
-        },
+        }
         published: boolean
         frontmatter: {
           title: string
@@ -27,9 +28,14 @@ interface IDataProps {
           image?: {
             publicURL: string
           }
+          series: string
+          seriesPriority: number
         }
       }
     }>
+    group: Array<{ fieldValue: string; totalCount: number }>
+  }
+  seriesGroup: {
     group: Array<{ fieldValue: string; totalCount: number }>
   }
   markdownRemark: {
@@ -53,6 +59,7 @@ interface IDataProps {
       image?: {
         publicURL: string
       }
+      series: string
     }
   }
 }
@@ -133,8 +140,8 @@ const PostHeaderText = styled.h1`
 `
 
 const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
-  const { markdownRemark } = data
-  const { html, frontmatter } = markdownRemark
+  const { allMarkdownRemark, markdownRemark } = data
+  const { html, frontmatter, excerpt } = markdownRemark
   const { title, date, image, tags } = frontmatter
   const { pathname } = useLocation()
 
@@ -149,9 +156,11 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
     title: markdownRemark.frontmatter.title,
   }), [pathname, markdownRemark])
 
+  const series = useSeries({ allMarkdownRemark, markdownRemark })
+
   return (
     <>
-      <SEO title={markdownRemark.frontmatter.title} description={markdownRemark.excerpt} article={markdownRemark.html} />
+      <SEO title={frontmatter.title} description={excerpt} article={html} />
       <PageTemplate {...data}>
         <Layout justifyContent='center' overflow='auto' padding='0 48px' scrollBehavior='smooth' id='contents'>
           <Layout flexDirection='column' width='auto' height='auto' backgroundColor={Color.GRAY_900} maxWidth={`${MAXIMUM_WIDTH}px`} id='content'>
@@ -170,8 +179,8 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
               </div>
             </PostHeader>
             <PostContents id="post-contents">
-              <Series posts={[]} />
-              <div dangerouslySetInnerHTML={{ __html: html }} />
+              <Series {...series} pageName={frontmatter.title} />
+              <div id="post-markdown" dangerouslySetInnerHTML={{ __html: html }} />
               <hr style={{ marginTop: '36px' }} />
               <div style={{ marginTop: '36px' }}>
                 <Disqus config={disqusConfig} />
@@ -186,9 +195,6 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
 }
 
 export default Post
-
-// const isDraft = process.env.DRAFT === 'true'
-// filter: { frontmatter: { draft: { eq: false } } }
 
 export const pageQuery = graphql`
   query BlogPostQuery($id: String) {
@@ -214,11 +220,19 @@ export const pageQuery = graphql`
               sourceInstanceName
               publicURL
             }
+            series
+            seriesPriority
           }
           html
         }
       }
       group(field: frontmatter___tags) {
+        fieldValue
+        totalCount
+      }
+    }
+    seriesGroup: allMarkdownRemark {
+      group(field: frontmatter___series) {
         fieldValue
         totalCount
       }
@@ -248,6 +262,7 @@ export const pageQuery = graphql`
           sourceInstanceName
           publicURL
         }
+        series
       }
     }
   }

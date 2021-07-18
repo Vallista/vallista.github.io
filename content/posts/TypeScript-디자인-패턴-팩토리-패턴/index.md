@@ -7,6 +7,8 @@ tags:
   - Design Pattern
 draft: false
 info: false
+series: TypeScript 디자인 패턴
+seriesPriority: 1
 ---
 
 ![이미지0](./assets/0.jpg)

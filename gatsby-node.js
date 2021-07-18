@@ -97,6 +97,8 @@ exports.createPages = async function ({
               title
               date
               draft
+              series
+              seriesPriority
             }
           }
         }

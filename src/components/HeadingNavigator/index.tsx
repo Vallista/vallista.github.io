@@ -117,7 +117,7 @@ const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
   const isVisible = innerWidth > 1200;
 
   useEffect(() => {
-    const markdownElements = new Array(...document.getElementById('post-contents')?.children[0].querySelectorAll('*') ?? [])
+    const markdownElements = new Array(...document.getElementById('post-markdown')?.querySelectorAll('*') ?? [])
       .filter((it) => {
         return it.tagName === 'H1' ||
           it.tagName === 'H2' ||
@@ -127,13 +127,12 @@ const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
           it.tagName === 'H6'
       })
 
-    console.log(propHeadings)
-
     setHeadings(
       [
         { level: 0, name: '머릿말', y: 0, index: 0 },
         ...propHeadings
           .map((heading, idx) => {
+            console.log(markdownElements[idx])
             const y = Math.floor(markdownElements[idx]?.getBoundingClientRect().y ?? 0)
             return { level: heading.depth, name: heading.value, y, index: idx + 1 }
           })

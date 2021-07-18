@@ -26,3 +26,8 @@ export function toDate(time: string): Date {
   const result = translateDate(time)
   return new Date(result[0], result[1] - 1, result[2], result[3], result[4], result[5])
 }
+
+export function getTime(date: string): [string, string, string] {
+  const translate = date.split(/[\-\+ :T]/)
+  return [translate[0] || '0', translate[1] || '0', translate[2] || '0']
+}
