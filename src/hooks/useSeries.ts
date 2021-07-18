@@ -46,7 +46,8 @@ function useSeries(props: Props) {
 
   return {
     title: markdownRemark.frontmatter.series,
-    posts: series
+    posts: series,
+    hasSeries: series.length > 0
   }
 }
 

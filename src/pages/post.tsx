@@ -157,6 +157,7 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
   }), [pathname, markdownRemark])
 
   const series = useSeries({ allMarkdownRemark, markdownRemark })
+  const hasSeries = series.hasSeries
 
   return (
     <>
@@ -179,7 +180,7 @@ const Post: React.VFC<PageProps<IDataProps>> = ({ data }) => {
               </div>
             </PostHeader>
             <PostContents id="post-contents">
-              <Series {...series} pageName={frontmatter.title} />
+              {hasSeries && <Series {...series} pageName={frontmatter.title} />}
               <div id="post-markdown" dangerouslySetInnerHTML={{ __html: html }} />
               <hr style={{ marginTop: '36px' }} />
               <div style={{ marginTop: '36px' }}>
