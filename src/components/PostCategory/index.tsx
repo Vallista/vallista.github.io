@@ -37,6 +37,12 @@ const Category = styled.ul`
   padding: 6px 6px 0;
   margin: 0;
   list-style: none;
+
+  --ms-overflow-style: none;
+  scrollbar-width: none;
+  &:-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const CategoryItem = styled.li<{ orderIndex: number, image: string }>`

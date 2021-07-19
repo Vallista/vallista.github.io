@@ -40,6 +40,12 @@ const Contents = styled.section`
     margin: 0;
     list-style: none;
   }
+
+  --ms-overflow-style: none;
+  scrollbar-width: none;
+  &:-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const Content = styled.li<{ isSelect: boolean }>`

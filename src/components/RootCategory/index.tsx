@@ -34,6 +34,12 @@ const CategoryScrollLayer = styled.div`
   height: 80%;
   overflow: auto;
   position: relative;
+
+  --ms-overflow-style: none;
+  scrollbar-width: none;
+  &:-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const Category = styled.ul`
@@ -47,6 +53,12 @@ const Category = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
+
+  --ms-overflow-style: none;
+  scrollbar-width: none;
+  &:-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const CategoryItem = styled.li`

@@ -13,6 +13,12 @@ const Box = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 100vh;
+
+  --ms-overflow-style: none;
+  scrollbar-width: none;
+  &:-webkit-scrollbar {
+    display: none;
+  }
 `
 
 interface IProps extends React.CSSProperties {
