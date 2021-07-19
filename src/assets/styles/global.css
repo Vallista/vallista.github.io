@@ -7,12 +7,12 @@
 
 * {
   box-sizing: inherit;
+  scrollbar-width: none;
 }
 
 html {
   text-size-adjust: 100%;
   font-size: 16px;
-  scrollbar-width: none;
 }
 
 body {
