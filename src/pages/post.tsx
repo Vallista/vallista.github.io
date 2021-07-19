@@ -20,6 +20,7 @@ interface IDataProps {
           slug: string
         }
         published: boolean
+        timeToRead: number
         frontmatter: {
           title: string
           date: string
@@ -210,6 +211,7 @@ export const pageQuery = graphql`
             slug
           }
           published
+          timeToRead
           frontmatter {
             title
             date

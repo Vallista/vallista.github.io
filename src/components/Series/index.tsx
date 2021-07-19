@@ -52,19 +52,36 @@ const List = styled.ol`
   padding: 0;
 `
 
-const ListItem = styled.li<{ order: number, isSelected: boolean }>`
+const ListItem = styled.li<{
+  order: number,
+  isSelected: boolean,
+  readTime: number,
+}>`
   color: ${props => props.isSelected ? Color.PURPLE_100 : Color.GRAY_300};
   font-weight: ${props => props.isSelected ? 700 : 400};
   margin-bottom: 2px;
   font-size: 1rem;
   cursor: pointer;
   transition: opacity 0.3s;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 
   &:before {
     display: inline-block;
     width: 1.5rem;
     content: '${props => props.order}.';
     margin-right: 6px;
+  }
+
+  &:after {
+    display: inline-block;
+    width: 3rem;
+    font-size: 0.8rem;
+    content: '- ${props => props.readTime}분';
+    margin-left: 4px;
+    color: ${Color.GRAY_500};
   }
 
   &:last-child {
@@ -84,6 +101,13 @@ const ListItem = styled.li<{ order: number, isSelected: boolean }>`
   }
 `
 
+const Footer = styled.footer`
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: ${Color.GRAY_400};
+  font-style: italic;
+`
+
 interface Props {
   title: string
   pageName: string
@@ -92,6 +116,7 @@ interface Props {
     name: string
     priority: number
     date: string
+    readTime: number
   }[]
 }
 
@@ -106,6 +131,10 @@ const Series: React.VFC<Props> = (props) => {
     }))
 
   const pageName = filteringName(props.pageName)
+  const allSeriesReadTime = posts.reduce((acc, curr) => {
+    acc += curr.readTime
+    return acc
+  }, 0)
 
   return (
     <Wrapper>
@@ -114,6 +143,7 @@ const Series: React.VFC<Props> = (props) => {
         <List>
           {orderedPosts.map((it, idx) => <ListItem
             isSelected={pageName === it.title}
+            readTime={it.readTime}
             order={idx + 1}
             onClick={() => onMoveLocation(it.name, it.date)}
             key={idx}
@@ -122,6 +152,7 @@ const Series: React.VFC<Props> = (props) => {
           </ListItem>)}
         </List>
       </Contents>
+      <Footer>시리즈를 모두 읽는 데 {allSeriesReadTime}분 걸려요!</Footer>
     </Wrapper>
   )
 

@@ -7,6 +7,7 @@ interface Props {
         fields: {
           slug: string
         }
+        timeToRead: number
         frontmatter: {
           series: string
           seriesPriority: number
@@ -40,7 +41,8 @@ function useSeries(props: Props) {
       title: it.node.frontmatter.title,
       name: it.node.fields.slug,
       priority: it.node.frontmatter.seriesPriority,
-      date: it.node.frontmatter.date
+      date: it.node.frontmatter.date,
+      readTime: it.node.timeToRead
     }))
     .sort((a, b) => a.priority > b.priority ? -1 : 1)
 
