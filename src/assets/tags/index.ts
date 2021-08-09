@@ -8,6 +8,7 @@ import Vue from "./Vue"
 import Talk from "./Talk"
 import Reminiscence from "./Reminiscence"
 import All from "./All"
+import Book from "./Book"
 
 export default [
   {
@@ -33,6 +34,10 @@ export default [
   {
     name: '잡담',
     component: Talk
+  },
+  {
+    name: '독후감',
+    component: Book
   },
   {
     name: 'Design Pattern',

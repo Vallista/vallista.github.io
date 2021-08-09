@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components';
 import { Color } from '../../utils';
-import Arrow from '../../assets/svgs/Arrow'
 
 const lineHeight = 300;
 
@@ -116,6 +115,15 @@ const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
 
   const isVisible = innerWidth > 1200;
 
+  const initialWidth = () => {
+    const content = document.getElementById('content');
+    if (!content) return
+    if (content.getBoundingClientRect().right === pos) return
+
+    clearTimeout();
+    setTimeout(() => setPos(content.getBoundingClientRect().right))
+  }
+
   useEffect(() => {
     const markdownElements = new Array(...document.getElementById('post-markdown')?.querySelectorAll('*') ?? [])
       .filter((it) => {
@@ -132,7 +140,6 @@ const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
         { level: 0, name: '머릿말', y: 0, index: 0 },
         ...propHeadings
           .map((heading, idx) => {
-            console.log(markdownElements[idx])
             const y = Math.floor(markdownElements[idx]?.getBoundingClientRect().y ?? 0)
             return { level: heading.depth, name: heading.value, y, index: idx + 1 }
           })
@@ -145,12 +152,11 @@ const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
     })
 
     setInterval(() => {
-      const content = document.getElementById('content');
+      const content = document.getElementById('content')
 
       if (!content) return
       if (window.innerWidth > 1200) {
         content.style.marginLeft = '-250px';
-        return;
       } else {
         content.style.marginLeft = '0'
       }
@@ -167,15 +173,6 @@ const HeadingNavigator: React.VFC<Props> = React.memo((props) => {
     const height = (window.innerHeight / document?.getElementById('content')?.scrollHeight) * lineHeight
 
     window.setTimeout(() => setScrollBarHeight(height))
-  }
-
-  const initialWidth = () => {
-    const content = document.getElementById('content');
-    if (!content) return
-    if (content.getBoundingClientRect().right === pos) return
-
-    clearTimeout();
-    setTimeout(() => setPos(content.getBoundingClientRect().right))
   }
 
   useEffect(() => {
