@@ -68,6 +68,7 @@ interface IDataProps {
 const PostHeader = styled.header<{ backgroundImage: string }>`
   width: 100%;
   max-width: ${MAXIMUM_WIDTH}px;
+  /* width: 100vw; */
   min-height: 240px;
   height: auto;
   color: ${Color.GRAY_400};
@@ -115,6 +116,7 @@ const PostHeader = styled.header<{ backgroundImage: string }>`
 const PostContents = styled.section`
   width: 100%;
   max-width: ${MAXIMUM_WIDTH}px;
+  /* width: 100vw; */
   height: auto;
   box-sizing: border-box;
   padding: 24px 50px;

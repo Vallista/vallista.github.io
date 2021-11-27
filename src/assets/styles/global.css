@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 :root {
   --highlight-color: #b793c1;
@@ -50,7 +50,7 @@ li::marker {
   text-align-last: start !important;
 }
 
-li>p {
+li > p {
   margin: 0;
 }
 
@@ -72,6 +72,7 @@ hr {
 }
 
 a {
+  word-break: break-all;
   color: var(--highlight-color);
   text-decoration: none;
   transition: all 0.3s ease-in-out 0s;
@@ -93,7 +94,7 @@ section h3 {
 section h1::after,
 section h2::after,
 section h3::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: -12px;
@@ -220,8 +221,8 @@ img {
 }
 
 pre,
-pre>code,
-pre>code>span {
+pre > code,
+pre > code > span {
   font-size: 0.8rem !important;
   line-height: 20px !important;
 }
@@ -300,8 +301,8 @@ pre>code>span {
   }
 
   pre,
-  pre>code,
-  pre>code>span {
+  pre > code,
+  pre > code > span {
     font-size: 0.8rem !important;
     line-height: 20px !important;
   }
@@ -337,15 +338,14 @@ pre>code>span {
   }
 
   pre,
-  pre>code,
-  pre>code>span {
+  pre > code,
+  pre > code > span {
     font-size: 0.9rem !important;
     line-height: 23px !important;
   }
 }
 
 @media screen and (min-width: 1024px) {
-
   h1 {
     font-size: 2.5rem;
   }
