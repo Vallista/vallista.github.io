@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://gatsby-starter-default/./src/pages/404.tsx"],"names":[],"mappings":"0JAQA,UANgC,kBAC9B","file":"component---src-pages-404-tsx-d626980493df261aefc8.js","sourcesContent":["import * as React from \"react\"\n\nconst NotFoundPage: React.VFC = () => (\n  <div>\n    404\n  </div>\n)\n\nexport default NotFoundPage\n"],"sourceRoot":""}

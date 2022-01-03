@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk_vallista_land_blog=self.webpackChunk_vallista_land_blog||[]).push([[190],{3642:function(a,l,e){e.r(l);var n=e(5634),s=e(2322);l.default=function(a){var l=a.data.allMarkdownRemark.edges;return(0,s.jsx)(n.A,{edges:l})}}}]);
+//# sourceMappingURL=component---src-pages-tags-tsx-6c954da4bb8926b0ccee.js.map
