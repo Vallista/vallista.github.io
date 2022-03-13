@@ -4,21 +4,17 @@
 <p>실행 컨텍스트는 내부에 활성 객체를 가지고 있어, 이는 유사 배열(object) 형태를 띈다. 이 유사 배열 내부에는 scope chain, value object, this object 형태로 3개를 갖게 된다.</p>
 <p>실행 컨텍스트</p>
 <ul>
-<li>Variable Object (변수 객체)</li>
-</ul>
-<p>변수 객체는 함수 내에서 쓰이는 변수, 매개 변수와 넘겨 받은 인수 값 (Parameter, Arguments), 함수 선언 3가지를 갖는다.</p>
-<ul>
+<li>Variable Object (변수 객체)
+변수 객체는 함수 내에서 쓰이는 변수, 매개 변수와 넘겨 받은 인수 값 (Parameter, Arguments), 함수 선언 3가지를 갖는다.</li>
 <li>변수 (Variable)</li>
 <li>매개변수와 인수값 (Parameter, Arguments)</li>
 <li>함수 선언</li>
-<li>Scope Chain (스코프 체인)</li>
+<li>Scope Chain (스코프 체인)
+스코프 체인을 통해서, 부모의 프로토타입을 순서대로 스콥 체인에 등록한다.
+그래서, 함수 실행시, 스코프 체인을 통해서 변수가 없다면 부모 스콥을 계속 이동하면서 변수를 찾는다.</li>
+<li>This Object (This 객체)
+this 객체는 현재 객체가 어떤 this를 가지고 있는지 변경할 수 있다.</li>
 </ul>
-<p>스코프 체인을 통해서, 부모의 프로토타입을 순서대로 스콥 체인에 등록한다.
-그래서, 함수 실행시, 스코프 체인을 통해서 변수가 없다면 부모 스콥을 계속 이동하면서 변수를 찾는다.</p>
-<ul>
-<li>This Object (This 객체)</li>
-</ul>
-<p>this 객체는 현재 객체가 어떤 this를 가지고 있는지 변경할 수 있다.</p>
 <style class="grvsc-styles">
   .grvsc-container {
     overflow: auto;

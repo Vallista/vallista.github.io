@@ -13,7 +13,7 @@
 </li>
 <li>
 <p>jenkins 실행 서버</p>
-<div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="0"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source"> $ ssh-keygen -t rsa -f id_rsa</span></span></code></pre></div>
+<div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="0"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source">$ ssh-keygen -t rsa -f id_rsa</span></span></code></pre></div>
 </li>
 <li>
 <p>Credentials > System > Global Credentials > Add Credentials</p>
@@ -64,8 +64,8 @@
 </li>
 <li>
 <p>docker group 권한 주기</p>
-<div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="1"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source">sudo groupadd docker</span></span>
-<span class="grvsc-line"><span class="grvsc-source">sudo usermod -aG docker $(whoami)</span></span></code></pre></div>
+<p>sudo groupadd docker
+sudo usermod -aG docker $(whoami)</p>
 </li>
 <li>
 <p>sudo service docker start</p>

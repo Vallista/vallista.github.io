@@ -4,11 +4,11 @@
 <h2>해결 방법</h2>
 <ol>
 <li>HTTP와 HTTPS 두 프로토콜을 하나의 프로토콜 이전한다.</li>
-<li>URI를 가져올 때 Full Path를 포트 포함해서 입력해 갖고온다.</li>
+<li>URI를 가져올 때 Full Path를 포트 포함해서 입력해 갖고온다.
+ex) <a href="http://vallista.kr:80/image">vallista.kr:80/image</a>, <a href="http://vallista.kr:443/imager">vallista.kr:443/image</a></li>
+<li>HTTPS와 HTTP가 혼합해서 쓰이는 URL의 경우, 아래와 같이 경로를 지정하면 된다.
+앞에 <code>//도메인</code> 을 붙이면 현재 웹 페이지의 스키마를 적용해서 전달하게 된다. <code>&#x3C;img src="//some.domain.com/img/background4.jpg"/></code></li>
 </ol>
-<p>ex) <a href="http://vallista.kr:80/image">vallista.kr:80/image</a>, <a href="http://vallista.kr:443/imager">vallista.kr:443/image</a>
-3. HTTPS와 HTTP가 혼합해서 쓰이는 URL의 경우, 아래와 같이 경로를 지정하면 된다.
-앞에 <code>//도메인</code> 을 붙이면 현재 웹 페이지의 스키마를 적용해서 전달하게 된다. <code>&#x3C;img src="//some.domain.com/img/background4.jpg"/></code></p>
 <style class="grvsc-styles">
   .grvsc-container {
     overflow: auto;

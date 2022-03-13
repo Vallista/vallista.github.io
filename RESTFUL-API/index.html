@@ -14,30 +14,32 @@
 URI의 하위 개념으로 URL, URN등이 있다.</p>
 <h2>REST의 특징</h2>
 <ol>
-<li>Uniform Interface (유니폼 인터페이스)</li>
-</ol>
-<p>URI로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터페이스로 수행하는 아키텍처 스타일을 말한다.
+<li>
+<p>Uniform Interface (유니폼 인터페이스)
+URI로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터페이스로 수행하는 아키텍처 스타일을 말한다.
 get, post, patch, put, delete등의 조작을 통일되고 한정적으로 제공한다.</p>
-<ol start="2">
-<li>Stateless (무상태성)</li>
+</li>
+<li>
+<p>Stateless (무상태성)
+REST는 무상태성 성격을 갖는다. 다시 말해 작업을 위한 상태 정보를 따로 저장하지 않는다. 세션 정보나 쿠키 정보를 따로 저장하지 않기 때문에 들어오는 요청만 단순히 처리하면 된다. 때문에 자유도가 높아지고 서버에서 불필요한 정보를 가지고 있지 않기 때문에 구현이 쉽게 가능해진다.</p>
+</li>
+<li>
+<p>Casheable (캐시 가능)
+HTTP 웹 표준을 그대로 사용하기 때문에, 웹에서 사용하는 기존 인프라를 그대로 활용 할 수 있다. 따라서 HTTP가 가진 캐싱 기능을 적용할 수 있다. HTTP 프로토콜 표준에서 사용하는 Last-Modified 태그나 E-Tag를 이용하면 캐싱 구현이 가능하다.</p>
+</li>
+<li>
+<p>Self-descriptiveness
+REST API 메시지만 보고도 이를 쉽게 이해 할 수 있는 자체 표현 구조로 되어 있음.</p>
+</li>
+<li>
+<p>Client - Server 구조
+REST 서버는 API를 제공하므로 클라이언트와 서버의 역할이 확실히 구분되기 때문에 클라이언트와 서버에서 개발해야 할 내용이 명확해지고 서로간의 의존성이 줄어듦</p>
+</li>
+<li>
+<p>계층형 구조
+REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런싱, 암호화 계층을 추가해 구조상의 유연성을 줄 수 있다. PROXY, 게이트웨이 같은 네트워크 기반의 중간 매체를 사용할 수 있게 한다.</p>
+</li>
 </ol>
-<p>REST는 무상태성 성격을 갖는다. 다시 말해 작업을 위한 상태 정보를 따로 저장하지 않는다. 세션 정보나 쿠키 정보를 따로 저장하지 않기 때문에 들어오는 요청만 단순히 처리하면 된다. 때문에 자유도가 높아지고 서버에서 불필요한 정보를 가지고 있지 않기 때문에 구현이 쉽게 가능해진다.</p>
-<ol start="3">
-<li>Casheable (캐시 가능)</li>
-</ol>
-<p>HTTP 웹 표준을 그대로 사용하기 때문에, 웹에서 사용하는 기존 인프라를 그대로 활용 할 수 있다. 따라서 HTTP가 가진 캐싱 기능을 적용할 수 있다. HTTP 프로토콜 표준에서 사용하는 Last-Modified 태그나 E-Tag를 이용하면 캐싱 구현이 가능하다.</p>
-<ol start="4">
-<li>Self-descriptiveness</li>
-</ol>
-<p>REST API 메시지만 보고도 이를 쉽게 이해 할 수 있는 자체 표현 구조로 되어 있음.</p>
-<ol start="5">
-<li>Client - Server 구조</li>
-</ol>
-<p>REST 서버는 API를 제공하므로 클라이언트와 서버의 역할이 확실히 구분되기 때문에 클라이언트와 서버에서 개발해야 할 내용이 명확해지고 서로간의 의존성이 줄어듦</p>
-<ol start="6">
-<li>계층형 구조</li>
-</ol>
-<p>REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런싱,  암호화 계층을 추가해 구조상의 유연성을 줄 수 있다. PROXY, 게이트웨이 같은 네트워크 기반의 중간 매체를 사용할 수 있게 한다.</p>
 <blockquote>
 <p>Last-Modified</p>
 </blockquote>
@@ -74,9 +76,9 @@ get, post, patch, put, delete등의 조작을 통일되고 한정적으로 제�
 <p>슬래시 구분자( / )는 계층 관계를 나타낸다.</p>
 <div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="1"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source">  Bad :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/dogs/animals</span></span>
-<span class="grvsc-line"><span class="grvsc-source">  </span></span>
+<span class="grvsc-line"><span class="grvsc-source"></span></span>
 <span class="grvsc-line"><span class="grvsc-source">  Good :</span></span>
-<span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/animals/dogs	</span></span></code></pre></div>
+<span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/animals/dogs</span></span></code></pre></div>
 <p>좋은 예시와 안 좋은 예시를 보면 알 수 있다.
 큰 범주 부터 작은 범주로 / 를 통해 계층을 구성한다.</p>
 </li>
@@ -84,7 +86,7 @@ get, post, patch, put, delete등의 조작을 통일되고 한정적으로 제�
 <p>URI의 마지막 문자는 / 를 포함하지 않는다.</p>
 <div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="2"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source">  Bad :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/animals/dogs/</span></span>
-<span class="grvsc-line"><span class="grvsc-source">  </span></span>
+<span class="grvsc-line"><span class="grvsc-source"></span></span>
 <span class="grvsc-line"><span class="grvsc-source">  Good :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/animals/dogs</span></span></code></pre></div>
 <p>/ 는 '이후에도 depth가 있다'를 의미한다.
@@ -95,7 +97,7 @@ get, post, patch, put, delete등의 조작을 통일되고 한정적으로 제�
 <div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="3"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source">  Bad :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/user_permission</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/userPermission</span></span>
-<span class="grvsc-line"><span class="grvsc-source">  </span></span>
+<span class="grvsc-line"><span class="grvsc-source"></span></span>
 <span class="grvsc-line"><span class="grvsc-source">  Good :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/user-permission</span></span></code></pre></div>
 <p>긴 문자열의 명사나 동사 구분을 위해 Camel 표기법이나 Snake 표기법을 사용한다.
@@ -107,7 +109,7 @@ get, post, patch, put, delete등의 조작을 통일되고 한정적으로 제�
 <p>파일 확장자는 사용하지 않는다.</p>
 <div class="markdown-wrapper"><pre class="grvsc-container dark-default-dark" data-language="" data-index="4"><code class="grvsc-code"><span class="grvsc-line"><span class="grvsc-source">  Bad :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/user/1/profile.jpg</span></span>
-<span class="grvsc-line"><span class="grvsc-source">  </span></span>
+<span class="grvsc-line"><span class="grvsc-source"></span></span>
 <span class="grvsc-line"><span class="grvsc-source">  Good :</span></span>
 <span class="grvsc-line"><span class="grvsc-source">  	http://restapi.example.com/user/1/profile</span></span>
 <span class="grvsc-line"><span class="grvsc-source">    HTTP/1.1 Host: restapi.example.com Accept: image/jpg</span></span></code></pre></div>
