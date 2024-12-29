@@ -1,0 +1,20 @@
+"use strict";
+(self["webpackChunk_vallista_blog"] = self["webpackChunk_vallista_blog"] || []).push([[152],{
+
+/***/ 1167:
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   GJ: function() { return /* binding */ _Category; },
+/* harmony export */   XN: function() { return /* binding */ _Wrapper; },
+/* harmony export */   jv: function() { return /* binding */ _Container; },
+/* harmony export */   nz: function() { return /* binding */ _Section; }
+/* harmony export */ });
+/* harmony import */ var _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2803);
+/* harmony import */ var _emotion_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(814);
+function _EMOTION_STRINGIFIED_CSS_ERROR__(){return"You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";}const _Container=/*#__PURE__*/(0,_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A)("aside",{target:"e1y68d4w3"})("position:fixed;top:0;left:0;",_ref=>{let{theme}=_ref;return/*#__PURE__*//*#__PURE__*/(0,_emotion_react__WEBPACK_IMPORTED_MODULE_1__/* .css */ .AH)("background:",theme.colors.PRIMARY.ACCENT_2,";z-index:",theme.layers.AFTER_STANDARD+1,";"+( true?"":0), true?"":0);},"@media screen and (min-width: 1025px){min-width:80px;height:100vh;}@media screen and (max-width: 1024px){top:43px;min-height:60px;width:100vw;overflow-y:hidden;overflow-x:auto;scrollbar-width:8px;scrollbar-color:var(--scrollbar-thumb) var(--scrollbar-background);&::-webkit-scrollbar{background:var(--scrollbar-background);height:8px;width:8px;}&::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:0;}}"+( true?"":0));const _Section=/*#__PURE__*/(0,_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A)("section",{target:"e1y68d4w2"})( true?{name:"httzni",styles:"display:flex;justify-content:space-between;align-items:center;@media screen and (min-width: 1025px){flex-direction:column;height:100vh;}@media screen and (max-width: 1024px){flex-direction:row;}"}:0);const _Wrapper=/*#__PURE__*/(0,_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A)("nav",{target:"e1y68d4w1"})( true?{name:"1w6v0wk",styles:"@media screen and (max-width: 1024px){display:flex;flex-direction:row;}"}:0);const _Category=/*#__PURE__*/(0,_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A)("a",{target:"e1y68d4w0"})("position:relative;display:flex;justify-content:center;align-items:center;width:80px;height:80px;cursor:pointer;transition:background 0.2s ease;&>div>div>div>svg{width:32px;height:32px;}@media screen and (max-width: 1024px){width:60px;height:60px;&>figure{width:40px;height:40px;border-radius:12px;overflow:hidden;}&>svg{width:24px;height:24px;}}&>div{width:inherit;height:inherit;& img{border-radius:12px;}}",_ref2=>{let{theme,checked}=_ref2;return/*#__PURE__*//*#__PURE__*/(0,_emotion_react__WEBPACK_IMPORTED_MODULE_1__/* .css */ .AH)("&>div>div:first-of-type{width:inherit;height:inherit;display:flex;justify-content:center;align-items:center;color:",theme.colors.PRIMARY.FOREGROUND,";}&:hover{background:",theme.colors.PRIMARY.ACCENT_3,";}&:hover>div>div:first-of-type{color:",theme.colors.PRIMARY.BACKGROUND,";}",checked&&/*#__PURE__*//*#__PURE__*/(0,_emotion_react__WEBPACK_IMPORTED_MODULE_1__/* .css */ .AH)("&:before{position:absolute;left:0;top:0;width:80px;height:80px;content:'';border-left:3px solid ",theme.colors.HIGHLIGHT.PINK,";box-sizing:border-box;@media screen and (max-width: 1024px){width:60px;height:60px;border-left:none;border-bottom:3px solid ",theme.colors.HIGHLIGHT.PINK,";}}"+( true?"":0), true?"":0),";"+( true?"":0), true?"":0);},";"+( true?"":0));
+
+/***/ })
+
+}]);
+//# sourceMappingURL=d265142c-06697b4408a57c102851.js.map
