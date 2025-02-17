@@ -1,0 +1,14 @@
+"use strict";
+(self["webpackChunk_vallista_blog"] = self["webpackChunk_vallista_blog"] || []).push([[246],{
+
+/***/ 4361:
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+/* unused harmony export Tabs */
+/* harmony import */ var _emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2803);
+function X(){return"You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";}const H=g=>{const{selected:G,setSelected:A,tabs:W,disabled:l}=B(g);return/* @__PURE__ */C(u,{children:W.map((I,d)=>/* @__PURE__ */C(x,{active:Z(I.value),onClick:()=>i(I.value),disabled:l,children:/* @__PURE__ */Y(N,{active:Z(I.value),disabled:l,children:[I.icon&&/* @__PURE__ */C(R,{children:I.icon}),I.title]})},"tab-"+d))});function Z(I){return G===I;}function i(I){l||A(I);}},u=/* @__PURE__ */(/* unused pure expression or super */ null && (c("div", true?{target:"eozn1dq3"}:0)("display:flex;flex-wrap:nowrap;align-items:baseline;padding-bottom:1px;overflow-x:auto;",_ref=>{let{theme:g}=_ref;return/*#__PURE__*//* @__PURE__ */b("box-shadow:0 -1px 0 ",g.colors.PRIMARY.ACCENT_2," inset;"+( true?"":0), true?"":0, true?"":0, true?"":0);}," &,&>*{gap:0!important;}"+( true?"":0))));var V= true?{name:"1sfig4b",styles:"cursor:not-allowed"}:0;const x=/* @__PURE__ */(/* unused pure expression or super */ null && (c("div", true?{target:"eozn1dq2"}:0)(_ref2=>{let{theme:g,disabled:G}=_ref2;return/*#__PURE__*//* @__PURE__ */b("cursor:pointer;padding:0 0.75rem;margin-bottom:-1px;border-bottom:1px solid ",g.colors.PRIMARY.ACCENT_2,";outline:0;&:first-of-type{padding-left:0.75rem;}",G&&V,";"+( true?"":0), true?"":0, true?"":0, true?"":0);},";"+( true?"":0)))),N=/* @__PURE__ */(/* unused pure expression or super */ null && (c("div", true?{target:"eozn1dq1"}:0)("display:flex;align-items:center;padding:6px 2px;margin-bottom:-1px;",_ref3=>{let{theme:g,active:G}=_ref3;return/*#__PURE__*//* @__PURE__ */b("color:",g.colors.PRIMARY.ACCENT_4,";border-bottom:1px solid transparent;",G&&/*#__PURE__*//* @__PURE__ */b("border-bottom:2px solid ",g.colors.PRIMARY.FOREGROUND,";color:",g.colors.PRIMARY.FOREGROUND,";"+( true?"":0), true?"":0, true?"":0, true?"":0),";"+( true?"":0), true?"":0, true?"":0, true?"":0);},";"+( true?"":0)))),R=/* @__PURE__ */(0,_emotion_styled_base__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A)("div", true?{target:"eozn1dq0"}:0)( true?{name:"17uaugp",styles:"margin-right:6px;margin-bottom:-3px;&>svg{width:14px!important;height:14px!important;}"}:0);
+
+/***/ })
+
+}]);
+//# sourceMappingURL=de73ab8c-63ecf818d7b77e5ac293.js.map
