@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_vallista_blog=self.webpackChunk_vallista_blog||[]).push([[256],{6435:function(l,s,a){a(2803),a(4786)}}]);
