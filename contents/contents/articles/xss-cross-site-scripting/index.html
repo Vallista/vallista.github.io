@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  <title>xss-cross-site-scripting</title>
+  <meta name="description" content="XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사">
+  <meta name="image" content="https://vallista.kr/profile.png">
+  <meta property="og:url" content="https://vallista.kr/contents/XSS-Cross-Site-Scripting">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="xss-cross-site-scripting">
+  <meta property="og:description" content="XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사">
+  <meta property="og:image" content="https://vallista.kr/profile.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="xss-cross-site-scripting">
+  <meta name="twitter:description" content="XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사">
+  <meta name="twitter:image" content="https://vallista.kr/profile.png">
+  <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts Preload -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Regular.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Bold.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraBold.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraLight.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Black.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Medium.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-SemiBold.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Thin.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Light.subset.woff2"
+    />
+
+    <!-- Favicon / PWA -->
+    <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <!-- iOS Theme Color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="root">
+      <p>XSS는 Cross-Site-Scripting의 약자로, 해커가 사용자의 웹에 스크립트를 실행해서 쿠키나 세션 같은 민감한 정보를 빼가는 행위를 일컫는다. 해커가 document.cookie를 가져오는 소스를 넣은 php파일을 만들어서 서버에 넣어두고, 게시판 같은 사용자가 글을 볼 수 있는 곳에 자신의 서버에 있는 php파일을 실행하는 태그를 작성하여 올려둔다. XSS처리를 하지 않은 사이트는 해당 글을 열람한 사용자들이 들어가면 php 파일을 실행하게 되며, 자신의 정보가 해커의 서버에 전송된다.</p>
+<p>XSS를 해결할 수 있는 방법에는 몇 가지가 있는데, 대표적으로 BBCode 사용이 있다. HTML '&#x3C;'와 '>' 태그 대신 대괄호를 사용하는 방법이다. 또, 각종 이벤트 블러킹등으로 막을 수 있다.</p>
+<p>간단하게는 이렇게 막을 수 있으나, 본격적으로 막으려면 네이버등 대기업에서 제공하는 라이브러리를 사용하면 좋다.</p>
+    </div>
+
+    <!-- 빌드된 JS 번들 로드 -->
+    <script type="module" src="/assets/assets/index-BBIx56w-.js"></script>
+  </body>
+</html>

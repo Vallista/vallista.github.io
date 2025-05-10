@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  <title>call-by-value-call-by-reference</title>
+  <meta name="description" content="```javascript {numberLines} const array = [1, 2, 3] array = [] // const라 동작하지 않음 function changeArrayEmpty(changeArr) { changeArr = [] } function chan">
+  <meta name="image" content="https://vallista.kr/profile.png">
+  <meta property="og:url" content="https://vallista.kr/contents/Call-By-Value-Call-By-Reference">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="call-by-value-call-by-reference">
+  <meta property="og:description" content="```javascript {numberLines} const array = [1, 2, 3] array = [] // const라 동작하지 않음 function changeArrayEmpty(changeArr) { changeArr = [] } function chan">
+  <meta property="og:image" content="https://vallista.kr/profile.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="call-by-value-call-by-reference">
+  <meta name="twitter:description" content="```javascript {numberLines} const array = [1, 2, 3] array = [] // const라 동작하지 않음 function changeArrayEmpty(changeArr) { changeArr = [] } function chan">
+  <meta name="twitter:image" content="https://vallista.kr/profile.png">
+  <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts Preload -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Regular.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Bold.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraBold.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraLight.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Black.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Medium.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-SemiBold.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Thin.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Light.subset.woff2"
+    />
+
+    <!-- Favicon / PWA -->
+    <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <!-- iOS Theme Color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="root">
+      <p><a href="https://emflant.tistory.com/64">자바스크립트 function - Call by Value, Call by Reference</a></p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="javascript" data-theme="one-dark-pro"><code data-language="javascript" data-theme="one-dark-pro" style="display: grid;"><span data-line=""><span style="color:#C678DD">const</span><span style="color:#E5C07B"> array</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> [</span><span style="color:#D19A66">1</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">3</span><span style="color:#ABB2BF">]</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#E06C75">array</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> [] </span><span style="color:#7F848E;font-style:italic">// const라 동작하지 않음</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#C678DD">function</span><span style="color:#61AFEF"> changeArrayEmpty</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">changeArr</span><span style="color:#ABB2BF">) {</span></span>
+<span data-line=""><span style="color:#E06C75">  changeArr</span><span style="color:#56B6C2"> =</span><span style="color:#ABB2BF"> []</span></span>
+<span data-line=""><span style="color:#ABB2BF">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#C678DD">function</span><span style="color:#61AFEF"> changeArray</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75;font-style:italic">changeArr</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">index</span><span style="color:#ABB2BF">) {</span></span>
+<span data-line=""><span style="color:#E06C75">  changeArr</span><span style="color:#ABB2BF">[</span><span style="color:#E06C75">index</span><span style="color:#ABB2BF">] </span><span style="color:#56B6C2">=</span><span style="color:#D19A66"> 1</span></span>
+<span data-line=""><span style="color:#ABB2BF">}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span style="color:#61AFEF">changeArrayEmpty</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">array</span><span style="color:#ABB2BF">) </span><span style="color:#7F848E;font-style:italic">// [1, 2, 3] NO!</span></span>
+<span data-line=""><span style="color:#61AFEF">changeArray</span><span style="color:#ABB2BF">(</span><span style="color:#E06C75">array</span><span style="color:#ABB2BF">, </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">) </span><span style="color:#7F848E;font-style:italic">// [1, 2, 1] OK!</span></span></code></pre></figure>
+<ul>
+<li>기본 자료형(number, string, boolean, undefined, null)을 Function Parameter로 넘겼을 때 값(value)를 복사해서 넘겨준다. → 그러므로 해당 변수를 바꾸던 말던 원래의 값에는 변경이 없다.</li>
+<li>Object(유사배열), Array(배열)를 넘겼을 때 함수 안에서 속성 값을 변경할 수 있고 원 데이터에 영향을 끼친다.</li>
+<li>새로운 객체를 따로 생성해서 값 자체를 새로 할당해서 변경할 수 없다.</li>
+</ul>
+<blockquote>
+<p>JavaScript는 function parameter로 던지는 값은 모두 Call By Value이다.
+객체나 배열같은 참조형(Reference) 타입인 경우에도 실제로는 그 복사본을 만들어 value로 Parameter에 전달하게 된다. 그래서 Function으로 Parameter 안에 있는 해당 속성은 변경이 가능해도, 배열 전체를 대체할 수 없다. Parameter로 받은 객체 내부의 값들은 해당 값에 대한 Reference를 지니고 있으므로..</p>
+</blockquote>
+    </div>
+
+    <!-- 빌드된 JS 번들 로드 -->
+    <script type="module" src="/assets/assets/index-BBIx56w-.js"></script>
+  </body>
+</html>

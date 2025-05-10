@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  <title>ssr-server-side-rendering</title>
+  <meta name="description" content="SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Sear">
+  <meta name="image" content="https://vallista.kr/profile.png">
+  <meta property="og:url" content="https://vallista.kr/contents/SSR-Server-Side-Rendering">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ssr-server-side-rendering">
+  <meta property="og:description" content="SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Sear">
+  <meta property="og:image" content="https://vallista.kr/profile.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ssr-server-side-rendering">
+  <meta name="twitter:description" content="SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Sear">
+  <meta name="twitter:image" content="https://vallista.kr/profile.png">
+  <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts Preload -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Regular.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Bold.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraBold.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraLight.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Black.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Medium.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-SemiBold.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Thin.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Light.subset.woff2"
+    />
+
+    <!-- Favicon / PWA -->
+    <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <!-- iOS Theme Color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="root">
+      <p>SSR(Server Side Rendering)은 서버에서 렌더링이 끝난 html 파일을 사용자에게 serve 하는 방식이다. 그러므로 페이지 이동마다 서버에 페이지를 요청하게 된다. 그래서 사용성은 떨어지지만 각 페이지마다 html을 들고 있기 때문에 SEO(Search Engine Optimization)가 가능하다.</p>
+<p>페이지마다 렌더링 된 html 파일을 받는 작업은 과거에 전통적으로 사용되던 웹 개발 기법이다. 대표적으로 jsp를 들 수 있다.</p>
+<p>장점은 SPA에 비해서 JavaScript 연산을 통해 HTML을 생성하므로 초기 스타트 비용이 큰 반면, SSR 처리를 하게 되면 완성된 HTML을 받으므로 초기 스타트 비용이 매우 적다.</p>
+<p>단점은 사용자 경험이 매우 좋지 않게 되는데, 페이지 전환마다 깜빡임이 일어날 수 있고, 어플리케이션을 쓰는 느낌을 주기 힘들다.</p>
+    </div>
+
+    <!-- 빌드된 JS 번들 로드 -->
+    <script type="module" src="/assets/assets/index-BBIx56w-.js"></script>
+  </body>
+</html>

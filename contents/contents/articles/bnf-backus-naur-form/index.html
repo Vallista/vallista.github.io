@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  <title>bnf-backus-naur-form</title>
+  <meta name="description" content="BNF는 **문맥 자유 문법**을 나타내기 위해 만들어진 표기법이다. 존 베커스와 페테르 나우르의 이름을 따서 부른다. 기본적으로 &quot; ::= &quot; 문법을 사용한다. 여기서 기호는 말단 기호가 될 수 없고, 표현식은 다른 기호의 조합, 또는 여러 가지의 표현식 중 하나를 ">
+  <meta name="image" content="https://vallista.kr/profile.png">
+  <meta property="og:url" content="https://vallista.kr/contents/BNF-Backus-Naur-Form">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="bnf-backus-naur-form">
+  <meta property="og:description" content="BNF는 **문맥 자유 문법**을 나타내기 위해 만들어진 표기법이다. 존 베커스와 페테르 나우르의 이름을 따서 부른다. 기본적으로 &quot; ::= &quot; 문법을 사용한다. 여기서 기호는 말단 기호가 될 수 없고, 표현식은 다른 기호의 조합, 또는 여러 가지의 표현식 중 하나를 ">
+  <meta property="og:image" content="https://vallista.kr/profile.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="bnf-backus-naur-form">
+  <meta name="twitter:description" content="BNF는 **문맥 자유 문법**을 나타내기 위해 만들어진 표기법이다. 존 베커스와 페테르 나우르의 이름을 따서 부른다. 기본적으로 &quot; ::= &quot; 문법을 사용한다. 여기서 기호는 말단 기호가 될 수 없고, 표현식은 다른 기호의 조합, 또는 여러 가지의 표현식 중 하나를 ">
+  <meta name="twitter:image" content="https://vallista.kr/profile.png">
+  <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts Preload -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Regular.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Bold.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraBold.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraLight.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Black.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Medium.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-SemiBold.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Thin.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Light.subset.woff2"
+    />
+
+    <!-- Favicon / PWA -->
+    <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <!-- iOS Theme Color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="root">
+      <p>BNF는 <strong>문맥 자유 문법</strong>을 나타내기 위해 만들어진 표기법이다. 존 베커스와 페테르 나우르의 이름을 따서 부른다.</p>
+<p>기본적으로 "&#x3C;기호> ::= &#x3C;표현식>" 문법을 사용한다.
+여기서 기호는 말단 기호가 될 수 없고, 표현식은 다른 기호의 조합, 또는 여러 가지의 표현식 중 하나를 사용한다는 의미로 |를 사용한다. 다른 표현식으로 정의되지 않은 기호는 자동으로 '말단 기호'가 된다. 기호가 아닌 상수에는 따옴표를 붙여서 구별한다.</p>
+<p>16진수를 BNF로 표현하면 다음과 같다.</p>
+<pre><code>&#x3C;digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+&#x3C;letter> ::= "A" | "B" | "C" | "D" | "E" | "F"
+&#x3C;number> ::= &#x3C;digit> | &#x3C;letter>
+&#x3C;integer> ::= &#x3C;number> | &#x3C;number>&#x3C;integer>
+</code></pre>
+    </div>
+
+    <!-- 빌드된 JS 번들 로드 -->
+    <script type="module" src="/assets/assets/index-BBIx56w-.js"></script>
+  </body>
+</html>

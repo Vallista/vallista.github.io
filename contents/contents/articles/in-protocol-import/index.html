@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  <title>in-protocol-import</title>
+  <meta name="description" content="HTTP 프로토콜에서 HTTPS URI를 호출하면 에러가 난다. 왜냐하면 해당 프로토콜에서 다른 프로토콜의 URI를 불러올 때 자신과 같은 프로토콜을 가정하고 가져오기 때문이다. HTTP의 포트는 80, HTTPS의 포트가 443 이므로 전혀 다른 URI로 접속해서 데">
+  <meta name="image" content="https://vallista.kr/profile.png">
+  <meta property="og:url" content="https://vallista.kr/contents/HTTP-프로토콜에서-HTTPS-URI-가져오기">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="in-protocol-import">
+  <meta property="og:description" content="HTTP 프로토콜에서 HTTPS URI를 호출하면 에러가 난다. 왜냐하면 해당 프로토콜에서 다른 프로토콜의 URI를 불러올 때 자신과 같은 프로토콜을 가정하고 가져오기 때문이다. HTTP의 포트는 80, HTTPS의 포트가 443 이므로 전혀 다른 URI로 접속해서 데">
+  <meta property="og:image" content="https://vallista.kr/profile.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="in-protocol-import">
+  <meta name="twitter:description" content="HTTP 프로토콜에서 HTTPS URI를 호출하면 에러가 난다. 왜냐하면 해당 프로토콜에서 다른 프로토콜의 URI를 불러올 때 자신과 같은 프로토콜을 가정하고 가져오기 때문이다. HTTP의 포트는 80, HTTPS의 포트가 443 이므로 전혀 다른 URI로 접속해서 데">
+  <meta name="twitter:image" content="https://vallista.kr/profile.png">
+  <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts Preload -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Regular.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Bold.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraBold.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraLight.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Black.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Medium.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-SemiBold.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Thin.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Light.subset.woff2"
+    />
+
+    <!-- Favicon / PWA -->
+    <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <!-- iOS Theme Color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="root">
+      <p>HTTP 프로토콜에서 HTTPS URI를 호출하면 에러가 난다. 왜냐하면 해당 프로토콜에서 다른 프로토콜의 URI를 불러올 때 자신과 같은 프로토콜을 가정하고 가져오기 때문이다.</p>
+<p>HTTP의 포트는 80, HTTPS의 포트가 443 이므로 전혀 다른 URI로 접속해서 데이터를 받아오게 된다.</p>
+<p>이 문제를 해결하기 위해서는 어떻게 해야할까?</p>
+<h2>해결 방법</h2>
+<ol>
+<li>HTTP와 HTTPS 두 프로토콜을 하나의 프로토콜 이전한다.</li>
+<li>URI를 가져올 때 Full Path를 포트 포함해서 입력해 갖고온다.
+ex) <a href="http://vallista.kr:80/image">vallista.kr:80/image</a>, <a href="http://vallista.kr:443/imager">vallista.kr:443/image</a></li>
+<li>HTTPS와 HTTP가 혼합해서 쓰이는 URL의 경우, 아래와 같이 경로를 지정하면 된다.
+앞에 <code>//도메인</code> 을 붙이면 현재 웹 페이지의 스키마를 적용해서 전달하게 된다. <code>&#x3C;img src="//some.domain.com/img/background4.jpg"/></code></li>
+</ol>
+    </div>
+
+    <!-- 빌드된 JS 번들 로드 -->
+    <script type="module" src="/assets/assets/index-BBIx56w-.js"></script>
+  </body>
+</html>

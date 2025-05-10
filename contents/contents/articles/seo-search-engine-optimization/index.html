@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+  <title>seo-search-engine-optimization</title>
+  <meta name="description" content="SPA는 SEO가 어렵다는 단점이 존재하는데, 이 단점을 극복하기 위해서는 전통적인 웹 형태인 MPA(Multiple Page Application) 형태를 띄어야 한다. MPA는 페이지를 요청할 때마다 새로운 페이지를 요청한다. 말 그대로 여러 페이지로 구성된 어플리">
+  <meta name="image" content="https://vallista.kr/profile.png">
+  <meta property="og:url" content="https://vallista.kr/contents/SEO-Search-Engine-Optimization">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="seo-search-engine-optimization">
+  <meta property="og:description" content="SPA는 SEO가 어렵다는 단점이 존재하는데, 이 단점을 극복하기 위해서는 전통적인 웹 형태인 MPA(Multiple Page Application) 형태를 띄어야 한다. MPA는 페이지를 요청할 때마다 새로운 페이지를 요청한다. 말 그대로 여러 페이지로 구성된 어플리">
+  <meta property="og:image" content="https://vallista.kr/profile.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="seo-search-engine-optimization">
+  <meta name="twitter:description" content="SPA는 SEO가 어렵다는 단점이 존재하는데, 이 단점을 극복하기 위해서는 전통적인 웹 형태인 MPA(Multiple Page Application) 형태를 띄어야 한다. MPA는 페이지를 요청할 때마다 새로운 페이지를 요청한다. 말 그대로 여러 페이지로 구성된 어플리">
+  <meta name="twitter:image" content="https://vallista.kr/profile.png">
+  <meta name="google-site-verification" content="wPI09aIL9InuxJwKlMkLE-4mzzfbNhQqRCJ760C-8nQ">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts Preload -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Regular.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Bold.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraBold.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-ExtraLight.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Black.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Medium.subset.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-SemiBold.subset.woff2"
+    />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/pretendard/Pretendard-Thin.subset.woff2" />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/fonts/pretendard/Pretendard-Light.subset.woff2"
+    />
+
+    <!-- Favicon / PWA -->
+    <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+
+    <!-- iOS Theme Color -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <div id="root">
+      <p>SPA는 SEO가 어렵다는 단점이 존재하는데, 이 단점을 극복하기 위해서는 전통적인 웹 형태인 MPA(Multiple Page Application) 형태를 띄어야 한다. MPA는 페이지를 요청할 때마다 새로운 페이지를 요청한다. 말 그대로 여러 페이지로 구성된 어플리케이션이다. 페이지가 전환될 때 마다 서버에 요청해서 해당 페이지에 맞는 완성된 html 파일을 받는다. 서버에서 완성된 html 파일을 보내므로, 각 URI마다 html파일이 존재한다. 그래서 Open Graph API를 사용해서 페이지 소개 글 및 preview 이미지를 집어넣을 수 있고, robot.txt가 인식할 수 있는 형태가 된다.</p>
+<p>새로운 페이지를 요청하면서 모든 템플릿(html 파일)은 서버 연산을 통해 렌더링하고 완성된 페이지 형태를 클라이언트는 받게 된다. 이를 SSR (Server Side Rendering) 이라고 한다.</p>
+<h2>아이디어</h2>
+<ul>
+<li>SEO가 필요한 페이지를 따로 추출하여 html를 만들고 내부의 javascript에서 spa 웹으로 redirect 시키는 방법</li>
+</ul>
+    </div>
+
+    <!-- 빌드된 JS 번들 로드 -->
+    <script type="module" src="/assets/assets/index-BBIx56w-.js"></script>
+  </body>
+</html>
