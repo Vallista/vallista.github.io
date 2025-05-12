@@ -2,306 +2,310 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2017년-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2017-year-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2018년-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2018-year-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2019년-7월-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2019-year-7-month-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2019년-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2019-year-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2020년-상반기-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2020-year-first-half-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2021년-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2021-year-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-8월-15일/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-8-month-15-day/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-8월-16일/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-8-month-16-day/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-8월-17일/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-8-month-17-day/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-8월-18일/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-8-month-18-day/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-8월-22일/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-8-month-22-day/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-8월-24일/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-8-month-24-day/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2022년-상반기-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2022-year-first-half-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/2024년-회고/</loc>
+    <loc>https://vallista.kr/contents/articles/2024-year-retrospective/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/BNF-Backus-Naur-Form/</loc>
+    <loc>https://vallista.kr/contents/articles/E2E-(end-to-end)-Test/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/COPY와-Command를-이용한-Excel-Export/</loc>
+    <loc>https://vallista.kr/contents/articles/and-using/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/CORS-Cross-Origin-Resource-Sharing/</loc>
+    <loc>https://vallista.kr/contents/articles/at-apply/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/CSSOM-CSS-Object-Model/</loc>
+    <loc>https://vallista.kr/contents/articles/at-beautifully-developing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Call-By-Value-Call-By-Reference/</loc>
+    <loc>https://vallista.kr/contents/articles/baemin-hackathon-my-1-meeting-wooathon-2019-review/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Component-분리의-미학/</loc>
+    <loc>https://vallista.kr/contents/articles/blog-3/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/DOM-Document-Object-Model/</loc>
+    <loc>https://vallista.kr/contents/articles/bnf-backus-naur-form/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Docker-In-Docker-DIND-설정하기/</loc>
+    <loc>https://vallista.kr/contents/articles/browser-rendering-process/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/E2E-end-to-end-Test/</loc>
+    <loc>https://vallista.kr/contents/articles/call-by-value-call-by-reference/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/HTTP-프로토콜에서-HTTPS-URI-가져오기/</loc>
+    <loc>https://vallista.kr/contents/articles/closure/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Jenkins/</loc>
+    <loc>https://vallista.kr/contents/articles/complicated-system-response/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Jest-enzyme를-활용한-테스팅-환경/</loc>
+    <loc>https://vallista.kr/contents/articles/concurrency-parallelism/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/LDAP-(Lightweight-Directory-Access-Protocol)/</loc>
+    <loc>https://vallista.kr/contents/articles/configuration/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Next에서-Alias-적용하기/</loc>
+    <loc>https://vallista.kr/contents/articles/cors-cross-origin-resource-sharing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/RESTFUL-API/</loc>
+    <loc>https://vallista.kr/contents/articles/cssom-css-object-model/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Redux/</loc>
+    <loc>https://vallista.kr/contents/articles/design-pattern-factory-pattern/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/SEO-Search-Engine-Optimization/</loc>
+    <loc>https://vallista.kr/contents/articles/design-pattern-memento-pattern/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/SPA-Single-Page-Application/</loc>
+    <loc>https://vallista.kr/contents/articles/design-pattern-observer-pattern/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/SSR-Server-Side-Rendering/</loc>
+    <loc>https://vallista.kr/contents/articles/dom-document-object-model/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/TypeScript-디자인-패턴-메멘토-패턴/</loc>
+    <loc>https://vallista.kr/contents/articles/efficient-component-structure-making/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/TypeScript-디자인-패턴-옵저버-패턴/</loc>
+    <loc>https://vallista.kr/contents/articles/event-bubbling-capturing-delegation/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/TypeScript-디자인-패턴-팩토리-패턴/</loc>
+    <loc>https://vallista.kr/contents/articles/event-loop/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/TypeScript에서-Redux-Redux-Saga-아름답게-개발하기/</loc>
+    <loc>https://vallista.kr/contents/articles/fantasy-and-reality-the-between-service/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/TypeScript의-interface와-type-alias/</loc>
+    <loc>https://vallista.kr/contents/articles/generator/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Virtual-DOM/</loc>
+    <loc>https://vallista.kr/contents/articles/geultto-4-path-while-starting/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Vue-Event-Bus/</loc>
+    <loc>https://vallista.kr/contents/articles/geultto-6-path-starting/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/Vue-LifeCycle/</loc>
+    <loc>https://vallista.kr/contents/articles/hoisting-execution-context/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/XSS-Cross-Site-Scripting/</loc>
+    <loc>https://vallista.kr/contents/articles/identical-source-policy/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/git-flow;-환상과-현실-그-사이에-서비스/</loc>
+    <loc>https://vallista.kr/contents/articles/in-backend-received-data-how-if-raw-to-client-to-apply-count-possible/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/객체지향-프로그래밍/</loc>
+    <loc>https://vallista.kr/contents/articles/in-company-workshop-effective-typescript-object-oriented-facts-and-misunderstanding-finishing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/글또-4기를-시작하면서/</loc>
+    <loc>https://vallista.kr/contents/articles/in-interview-meaningful-questions-and-exists/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/글또-6기를-시작하며/</loc>
+    <loc>https://vallista.kr/contents/articles/in-protocol-import/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/놓치기-쉬운-HTML-CSS-지식-몰아보기/</loc>
+    <loc>https://vallista.kr/contents/articles/jenkins/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/덕-타이핑과-구조적-타이핑/</loc>
+    <loc>https://vallista.kr/contents/articles/job-change-while-preparing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/동시성과-병렬성-Concurrency-Parallelism/</loc>
+    <loc>https://vallista.kr/contents/articles/ldap-lightweight-directory-access-protocol/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/동일-출처-정책-Same-Origin-Policy/</loc>
+    <loc>https://vallista.kr/contents/articles/missing-easy-knowledge-binge/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/렌더-트리-생성/</loc>
+    <loc>https://vallista.kr/contents/articles/mobile-webview-exploring-developer-for-guide-in/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/리듀스-Reduce/</loc>
+    <loc>https://vallista.kr/contents/articles/mobile-webview-exploring-developer-for-guide-part1/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/면접에서-의미있는-질문을-하고-있나요/</loc>
+    <loc>https://vallista.kr/contents/articles/object-oriented-programming/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/모바일-웹뷰를-탐험하는-개발자를-위한-안내서-상/</loc>
+    <loc>https://vallista.kr/contents/articles/of-and/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/모바일-웹뷰를-탐험하는-개발자를-위한-안내서-중/</loc>
+    <loc>https://vallista.kr/contents/articles/of-test-type/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/반응형-웹-적응형-웹/</loc>
+    <loc>https://vallista.kr/contents/articles/parsing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/백앤드에서-받은-데이터를-어떻게-하면-가공없이-클라이언트에-적용할-수-있을까/</loc>
+    <loc>https://vallista.kr/contents/articles/receipt-and/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/브라우저-렌더링-과정/</loc>
+    <loc>https://vallista.kr/contents/articles/reduce/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/블로그-v3-개편/</loc>
+    <loc>https://vallista.kr/contents/articles/redux/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/사내-워크숍;-이펙티브-타입스크립트,-객체지향의-사실과-오해를-끝내며/</loc>
+    <loc>https://vallista.kr/contents/articles/render-tree-generation/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/영수증,-React-그리고-emotion/</loc>
+    <loc>https://vallista.kr/contents/articles/responsive-web-adaptive-web/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/우아한형제들-헤커톤-제-1회-우아톤-2019-후기/</loc>
+    <loc>https://vallista.kr/contents/articles/restful-api/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/웹-개발자의-지옥-이메일-폼-개발하기/</loc>
+    <loc>https://vallista.kr/contents/articles/schedule-tight-with-project-broken-glass-window/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/이벤트-루프-Event-Loop/</loc>
+    <loc>https://vallista.kr/contents/articles/seo-search-engine-optimization/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/이벤트-버블링-캡쳐링-위임/</loc>
+    <loc>https://vallista.kr/contents/articles/separation-aesthetics/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/이직을-준비하면서/</loc>
+    <loc>https://vallista.kr/contents/articles/spa-single-page-application/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/일정이-촉박한-프로젝트와-깨진-유리창/</loc>
+    <loc>https://vallista.kr/contents/articles/ssr-server-side-rendering/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/제너레이터-Generator/</loc>
+    <loc>https://vallista.kr/contents/articles/team-reading-development-culture-about-thoughts/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/첩첩산중,-POS-시스템을-대응하자/</loc>
+    <loc>https://vallista.kr/contents/articles/test-code-getting-started/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/클로저-Closure/</loc>
+    <loc>https://vallista.kr/contents/articles/thanks-and-typing-structural-typing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/테스트-코드-시작하기/</loc>
+    <loc>https://vallista.kr/contents/articles/utilizing-testing-environment/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/테스트의-종류/</loc>
+    <loc>https://vallista.kr/contents/articles/virtual-dom/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/팀-리딩과-개발-문화에-대한-단상/</loc>
+    <loc>https://vallista.kr/contents/articles/vue-event-bus/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/파싱-Parsing/</loc>
+    <loc>https://vallista.kr/contents/articles/vue-lifecycle/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/호이스팅-실행-컨텍스트/</loc>
+    <loc>https://vallista.kr/contents/articles/web-developer-hell-email-form-developing/</loc>
   </url>
 
   <url>
-    <loc>https://vallista.kr/contents/articles/효율적인-Storybook-컴포넌트-구조-만들기/</loc>
+    <loc>https://vallista.kr/contents/articles/xss-cross-site-scripting/</loc>
+  </url>
+
+  <url>
+    <loc>https://vallista.kr/contents/index/</loc>
   </url>
 </urlset>
