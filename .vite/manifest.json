@@ -1,16 +1,16 @@
 {
   "../../packages/design-system/dist/ToastRoot-yj9IT2Nv.js": {
-    "file": "assets/ToastRoot-yj9IT2Nv-Ct03NGmT.js",
+    "file": "assets/ToastRoot-yj9IT2Nv-BSC-8mDr.js",
     "name": "ToastRoot-yj9IT2Nv",
     "src": "../../packages/design-system/dist/ToastRoot-yj9IT2Nv.js",
     "isDynamicEntry": true,
     "imports": [
-      "_design-system-CsHlV3nF.js",
+      "_design-system-Dmy7GNL1.js",
       "_react-vendor-gH-7aFTg.js"
     ]
   },
-  "_design-system-CsHlV3nF.js": {
-    "file": "assets/design-system-CsHlV3nF.js",
+  "_design-system-Dmy7GNL1.js": {
+    "file": "assets/design-system-Dmy7GNL1.js",
     "name": "design-system",
     "imports": [
       "_react-vendor-gH-7aFTg.js"
@@ -19,41 +19,41 @@
       "../../packages/design-system/dist/ToastRoot-yj9IT2Nv.js"
     ]
   },
-  "_query-NCmVlnU7.js": {
-    "file": "assets/query-NCmVlnU7.js",
+  "_query-CdHuuE8A.js": {
+    "file": "assets/query-CdHuuE8A.js",
     "name": "query",
     "imports": [
-      "_design-system-CsHlV3nF.js"
+      "_design-system-Dmy7GNL1.js"
     ]
   },
   "_react-vendor-gH-7aFTg.js": {
     "file": "assets/react-vendor-gH-7aFTg.js",
     "name": "react-vendor"
   },
-  "_router-vd4EWxNH.js": {
-    "file": "assets/router-vd4EWxNH.js",
+  "_router-BmWwvi5p.js": {
+    "file": "assets/router-BmWwvi5p.js",
     "name": "router",
     "imports": [
-      "_design-system-CsHlV3nF.js"
+      "_design-system-Dmy7GNL1.js"
     ]
   },
-  "_utils-BFkQvvKN.js": {
-    "file": "assets/utils-BFkQvvKN.js",
+  "_utils-CLt7pi9N.js": {
+    "file": "assets/utils-CLt7pi9N.js",
     "name": "utils",
     "imports": [
-      "_design-system-CsHlV3nF.js"
+      "_design-system-Dmy7GNL1.js"
     ]
   },
   "index.html": {
-    "file": "assets/index-Df64sDOI.js",
+    "file": "assets/index-tjwrlo6l.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "imports": [
-      "_query-NCmVlnU7.js",
-      "_design-system-CsHlV3nF.js",
+      "_query-CdHuuE8A.js",
+      "_design-system-Dmy7GNL1.js",
       "_react-vendor-gH-7aFTg.js",
-      "_router-vd4EWxNH.js"
+      "_router-BmWwvi5p.js"
     ],
     "css": [
       "assets/index-VbXnWRDn.css"
