@@ -1,16 +1,16 @@
 {
   "../../packages/design-system/dist/ToastRoot-yj9IT2Nv.js": {
-    "file": "assets/ToastRoot-yj9IT2Nv-VstYsifE.js",
+    "file": "assets/ToastRoot-yj9IT2Nv-Be97DrLP.js",
     "name": "ToastRoot-yj9IT2Nv",
     "src": "../../packages/design-system/dist/ToastRoot-yj9IT2Nv.js",
     "isDynamicEntry": true,
     "imports": [
-      "_design-system-DMxmF8kO.js",
+      "_design-system-CQ5a6HkQ.js",
       "_react-vendor-gH-7aFTg.js"
     ]
   },
-  "_design-system-DMxmF8kO.js": {
-    "file": "assets/design-system-DMxmF8kO.js",
+  "_design-system-CQ5a6HkQ.js": {
+    "file": "assets/design-system-CQ5a6HkQ.js",
     "name": "design-system",
     "imports": [
       "_react-vendor-gH-7aFTg.js"
@@ -19,44 +19,44 @@
       "../../packages/design-system/dist/ToastRoot-yj9IT2Nv.js"
     ]
   },
-  "_query-DTBiOWY3.js": {
-    "file": "assets/query-DTBiOWY3.js",
+  "_query-DgeB-bFq.js": {
+    "file": "assets/query-DgeB-bFq.js",
     "name": "query",
     "imports": [
-      "_design-system-DMxmF8kO.js"
+      "_design-system-CQ5a6HkQ.js"
     ]
   },
   "_react-vendor-gH-7aFTg.js": {
     "file": "assets/react-vendor-gH-7aFTg.js",
     "name": "react-vendor"
   },
-  "_router-JG92-Rx7.js": {
-    "file": "assets/router-JG92-Rx7.js",
+  "_router-DsrW0Ozy.js": {
+    "file": "assets/router-DsrW0Ozy.js",
     "name": "router",
     "imports": [
-      "_design-system-DMxmF8kO.js"
+      "_design-system-CQ5a6HkQ.js"
     ]
   },
-  "_utils-CAVDVWLz.js": {
-    "file": "assets/utils-CAVDVWLz.js",
+  "_utils-C750zC5_.js": {
+    "file": "assets/utils-C750zC5_.js",
     "name": "utils",
     "imports": [
-      "_design-system-DMxmF8kO.js"
+      "_design-system-CQ5a6HkQ.js"
     ]
   },
   "index.html": {
-    "file": "assets/index-CmicseNI.js",
+    "file": "assets/index-39aKBfmS.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "imports": [
-      "_query-DTBiOWY3.js",
-      "_design-system-DMxmF8kO.js",
+      "_query-DgeB-bFq.js",
+      "_design-system-CQ5a6HkQ.js",
       "_react-vendor-gH-7aFTg.js",
-      "_router-JG92-Rx7.js"
+      "_router-DsrW0Ozy.js"
     ],
     "css": [
-      "assets/index-FycS-t_B.css"
+      "assets/index-C8zb6Jsc.css"
     ]
   }
 }
