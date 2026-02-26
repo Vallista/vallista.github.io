@@ -1,0 +1,2 @@
+# /contents/articles/xxx → /articles/xxx (색인 URL 통일)
+/contents/articles/*  /articles/:splat  301

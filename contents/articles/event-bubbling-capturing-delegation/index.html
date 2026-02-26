@@ -1,56 +1,23 @@
-<!doctype html>
-<html lang="ko-KR">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-    <link rel="alternate icon" href="/favicon/favicon.ico" />
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 버블링, 캡쳐링, 위임</title>
+    <meta name="description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. javascript {numberLines} functionA, functionB, functionC를 이벤트 등...">
+    <meta property="og:title" content="이벤트 버블링, 캡쳐링, 위임">
+    <meta property="og:description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. javascript {numberLines} functionA, functionB, functionC를 이벤트 등...">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://vallista.kr/articles/event-bubbling-capturing-delegation">
     
-    <!-- iOS -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Vallista Blog" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="이벤트 버블링, 캡쳐링, 위임">
+    <meta name="twitter:description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. javascript {numberLines} functionA, functionB, functionC를 이벤트 등...">
     
-    <!-- Android -->
-    <link rel="manifest" href="/favicon/manifest.json" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. javascript {numberLines} functionA, functionB, functionC를 이벤트 등..." />
-    <meta name="author" content="Vallista" />
-    <meta name="theme-color" content="#ffffff" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="이벤트 버블링, 캡쳐링, 위임 - Vallista Blog" />
-    <meta property="og:description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. javascript {numberLines} functionA, functionB, functionC를 이벤트 등..." />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://vallista.kr/articles/event-bubbling-capturing-delegation" />
-    <meta property="og:image" content="/images/default-og.png" />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="이벤트 버블링, 캡쳐링, 위임 - Vallista Blog" />
-    <meta name="twitter:description" content="HTML에서 onClick와 같은 이벤트를 등록하여 버튼을 클릭하면 해당 이벤트가 나오도록 할 수 있다. 단, 아래와 같은 상황에서는 이벤트가 전파 된다. javascript {numberLines} functionA, functionB, functionC를 이벤트 등..." />
-    <meta name="twitter:image" content="/images/default-og.png" />
-
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    
-    
-    <title>이벤트 버블링, 캡쳐링, 위임 - Vallista Blog</title>
-      
-      
-    <script type="module" crossorigin src="/assets/index-Cr5We71m.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/react-vendor-gH-7aFTg.js">
-    <link rel="modulepreload" crossorigin href="/assets/design-system-KZivwqHn.js">
-    <link rel="modulepreload" crossorigin href="/assets/query-69QtuPlk.js">
-    <link rel="modulepreload" crossorigin href="/assets/router-D2poMqKs.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-COFsO4Nz.css">
-      <meta property="article:published_time" content="2019-05-11T10:58:12.000Z" />
+    <link rel="canonical" href="https://vallista.kr/articles/event-bubbling-capturing-delegation">
 </head>
-  <body>
+<body>
     <div id="root"></div>
-  </body>
+    <script type="module" src="/src/main.tsx"></script>
+</body>
 </html>
