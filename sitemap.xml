@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://vallista.kr/</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://vallista.kr/about</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://vallista.kr/resume</loc>
-    <lastmod>2026-02-26</lastmod>
+    <lastmod>2026-03-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -259,176 +259,8 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://vallista.kr/articles/configuration</loc>
-    <lastmod>2019-05-30T16:33:52.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/jenkins</loc>
-    <lastmod>2019-05-28T11:11:30.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/at-apply</loc>
-    <lastmod>2019-05-15T11:17:29.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/redux</loc>
-    <lastmod>2019-05-15T11:16:29.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/utilizing-testing-environment</loc>
-    <lastmod>2019-05-13T11:08:23.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/in-protocol-import</loc>
-    <lastmod>2019-05-13T11:05:53.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/cors-cross-origin-resource-sharing</loc>
-    <lastmod>2019-05-12T11:04:45.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/xss-cross-site-scripting</loc>
-    <lastmod>2019-05-12T11:03:57.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/identical-source-policy</loc>
-    <lastmod>2019-05-12T11:03:24.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/reduce</loc>
-    <lastmod>2019-05-12T11:01:13.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/event-bubbling-capturing-delegation</loc>
-    <lastmod>2019-05-11T10:58:12.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/closure</loc>
-    <lastmod>2019-05-11T10:55:07.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/call-by-value-call-by-reference</loc>
-    <lastmod>2019-05-10T19:14:14.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/seo-search-engine-optimization</loc>
-    <lastmod>2019-05-10T19:07:56.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/hoisting-execution-context</loc>
-    <lastmod>2019-05-10T10:53:13.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/event-loop</loc>
-    <lastmod>2019-05-09T19:14:14.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/render-tree-generation</loc>
-    <lastmod>2019-05-08T19:13:17.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/cssom-css-object-model</loc>
-    <lastmod>2019-05-07T19:12:24.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/dom-document-object-model</loc>
-    <lastmod>2019-05-07T19:11:27.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/browser-rendering-process</loc>
-    <lastmod>2019-05-06T19:08:52.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/ssr-server-side-rendering</loc>
-    <lastmod>2019-05-05T19:07:15.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/spa-single-page-application</loc>
-    <lastmod>2019-05-05T19:06:21.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/virtual-dom</loc>
-    <lastmod>2019-05-04T19:04:34.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/responsive-web-adaptive-web</loc>
-    <lastmod>2019-05-03T19:03:41.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/parsing</loc>
-    <lastmod>2019-05-03T19:02:32.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/bnf-backus-naur-form</loc>
-    <lastmod>2019-05-02T19:00:34.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/restful-api</loc>
-    <lastmod>2019-05-02T18:46:16.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://vallista.kr/articles/object-oriented-programming</loc>
     <lastmod>2019-05-01T18:46:16.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/in-backend-received-data-how-if-raw-to-client-to-apply-count-possible</loc>
-    <lastmod>2019-02-25T17:57:57.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -445,32 +277,8 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://vallista.kr/articles/vue-lifecycle</loc>
-    <lastmod>2018-01-15T18:40:06.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/vue-event-bus</loc>
-    <lastmod>2018-01-14T18:38:29.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://vallista.kr/articles/2017-year-retrospective</loc>
     <lastmod>2017-12-25T18:00:55.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/of-test-type</loc>
-    <lastmod>2017-07-01T18:42:43.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://vallista.kr/articles/E2E-(end-to-end)-Test</loc>
-    <lastmod>2017-07-01T18:41:35.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
