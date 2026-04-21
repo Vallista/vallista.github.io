@@ -1,0 +1,633 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>영수증, React 그리고 emotion · Vallista Blog</title><meta name="description" content><meta property="og:title" content="영수증, React 그리고 emotion · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.BR42T3NH.css">
+<link rel="stylesheet" href="/_astro/style.bcqNdLA3.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 프론트엔드 </span> <span class="_1df7oe00 _1df7oe02"> React로 영수증 개발하기 </span> </div> <h1 class="o06wxs3">영수증, React 그리고 emotion</h1>  <div class="o06wxs5"> <time datetime="2021-11-21T11:57:00.000Z">2021.11.21</time> <span>·</span> <span>8 min read</span> <span>·</span> <span>3,632 words</span> </div> </header> <div class="y6w2c71"> <span class="y6w2c72" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"> <path d="M2 4.5a2 2 0 0 1 2-2h2M8 2.5h2a2 2 0 0 1 2 2M2 9.5a2 2 0 0 0 2 2h2M8 11.5h2a2 2 0 0 0 2-2"></path> <path d="M5 7h4"></path> </svg> </span> <span>이 글은 시리즈의 일부입니다 · <a href="/series/React로-영수증-개발하기" style="color: inherit; border-bottom: 1px solid currentColor;">React로 영수증 개발하기</a></span> </div> <details class="y6w2c70" open> <summary class="y6w2c73"> <div class="y6w2c74"> <span class="y6w2c75">Series</span> <span class="y6w2c76">React로 영수증 개발하기</span> </div> <div class="y6w2c77"> <span class="y6w2c78">1 / 2</span> <svg class="y6w2c79 y6w2c7a" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"> <path d="M3 5l4 4 4-4"></path> </svg> </div> </summary> <ol class="y6w2c7b"> <li> <a href="/articles/영수증-React-그리고-emotion" class="y6w2c7c y6w2c7d" aria-current="page"> <span class="y6w2c7e">#01</span> <span class="y6w2c7f">영수증, React 그리고 emotion</span> <time class="y6w2c7g" datetime="2021-11-21T11:57:00.000Z">2021.11.21</time> </a> </li><li> <a href="/articles/첩첩산중-POS-시스템을-대응하자" class="y6w2c7c"> <span class="y6w2c7e">#02</span> <span class="y6w2c7f">첩첩산중, POS 시스템을 대응하자</span> <time class="y6w2c7g" datetime="2021-12-19T13:25:37.000Z">2021.12.19</time> </a> </li> </ol> </details> <script type="module">function o(e){const n=e.querySelector("svg");n&&n.classList.toggle("is-open",e.open)}function t(){document.querySelectorAll("details").forEach(e=>{e.dataset.chevronBound||(e.dataset.chevronBound="1",e.addEventListener("toggle",()=>o(e)))})}t();document.addEventListener("vallista:page-load",t);document.addEventListener("astro:page-load",t);</script><article class="o06wxs6">  <p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/1.jpeg" alt="이미지1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지1</figcaption></figure><p></p>
+<p>4년 넘도록 커머스 도메인의 웹 프론트엔드를 개발해오면서 사용자(대고객)와 맞닿는 영역 그리고 사용자에겐 보이지 않는 영역 두 가지를 개발해왔다. 오늘은 그 중에서, “사용자에겐 보이지 않는 영역” 쪽의 영수증 이야기를 해볼까 한다.</p>
+<h2 id="영수증">영수증<a aria-hidden="true" tabindex="-1" href="#영수증"><span class="icon icon-link"></span></a></h2>
+<p>영수증을 위키백과에서 찾아보자.</p>
+<blockquote>
+<p>채권자가 채무자에게 발부하는 채무의 변제를 받았다는 것을 증명하는 내용의 증서를 말한다. 변제자가 변제를 하더라도 변제를 한 것을 증명하지 않는 한 채권이 아직 존재하는 것으로 추정받게 된다. 또 변제한 것…</p>
+</blockquote>
+<p>너무 어려운 말이 써져있다. 쉽게 이야기 하면 내가 어떤 행위(구매, 환불, 이행 등)을 했다는 걸 증명하는 증표이다. 커머스에서는 이 영수증이 굉장히 중요한 영역을 담당하는데, O2O(Online to Offline) 서비스 인 만큼 온라인에서 자신의 가상 자산(은행에 입금되어있는 전산상의 자신의 돈)으로 해당 물품을 구매해서, 실제 받아야 하기 때문이다. 이 과정에서, 실제 못받았거나 받은 물품이 잘못된 경우 해당 영수증을 통해 상품에 대한 환불, 리콜 등의 피드백을 받을 수 있다.</p>
+<p>그렇듯, 영수증은 온라인 상거래에서 굉장히 중요한 위치를 차지한다. 사용자는 “쿠팡에서 구매했으니 내일 오전에 오겠지” 혹은 “배민으로 주문했으니 1시간 내로 음식을 받을 수 있겠지”의 기저에는 영수증으로 하여금, 서로간의 약속이 되어있기 때문이다. (그 외에도 전산상의 DB 데이터들이 있겠지만)</p>
+<h3 id="다양한-종류의-영수증">다양한 종류의 영수증<a aria-hidden="true" tabindex="-1" href="#다양한-종류의-영수증"><span class="icon icon-link"></span></a></h3>
+<p>영수증은 종류가 다양하다. 아니, 다양해야한다. 그렇다면 왜 다양해야할까? 예시를 한 가지 들어보자.</p>
+<ol>
+<li>배달의민족을 키고, B마트에 들어가 코카콜라 4개를 장바구니에 담았다.</li>
+<li>장바구니에 담은 코카콜라 4개를 현대카드로 결제한다.</li>
+<li>결제가 완료되고, 물류센터에 주문정보가 전달된다.</li>
+<li>물류센터에서 주문정보를 확인하고 라이더에게 전달하도록 포장한다.</li>
+<li>라이더는 배차된 주문건을 센터에서 픽업하고 고객에게 전달한다.</li>
+<li>고객에게 전달 후, 라이더는 정산받고 고객은 자신이 주문한 물품을 배송받는다.</li>
+</ol>
+<p>B마트의 앱으로 고객이 주문해서 전달받기까지의 간략한 플로우를 작성해보았다. 이 플로우 내에서 필요한 영수증은 다음과 같다.</p>
+<ul>
+<li>신용카드/현금 영수증: 고객은 자신이 어떤 뭎룸을 구매했는지 영수증을 볼 수 있어야 한다.</li>
+<li>이메일고지: 어떤 물품을 구매했는지 영수증을 볼 수 있어야 하지만, 법적으로 등록한 연락처(이메일)에 고지를 해야한다.</li>
+<li>라이더 영수증: 라이더가 고객의 정보를 확인하여 해당 위치로 배달할 수 있도록 제공하는 라이더용 영수증.</li>
+</ul>
+<p>그 외에도 신용카드 매출 전표 등 다양한 결제 데이터를 보여줘야하지만, 여기서 중요한 내용은 아니므로 스킵한다.</p>
+<p>영수증이 다양한 이유는</p>
+<ul>
+<li>첫 째로 사용자의 구매수단이 천차만별이기 때문이고, 해당 결제수단으로 인해 결제가 거쳐지는 업체, 국세청에 제공해야하는 데이터들이 달라지기 때문이다.</li>
+<li>두 번째는 법적으로 고지를 해야하기 때문인데, 각 나라마다 다르겠지만, 기본적으로 한국은 신용카드/현금 영수증, 이메일 고지등은 기본적으로 제공해주어야 한다.</li>
+<li>세 번째는 전달받는 주체가 다르기 때문이다. 회사의 여러 팀, 혹은 도메인 입장에서 고객의 대상이 다르다. 예를들어 센터에서는 라이더가 고객일 것이고, 라이더에게는 사용자가 고객일 것이다. 그런 것처럼 주체가 다르므로 영수증의 종류는 달라질 수 밖에 없다.</li>
+</ul>
+<h3 id="개발-요건으로-추려보기">개발 요건으로 추려보기<a aria-hidden="true" tabindex="-1" href="#개발-요건으로-추려보기"><span class="icon icon-link"></span></a></h3>
+<p>앞서 영수증은 다양한 종류가 존재한다는 사실을 깨닫게 되었다. 그렇다면 이를 개발상에서는 어떻게 재사용성을 고민하면서 개발을 할 수 있을까? 먼저, 다양한 영수증에서 공통적인 영역을 추출해봐야한다.</p>
+<ol>
+<li>출력이 되어야 한다</li>
+<li>컴포넌트는 동일하다 (테이블, 텍스트, 하이라이트 등)</li>
+<li>HTML 형태는 동일하다. (영수증 기기 표준 규격이 존재)</li>
+</ol>
+<p>3개의 동일한 요건이 있다.</p>
+<h4 id="출력이-되어야-한다">출력이 되어야 한다<a aria-hidden="true" tabindex="-1" href="#출력이-되어야-한다"><span class="icon icon-link"></span></a></h4>
+<p>영수증의 가장 큰 목표는 사용자에게 전달이 되어야 한다는 목적이 있다. 그렇기 때문에 매장 혹은 센터에서 출력을 통해 사용자에게 전달할 수 있도록 해야한다.</p>
+<p>그러므로, 공통적으로 출력을 할 수 있도록 제공해야한다.</p>
+<h4 id="컴포넌트는-동일하다">컴포넌트는 동일하다<a aria-hidden="true" tabindex="-1" href="#컴포넌트는-동일하다"><span class="icon icon-link"></span></a></h4>
+<p>영수증 레이아웃은 도메인에 따라 대부분 비슷하다. 그렇기 때문에 컴포넌트로 인해서 모든 영수증 레이아웃이 동일하게 관리되어도 된다.</p>
+<h4 id="html-형태는-동일하다">HTML 형태는 동일하다<a aria-hidden="true" tabindex="-1" href="#html-형태는-동일하다"><span class="icon icon-link"></span></a></h4>
+<p>영수증 기기는 표준 규격이 존재하기 때문에 사이즈 (400*min600)으로 구현하면 대다수의 경우에 잘 출력이 된다.</p>
+<h3 id="실제-구현하기">실제 구현하기<a aria-hidden="true" tabindex="-1" href="#실제-구현하기"><span class="icon icon-link"></span></a></h3>
+<p>프로세스를 구축해보면 다음과 같다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/2.jpg" alt="이미지2" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지2</figcaption></figure><p></p>
+<ol>
+<li>사전에 영수증 컴포넌트에서, iframe을 생성해둔다.</li>
+<li>사용처에서 프린트를 요청하면 해당 영수증의 id에 맞는 iframe을 탐색한다.</li>
+<li>탐색한 iframe 내에 전달받은 데이터를 기반으로 레이아웃을 제작한다</li>
+<li>완성된 레이아웃의 iframe을 document content로 프린트 윈도우를 생성한다.</li>
+<li>완성된 window에서 onload되었을 때 window.print()를 호출한다.</li>
+<li>사용자는 프린트 출력으로 용지를 받고, iframe 내 데이터를 초기화하여 마크업을 제거한다.</li>
+</ol>
+<p>영수증을 출력하기위해 사용자는 위 과정을 몰라도 쉽게 가져와 쓸 수 있도록 해야한다. 그렇기 때문에 사진에서 border로 바운더리를 형성해두었다. 바운더리가 형성된 내부의 로직 및 프로세스는 일정하게 진행되며, 유저에게 프린트 요청을 받고, 프린트 출력을 진행해준다.
+이러한 프로세스를 구축해두면 추후 로직이 수정되야 할 때 혹은, 브라우저 지원으로 인해서 다양한 대응로직이 들어가야할 때 등 관심사의 분리를 진행할 수 있다.</p>
+<blockquote>
+<p><strong>iframe을 왜 사용하는가?</strong></p>
+<p>window.print() 기능은 현재 페이지의 보이는 모든 요소들(graphics layer로 출력되어야 할 요소를 추린 것들)을 프린트한다.
+그렇기 때문에 보통 브라우저에서 영수증 개발을 진행할 때는, iframe을 기반으로 새로운 html 요소를 만들어 그 안에 데이터를 렌더링하고 body의 이벤트로 onload 이벤트를 걸어, 모두 로드가 되었을 때 print() 를 호출한다.</p>
+</blockquote>
+<h3 id="영수증-컨텍스트-만들기">영수증 컨텍스트 만들기<a aria-hidden="true" tabindex="-1" href="#영수증-컨텍스트-만들기"><span class="icon icon-link"></span></a></h3>
+<p>영수증을 출력하기위해 컨텍스트를 분리해야한다. 컴포넌트 구조는 다음과 같다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/3.jpg" alt="이미지3" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지3</figcaption></figure><p></p>
+<ol>
+<li>영수증의 컨텍스트내에서는 전역으로 상태를 관리하며, 컨텍스트 내에서 커스텀훅이 reducer 역할을 맡고, 상태 관리에서 로직을 갱신한다.</li>
+<li>커스텀 훅에서는 현재 영수증의 발급 상태, 영수증 발급을 요청할 수 있는 함수가 존재한다. 필요한 각 영수증 도메인 별로 훅을 가져와서, 데이터를 매핑하여 사용하도록 한다.</li>
+<li>다양한 영수증을 공통적으로 포괄할 수 있는 스타일을 제공하여, 각 영수증에서 스타일을 가져다 사용한다.</li>
+</ol>
+<p>대략적인 컴포넌트 구조는 잡았다. 그러면 기술 스택을 선정해보자.</p>
+<ol>
+<li>React: 애초에 구동되는 프로젝트가 React다.</li>
+<li>context api: 전역 상태를 담기위한 방법. 상태관리 라이브러리를 사용하지 않는 이유는, 굳이 복잡한 상태(렌더링 성능에 해당하는)가 없고 플래그만 존재하기 때문이다. redux등 상태관리 라이브러리를 추가해봐야 디펜던시만 늘어나고, 상태관리의 장점이 없기 때문에 컨텍스트를 context api로 감싸서 사용할 것이다.</li>
+<li>emotion.js: 프로젝트 전역적으로 styled-component 스타일의 css in js를 사용한다. 그러므로 영수증도 emotion으로 css 스타일링 할 것이다.</li>
+</ol>
+<p>본격적으로 코딩을 해보자. 먼저, 폴더 스트럭쳐는 아래와 같다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/4.png" alt="이미지4" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지4</figcaption></figure><p></p>
+<ol>
+<li>index.tsx: 외부에서 노출될 모듈을 한번에 export 해서 내보낸다. 일종의 캡슐화를 위한 레이어라고 보면 된다.</li>
+<li>Receipt.context.ts: context api 로직을 들고 있다.</li>
+<li>Receipt.style.ts: 모든 영수증 컴포넌트에서 바라봐야하는 스타일 로직들 모음</li>
+<li>Receipt.tsx: 영수증 컨텍스트를 Provider화 하는 컴포넌트. 사용할 프로젝트의 페이지 root에 Provider를 설정한다. -> 이렇게 만든 이유는 렌더링의 영향을 적게 받을 수 있도록 컨텍스트를 사용자가 지정할 수 있기 위함이다.</li>
+<li>useReceipt.tsx: 외부에서 기능을 사용하기 위한 커스텀 훅</li>
+<li>useReceiptState.ts: 영수증 컨텍스트 내에서 상태관리를 하기위한 커스텀 훅</li>
+</ol>
+<h4 id="receiptcontextts">Receipt.context.ts<a aria-hidden="true" tabindex="-1" href="#receiptcontextts"><span class="icon icon-link"></span></a></h4>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { createContext } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '_utils/createContext'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { ReceiptState } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './Receipt.type'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#24292E"> [</span><span style="color:#005CC5">context</span><span style="color:#24292E">, </span><span style="color:#005CC5">useContext</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> createContext</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ReceiptState</span><span style="color:#24292E">>()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#005CC5"> ReceiptContext</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> context</span></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#005CC5"> useReceiptContext</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> useContext</span></span></code></pre>
+<ul>
+<li>createContext라는 유틸을 제작하여, context와 useContext를 쉽게 빼내어 중복되는 로직 혹은 에러를 캐치할 수 있도록 한다.</li>
+<li>외부에서 ReceiptContext와 useReceiptContext로 컨텍스트 데이터와 컨텍스트를 참조할 수 있도록 한다.</li>
+</ul>
+<h4 id="receiptstylets">Receipt.style.ts<a aria-hidden="true" tabindex="-1" href="#receiptstylets"><span class="icon icon-link"></span></a></h4>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { css } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '@emotion/react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> styled </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '@emotion/styled'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> Container</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> styled.</span><span style="color:#6F42C1">iframe</span><span style="color:#24292E">&#x3C;{ </span><span style="color:#E36209">test</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span><span style="color:#24292E"> }></span><span style="color:#032F62">`</span></span>
+<span class="line"><span style="color:#032F62">  ${</span><span style="color:#032F62">({ </span><span style="color:#005CC5">theme</span><span style="color:#032F62">, </span><span style="color:#005CC5">test</span><span style="color:#032F62"> }) </span><span style="color:#D73A49">=></span><span style="color:#6F42C1"> css</span><span style="color:#032F62">`</span></span>
+<span class="line"><span style="color:#032F62">    position: absolute;</span></span>
+<span class="line"><span style="color:#032F62">    z-index: ${</span><span style="color:#24292E">theme</span><span style="color:#032F62">.</span><span style="color:#24292E">layers</span><span style="color:#032F62">.</span><span style="color:#005CC5">CONCEAL</span><span style="color:#032F62">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62">    background-color: ${</span><span style="color:#24292E">theme</span><span style="color:#032F62">.</span><span style="color:#24292E">colors</span><span style="color:#032F62">.</span><span style="color:#24292E">white</span><span style="color:#032F62">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62">    ${</span><span style="color:#24292E">test</span></span>
+<span class="line"><span style="color:#D73A49">      ?</span><span style="color:#6F42C1"> css</span><span style="color:#032F62">`</span></span>
+<span class="line"><span style="color:#032F62">          left: 50%;</span></span>
+<span class="line"><span style="color:#032F62">          top: 50%;</span></span>
+<span class="line"><span style="color:#032F62">        `</span></span>
+<span class="line"><span style="color:#D73A49">      :</span><span style="color:#6F42C1"> css</span><span style="color:#032F62">`</span></span>
+<span class="line"><span style="color:#032F62">          left: ${</span><span style="color:#D73A49">-</span><span style="color:#24292E">theme</span><span style="color:#032F62">.</span><span style="color:#24292E">layers</span><span style="color:#032F62">.</span><span style="color:#005CC5">CONCEAL</span><span style="color:#032F62">}px;</span></span>
+<span class="line"><span style="color:#032F62">          top: ${</span><span style="color:#D73A49">-</span><span style="color:#24292E">theme</span><span style="color:#032F62">.</span><span style="color:#24292E">layers</span><span style="color:#032F62">.</span><span style="color:#005CC5">CONCEAL</span><span style="color:#032F62">}px;</span></span>
+<span class="line"><span style="color:#032F62">        `}</span></span>
+<span class="line"><span style="color:#032F62">  `}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62">  width: 400px;</span></span>
+<span class="line"><span style="color:#032F62">  height: 600px;</span></span>
+<span class="line"><span style="color:#032F62">`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ... 그 외 많은 스타일</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#24292E"> { Container, ... }</span></span></code></pre>
+<ul>
+<li>Container는 각 영수증 컴포넌트를 제작할 때 강제적으로 루트에 제공해야한다. 그 이유는, iframe 본체이기 때문이며, 각 iframe 마다 id를 지정하여 id로 하여금 element를 가져와 출력 레이아웃을 가져온다.</li>
+<li>test 기능이 있는데, 레이아웃을 확인해야하므로 test가 true인 경우 화면 중앙에 출력되도록 한다. 그렇지 않으면 미리 지정한 theme.layers.CONCEAL(9999)를 이용하여 z-index 상으로 제일 위로 나오도록 설정하고 화면에서 컬링되도록 밖으로 보낸다</li>
+</ul>
+<h3 id="receipttsx">Receipt.tsx<a aria-hidden="true" tabindex="-1" href="#receipttsx"><span class="icon icon-link"></span></a></h3>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { FC } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { ReceiptContext } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './Receipt.context'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { useReceiptState } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './useReceiptState'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * # ReceiptProvider</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#D73A49">@description</span><span style="color:#6A737D"> Receipt의 상태를 관리하는 훅입니다.</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#6F42C1"> ReceiptProvider</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> FC</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> (</span><span style="color:#E36209">props</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> { </span><span style="color:#005CC5">children</span><span style="color:#24292E">, </span><span style="color:#D73A49">...</span><span style="color:#005CC5">otherProps</span><span style="color:#24292E"> } </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> useReceiptState</span><span style="color:#24292E">(props)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> &#x3C;</span><span style="color:#005CC5">ReceiptContext</span><span style="color:#6F42C1"> state</span><span style="color:#D73A49">=</span><span style="color:#24292E">{otherProps}>{children}&#x3C;/</span><span style="color:#005CC5">ReceiptContext</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<ul>
+<li>전역 상태를 가지고 있으며, useReceiptState에서 상태관리가 진행된다.</li>
+</ul>
+<h3 id="receipttypets">Receipt.type.ts<a aria-hidden="true" tabindex="-1" href="#receipttypets"><span class="icon icon-link"></span></a></h3>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { FC } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> ReceiptType</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> 'USER_ORDER_RECEIPT_ID'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Receipt</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  orderId</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#E36209">  type</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReceiptType</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> ReceiptState</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> Receipt</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * # changeState</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * 속성을 변경합니다.</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#D73A49">@param</span><span style="color:#6F42C1"> {Receipt}</span><span style="color:#24292E"> orderId</span><span style="color:#6F42C1"> {</span><span style="color:#D73A49">@link</span><span style="color:#24292E"> Receipt</span><span style="color:#6F42C1">}</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#6F42C1"> changeState</span><span style="color:#D73A49">:</span><span style="color:#24292E"> (</span><span style="color:#E36209">state</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">Receipt</span><span style="color:#24292E">>) </span><span style="color:#D73A49">=></span><span style="color:#005CC5"> void</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> ReceiptHook</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> Receipt</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6A737D">  /** 현재 print 가능한 상태 유무 */</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#E36209"> availablePrint</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * # requestPrint</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * 프린트를 실행 할 수 있도록 요청합니다.</span></span>
+<span class="line"><span style="color:#6A737D">   * 해당 동작을 진행해야 </span><span style="color:#6F42C1">{</span><span style="color:#D73A49">@link</span><span style="color:#24292E"> executePrint</span><span style="color:#6F42C1">}</span><span style="color:#6A737D"> 를 할 수 있습니다.</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * 1. requestPrint를 진행한 후, orderId를 기반으로 각 Receipt 컴포넌트에서 API를 호출</span></span>
+<span class="line"><span style="color:#6A737D">   * 2. API 호출 후 데이터를 가공하여 마크업 렌더링을 해주세요.</span></span>
+<span class="line"><span style="color:#6A737D">   * 3. 모두 렌더링이 되었다면 executePrint를 실행해주세요.</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#D73A49">@param</span><span style="color:#6F42C1"> {number}</span><span style="color:#24292E"> orderId</span><span style="color:#6A737D"> 주문 아이디</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#D73A49">@param</span><span style="color:#6F42C1"> {ReceiptType}</span><span style="color:#24292E"> type</span><span style="color:#6A737D"> 영수증 타입</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#6F42C1"> requestPrint</span><span style="color:#D73A49">:</span><span style="color:#24292E"> (</span><span style="color:#E36209">orderId</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span><span style="color:#24292E">, </span><span style="color:#E36209">type</span><span style="color:#D73A49">?:</span><span style="color:#6F42C1"> ReceiptType</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#005CC5"> void</span></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * # executePrint</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#D73A49">@description</span><span style="color:#6A737D"> [중요] requestPrint를 꼭 먼저 실행해주세요. 그리고 설명을 참고해주세요.</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * 실제 프린트를 진행하는 함수입니다.</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#6F42C1"> executePrint</span><span style="color:#D73A49">:</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#005CC5"> void</span></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * # ReceiptContainer</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#D73A49">@description</span><span style="color:#6A737D"> [중요] 필수적으로 Receipt으로 사용할 컴포넌트의 최상위 container로 래핑해두어야 합니다.</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#E36209"> ReceiptContainer</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> FC</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ReceiptContainerProps</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> ReceiptContainerProps</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * 테스트 유무</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * true로 설정하면 레이아웃을 바로 볼 수 있도록 화면의 중앙에 출력됩니다.</span></span>
+<span class="line"><span style="color:#6A737D">   *</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#D73A49">@default</span><span style="color:#24292E"> false</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#E36209">  test</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#6A737D">  /** 해당 receipt의 타입을 설정합니다. */</span></span>
+<span class="line"><span style="color:#E36209">  type</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReceiptType</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> type</span><span style="color:#24292E"> { Receipt, ReceiptState, ReceiptHook, ReceiptContainerProps, ReceiptType }</span></span></code></pre>
+<p>설명이 내부에 있으므로 생략한다.</p>
+<h4 id="usereceiptstatets">useReceiptState.ts<a aria-hidden="true" tabindex="-1" href="#usereceiptstatets"><span class="icon icon-link"></span></a></h4>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { useState } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { Receipt, ReceiptState } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './Receipt.type'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> function</span><span style="color:#6F42C1"> useReceiptState</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">T</span><span style="color:#24292E">>(</span><span style="color:#E36209">props</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> T</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> T</span><span style="color:#D73A49"> &#x26;</span><span style="color:#6F42C1"> ReceiptState</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> [</span><span style="color:#005CC5">receipt</span><span style="color:#24292E">, </span><span style="color:#005CC5">setReceipt</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> useState</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">Receipt</span><span style="color:#24292E">>({</span></span>
+<span class="line"><span style="color:#24292E">    orderId: </span><span style="color:#D73A49">-</span><span style="color:#005CC5">1</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">    type: </span><span style="color:#032F62">'USER_ORDER_RECEIPT_ID'</span></span>
+<span class="line"><span style="color:#24292E">  })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> changeState</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReceiptState</span><span style="color:#24292E">[</span><span style="color:#032F62">'changeState'</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> (</span><span style="color:#E36209">state</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">    setReceipt</span><span style="color:#24292E">((</span><span style="color:#E36209">state_</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> ({ </span><span style="color:#D73A49">...</span><span style="color:#24292E">state_, </span><span style="color:#D73A49">...</span><span style="color:#24292E">state }))</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    ...</span><span style="color:#24292E">props,</span></span>
+<span class="line"><span style="color:#D73A49">    ...</span><span style="color:#24292E">receipt,</span></span>
+<span class="line"><span style="color:#24292E">    changeState</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<ul>
+<li>상태가 많지 않으므로 type을 바이패싱 가능하도록 props를 generic으로 받아서, 함께 반환하도록 제공한다.</li>
+<li>또한 기본적인 상태를 initialize 한다.</li>
+</ul>
+<h4 id="usereceipttsx">useReceipt.tsx<a aria-hidden="true" tabindex="-1" href="#usereceipttsx"><span class="icon icon-link"></span></a></h4>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * # useReceipt</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#D73A49">@description</span><span style="color:#6A737D"> [중요] 상위에 ReceiptProvider가 존재해야합니다!</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * Receipt의 기능을 사용할 수 있도록 제공합니다.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#D73A49">@returns</span><span style="color:#6F42C1"> {ReceiptHook}</span><span style="color:#6A737D"> {</span><span style="color:#D73A49">@link</span><span style="color:#6A737D"> ReceiptHook}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> function</span><span style="color:#6F42C1"> useReceipt</span><span style="color:#24292E">()</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReceiptHook</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> _context</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> useReceiptContext</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#D73A49">  if</span><span style="color:#24292E"> (</span><span style="color:#D73A49">!</span><span style="color:#24292E">_context) {</span></span>
+<span class="line"><span style="color:#D73A49">    throw</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Error</span><span style="color:#24292E">(ErrorMessage.</span><span style="color:#005CC5">NOT_FOUND_CONTEXT</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> requestPrint</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReceiptHook</span><span style="color:#24292E">[</span><span style="color:#032F62">'requestPrint'</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> (</span><span style="color:#E36209">orderId</span><span style="color:#24292E">, </span><span style="color:#E36209">type</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> 'USER_ORDER_RECEIPT_ID'</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    _context.state.</span><span style="color:#6F42C1">changeState</span><span style="color:#24292E">({ orderId, type })</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> executePrint</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReceiptHook</span><span style="color:#24292E">[</span><span style="color:#032F62">'executePrint'</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    const</span><span style="color:#005CC5"> printDiv</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> document.</span><span style="color:#6F42C1">getElementById</span><span style="color:#24292E">(_context.state.type) </span><span style="color:#D73A49">as</span><span style="color:#6F42C1"> HTMLIFrameElement</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#D73A49">!</span><span style="color:#24292E">printDiv) {</span></span>
+<span class="line"><span style="color:#D73A49">      throw</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Error</span><span style="color:#24292E">(ErrorMessage.</span><span style="color:#005CC5">FAILED_PRINT_RECEIPT</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    const</span><span style="color:#005CC5"> printWindow</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> printDiv.contentWindow</span></span>
+<span class="line"><span style="color:#24292E">    printWindow?.document.</span><span style="color:#6F42C1">open</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">    printWindow?.document.</span><span style="color:#6F42C1">write</span><span style="color:#24292E">(</span><span style="color:#6F42C1">createReceiptHTML</span><span style="color:#24292E">(printDiv))</span></span>
+<span class="line"><span style="color:#24292E">    printWindow?.document.</span><span style="color:#6F42C1">close</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">    _context.state.</span><span style="color:#6F42C1">changeState</span><span style="color:#24292E">({ orderId: </span><span style="color:#D73A49">-</span><span style="color:#005CC5">1</span><span style="color:#24292E"> })</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    ...</span><span style="color:#24292E">_context.state,</span></span>
+<span class="line"><span style="color:#24292E">    availablePrint: _context.state.orderId </span><span style="color:#D73A49">>=</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">    requestPrint,</span></span>
+<span class="line"><span style="color:#24292E">    executePrint,</span></span>
+<span class="line"><span style="color:#24292E">    ReceiptContainer</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> ReceiptContainer</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> FC</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ReceiptContainerProps</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> (</span><span style="color:#E36209">props</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> { </span><span style="color:#005CC5">test</span><span style="color:#D73A49"> =</span><span style="color:#005CC5"> false</span><span style="color:#24292E">, </span><span style="color:#005CC5">type</span><span style="color:#24292E">, </span><span style="color:#005CC5">children</span><span style="color:#24292E"> } </span><span style="color:#D73A49">=</span><span style="color:#24292E"> props</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#005CC5">Styled.Container</span><span style="color:#6F42C1"> test</span><span style="color:#D73A49">=</span><span style="color:#24292E">{test} </span><span style="color:#6F42C1">id</span><span style="color:#D73A49">=</span><span style="color:#24292E">{type}></span></span>
+<span class="line"><span style="color:#24292E">      {children}</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#005CC5">Styled.Container</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<ul>
+<li>핵심 로직이다. Context가 없다면 에러가 나오도록 유도한다.</li>
+<li>requestPrint, executePrint를 type.ts 에서 정의한 데로, ReceiptHook 양식에 맞춰 로직을 구현한다.</li>
+<li>requestPrint: 상태를 변경하여 print 되고 있는 상태로 변경한다. (orderId가 있으면 프린트가 되고 있는 상태이다.)</li>
+<li>executePrint: 실제 컴포넌트에서 request를 받으면 데이터를 fetch 받아 사용할 수 있도록 제공한다. executePrint를 실제로 사용해야 프린트를 진행한다. createReceiptHTML에 관해서는 밑에서 서술한다.</li>
+<li>ReceiptContainer로 React Component가 존재하고, field로 받게 되는데, Styled로만 제공하면 따르지 않을 수 있으므로 아에 제공을 해버렸다.</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> CustomHeadParam</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6A737D">  /** html의 헤드 타이틀 </span><span style="color:#D73A49">@default</span><span style="color:#032F62"> "</span><span style="color:#24292E">Receipt</span><span style="color:#032F62">"</span><span style="color:#6A737D">*/</span></span>
+<span class="line"><span style="color:#E36209">  title</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#6A737D">  /** 커스텀하게 스타일을 넣고 싶을때 추가 */</span></span>
+<span class="line"><span style="color:#E36209">  customHeadStyle</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#6A737D">  /** head의 style (emotion.js 같은)을 복사하므로써 기존의 스타일을 사용할 수 있도록 제공합니다. </span><span style="color:#D73A49">@default</span><span style="color:#24292E"> true</span><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#E36209">  inheritHead</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * # createReceiptHTML</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * Receipt 용 HTML을 생성합니다.</span></span>
+<span class="line"><span style="color:#6A737D"> *</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#D73A49">@param</span><span style="color:#6F42C1"> {HTMLIFrameElement}</span><span style="color:#24292E"> printTarget</span><span style="color:#6A737D"> print할 iframe</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#D73A49">@param</span><span style="color:#6F42C1"> {}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#D73A49">function</span><span style="color:#6F42C1"> createReceiptHTML</span><span style="color:#24292E">(</span><span style="color:#E36209">printTarget</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> HTMLIFrameElement</span><span style="color:#24292E">, </span><span style="color:#E36209">head</span><span style="color:#D73A49">?:</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">CustomHeadParam</span><span style="color:#24292E">>)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> title</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> head?.title </span><span style="color:#D73A49">??</span><span style="color:#032F62"> 'Receipt'</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> customHeadStyle</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> head?.customHeadStyle</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> inheritHead</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> head?.inheritHead </span><span style="color:#D73A49">??</span><span style="color:#005CC5"> true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * 참고 링크: https://github.com/emotion-js/emotion/issues/595</span></span>
+<span class="line"><span style="color:#6A737D">   * emotion.js는 build 되어 나오는 경우, css의 insertRule로 직행하여 CSS DOM을 직접 넣어버림.</span></span>
+<span class="line"><span style="color:#6A737D">   * 문제는 CRA 같이 페이지 많아지면 인메모리로 들고있어서 메모리 소모가 많아진다는 문제가 있음.</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> headStyle</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> `${</span><span style="color:#032F62">[</span><span style="color:#D73A49">...</span><span style="color:#24292E">document</span><span style="color:#032F62">.</span><span style="color:#24292E">styleSheets</span><span style="color:#032F62">]</span></span>
+<span class="line"><span style="color:#032F62">    .</span><span style="color:#6F42C1">map</span><span style="color:#032F62">((</span><span style="color:#005CC5">it</span><span style="color:#032F62">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> it</span><span style="color:#032F62">.</span><span style="color:#24292E">cssRules</span><span style="color:#032F62">)</span></span>
+<span class="line"><span style="color:#032F62">    .</span><span style="color:#6F42C1">flatMap</span><span style="color:#032F62">((</span><span style="color:#005CC5">it</span><span style="color:#032F62">) </span><span style="color:#D73A49">=></span><span style="color:#032F62"> [</span><span style="color:#D73A49">...</span><span style="color:#24292E">it</span><span style="color:#032F62">].</span><span style="color:#6F42C1">flatMap</span><span style="color:#032F62">((</span><span style="color:#005CC5">it_</span><span style="color:#032F62">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> it_</span><span style="color:#032F62">.</span><span style="color:#24292E">cssText</span><span style="color:#032F62">))</span></span>
+<span class="line"><span style="color:#032F62">    .</span><span style="color:#6F42C1">join</span><span style="color:#032F62">(</span><span style="color:#032F62">' '</span><span style="color:#032F62">)</span><span style="color:#032F62">}`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#032F62"> `</span></span>
+<span class="line"><span style="color:#032F62">  &#x3C;html lang="ko"></span></span>
+<span class="line"><span style="color:#032F62">  &#x3C;head></span></span>
+<span class="line"><span style="color:#032F62">    &#x3C;meta charset="UTF-8"></span></span>
+<span class="line"><span style="color:#032F62">    &#x3C;meta name="viewport" content="initial-scale=1, maximum-scale=1, width=400, height=600"></span></span>
+<span class="line"><span style="color:#032F62">    &#x3C;title>${</span><span style="color:#24292E">title</span><span style="color:#032F62">}&#x3C;/title></span></span>
+<span class="line"><span style="color:#032F62">    &#x3C;style>@page {size: auto;margin: 0mm;}&#x3C;/style></span></span>
+<span class="line"><span style="color:#032F62">    &#x3C;style></span></span>
+<span class="line"><span style="color:#032F62">      /** RESET CSS... */</span></span>
+<span class="line"><span style="color:#032F62">  </span></span>
+<span class="line"><span style="color:#032F62">      ${</span><span style="color:#24292E">inheritHead</span><span style="color:#D73A49"> &#x26;&#x26;</span><span style="color:#24292E"> headStyle</span><span style="color:#032F62">}</span></span>
+<span class="line"><span style="color:#032F62">      ${</span><span style="color:#24292E">customHeadStyle</span><span style="color:#D73A49"> &#x26;&#x26;</span><span style="color:#24292E"> customHeadStyle</span><span style="color:#032F62">}</span></span>
+<span class="line"><span style="color:#032F62">    &#x3C;/style></span></span>
+<span class="line"><span style="color:#032F62">  &#x3C;/head></span></span>
+<span class="line"><span style="color:#032F62">  &#x3C;body onload="window.print()"></span></span>
+<span class="line"><span style="color:#032F62">    ${</span><span style="color:#24292E">printTarget</span><span style="color:#032F62">.</span><span style="color:#24292E">innerHTML</span><span style="color:#032F62">}</span></span>
+<span class="line"><span style="color:#032F62">  &#x3C;/body></span></span>
+<span class="line"><span style="color:#032F62">  &#x3C;/html></span></span>
+<span class="line"><span style="color:#032F62">  `</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>여기서 중요한 부분이 나온다. createReceiptHTML는, iframe에서 html을 생성할 때 베이스가 되는 html을 제작해 넣어준다. 그런데, 이 html은 기존의 프로젝트의 css 스타일을 inherit 받거나 복제하여 가져가지 않는다. 이 말인 즉슨, 기존에 만들어둔 css in js의 emotion.js 스타일들이 먹히지 않는다는 뜻이다. 조금 더 자세히 들여다보면.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/5.png" alt="이미지5" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지5</figcaption></figure><p></p>
+<p>emotion.js으로 스타일을 하게 되면, 위와 같이 element에 class 이름으로 해쉬로 부여된 유니크한 아이디가 붙는다. 이 유니크한 아이디의 발급되는 프로세스는 다음과 같다.</p>
+<ol>
+<li>emotion.js의 css 혹은 styled.???“ 형태로 스타일링하면 내부 카운트가 선언한 순서대로(혹은 빌드에서 읽는 순서대로) 증가한다. 이 증가하게되면 모든 style은 일단, 유니크한 값을 보장받는다. (css-1, css-2 …)</li>
+<li>하지만 해쉬는 만에하나 중복될 확률이 존재한다. (DB를 공부하다보면, 혹은 개발하다보면 수많은 데이터에서 중복되는 경우들이 생긴다.) 그렇기 때문에 emotion.js는 겹치지 않도록 특정한 알고리즘을 사용해 (궁금하면 찾아보기) 중복을 피하며, 유니크한 값을 보장하여 생성한다.</li>
+<li>유니크한 아이디를 발급 받은 이후, 웹팩 빌드 과정에서 일괄적으로 정리하여 head에 css style 태그를 만들어, 저장한다.</li>
+</ol>
+<p>여기서 styled-component와 emotion.js의 차이가 존재한다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/6.png" alt="이미지6" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지6</figcaption></figure><p></p>
+<p>위의 사진은 Head의 css style에 emotion.js를 로컬에서 실행했을때의 결과이다. styled-component는 이처럼 하나의 스타일마다 css 스타일 블록을 만들어, 하위에 스타일을 정의해서 갖는다.</p>
+<p>반면, emotion.js를 프로덕션으로 빌드한 결과물은 다음과 같다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/7.png" alt="이미지7" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지7</figcaption></figure><p></p>
+<p>위의 사진을 보면, 내용물을 확인할 수 없고, 그저 data-emotion에 css-global과 css 두 개만 존재하는 것을 볼 수 있다.</p>
+<p>이 테크닉은 최신 브라우저의 cssRules 속성으로 다이나믹하게 css 스타일 readonly 형태로 제공하는 방법이다. (최신 브라우저라고 하기에는 IE8부터 됐다.) 그래서, 복사하거나 데이터를 가져오려면 다른 방법을 사용해야한다.</p>
+<ul>
+<li>상세 스펙: <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/cssRules">https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/cssRules</a></li>
+<li>데이터를 주입하려면: <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule">https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule</a></li>
+</ul>
+<p>이러한 rule로 제공된 css를 가져오려면 아래와 같은 코드를 작성하면 된다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#24292E">;[</span><span style="color:#D73A49">...</span><span style="color:#24292E">document.styleSheets].</span><span style="color:#6F42C1">map</span><span style="color:#24292E">((</span><span style="color:#E36209">it</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> it.cssRules).</span><span style="color:#6F42C1">flatMap</span><span style="color:#24292E">((</span><span style="color:#E36209">it</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> [</span><span style="color:#D73A49">...</span><span style="color:#24292E">it].</span><span style="color:#6F42C1">flatMap</span><span style="color:#24292E">((</span><span style="color:#E36209">it_</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> it_.cssText))</span></span></code></pre>
+<ul>
+<li>document.styleSheets는 현재 문서의 모든 styleSheets를 가져온다.</li>
+<li>해당 styleSheets는 CSSStyleSheet 타입이므로, 가져올 때마다 새로운 배열을 생성해준다.</li>
+<li>안의 cssRules를 추출하고, flatMap으로 cssText를 추출한다.</li>
+</ul>
+<p>실행하면 다음과 같은 데이터를 가져올 수 있다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/8.png" alt="이미지8" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지8</figcaption></figure><p></p>
+<p>정리하면 다음과 같다.</p>
+<ul>
+<li>iframe으로 생성한 HTML에서는 기존에 css in js로 가져오던 css style이 없으므로 html을 생성하고 내부에 styled-component, emotion 등으로 제작한 컴포넌트의 스타일이 출력되지 않는다.</li>
+<li>그러므로, html 생성 시 현재 프로젝트의 head에 있는 stylesheet 데이터를 가져와서 iframe의 html에 주입해주어야 한다.</li>
+<li>그런데, emotion.js의 경우 cssRules 형태로 다이나믹하게 가져오기 때문에 그에 맞게 cssRules의 cssText를 뽑아오는 처리를 해주어야 한다.</li>
+</ul>
+<p>그렇다면 emotion은 cssRule 형태로 사용하는 이유가 무엇일까?</p>
+<ol>
+<li>cssRule을 사용하게 되면 head의 태그가 많아져 document 상에서 찾기 어려운 데이터를 스타일을 제외하고 찾을 수 있다.</li>
+<li>cssRule로 감싸진 스타일을 말 그대로 메모리 내에서 다이나믹하게 반응하며, 변경되면 CSS DOM을 바로 갱신시킨다. 일반적인 stylesheet 변경에 비해 훨씬 변경이 용이하다.</li>
+<li>하지만, 그런만큼 메모리로 들고있으므로 SPA 앱의 CSS 데이터가 커지거나 페이지 내에서 사용되는 스타일이 굉장히 많아지면 브라우저 메모리가 커질 수 있다.</li>
+</ol>
+<h3 id="사용해보기">사용해보기<a aria-hidden="true" tabindex="-1" href="#사용해보기"><span class="icon icon-link"></span></a></h3>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#6F42C1"> UserOrderReceipt</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> VFC</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> { </span><span style="color:#005CC5">orderId</span><span style="color:#24292E">, </span><span style="color:#005CC5">executePrint</span><span style="color:#24292E">, </span><span style="color:#005CC5">availablePrint</span><span style="color:#24292E">, </span><span style="color:#005CC5">ReceiptContainer</span><span style="color:#24292E"> } </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> useReceipt</span><span style="color:#24292E">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> [</span><span style="color:#005CC5">orderDetail</span><span style="color:#24292E">, </span><span style="color:#005CC5">getOrderDetail</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> useAsyncWithTokenFlow</span><span style="color:#24292E">(</span><span style="color:#005CC5">API</span><span style="color:#24292E">.getOrderReceipt)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  useEffect</span><span style="color:#24292E">(() </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#D73A49">!</span><span style="color:#24292E">availablePrint) </span><span style="color:#D73A49">return</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">    getOrderDetail</span><span style="color:#24292E">(orderId)</span></span>
+<span class="line"><span style="color:#24292E">  }, [orderId])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  useEffect</span><span style="color:#24292E">(() </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#D73A49">!</span><span style="color:#24292E">availablePrint) </span><span style="color:#D73A49">return</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (orderDetail.loading) </span><span style="color:#D73A49">return</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#D73A49">!</span><span style="color:#24292E">orderDetail.value) </span><span style="color:#D73A49">return</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">    executePrint</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  }, [orderDetail])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // ... 로직</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#005CC5">ReceiptContainer</span><span style="color:#6F42C1"> type</span><span style="color:#D73A49">=</span><span style="color:#032F62">'USER_ORDER_RECEIPT_ID'</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      {detail </span><span style="color:#D73A49">&#x26;&#x26;</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;!-- 레이아웃 로직 --></span></span>
+<span class="line"><span style="color:#24292E">      )}</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#005CC5">ReceiptContainer</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<ul>
+<li>사용자의 주문 영수증을 출력하는 컴포넌트에 적용한다.</li>
+<li>각 컴포넌트별로 서버 데이터를 가져와서 적용해야하므로, 해당 처리를 진행한다.</li>
+<li>해당 처리를 진행할 하고나서, executePrint()를 실행하면 <receiptcontainer> 하위의 데이터가 출력되도록 한다.</receiptcontainer></li>
+</ul>
+<h3 id="결과">결과<a aria-hidden="true" tabindex="-1" href="#결과"><span class="icon icon-link"></span></a></h3>
+<p></p><figure class="img-card"><img src="/contents/articles/%EC%98%81%EC%88%98%EC%A6%9D-React-%EA%B7%B8%EB%A6%AC%EA%B3%A0-emotion/assets/9.gif" alt="이미지9" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지9</figcaption></figure><p></p>
+<p>화면에서 보이는 영수증 출력 버튼을 누르면 <code>useReceipt()</code>의 <code>requestPrint()</code>를 요청하며, 위에서 설계한 프로세스대로 실행된다.</p>
+<h2 id="끝으로">끝으로<a aria-hidden="true" tabindex="-1" href="#끝으로"><span class="icon icon-link"></span></a></h2>
+<p>현재의 모던 브라우저는 출력을 잘 제공하고 있다. 위에서의 프로세스는 여러 모던 브라우저에서 별 문제 없이 동작한다.
+이는 모던 브라우저와 OS 생태계가 발전한 것 뿐만 아니라, 영수증 기기의 ISO 표준 확립, 종이의 배출에 따른 크기의 조정.. 등 다양한 발전이 함께 있었다.</p>
+<p>불과 20년전만 해도, 각 영수증 기기는 저마다의 표준을 갖고 있었고 각 OS, 브라우저 별 기능도 다른 상황이었다. 지금은 그렇지 않다는 것에 안도하며…
+다음 글은 현재 Context + React + Emotion 형태로 어느정도 오버헤드 있는 코드를 작성하고 있는데, 이를 더욱 쉽게 개발할 수 있도록 고도화하는 글을 작성하고자 한다.</p>
+<h2 id="그-외">그 외<a aria-hidden="true" tabindex="-1" href="#그-외"><span class="icon icon-link"></span></a></h2>
+<p>모바일 기기 표준 규격에 관한 자료</p>
+<ul>
+<li><a href="https://scienceon.kisti.re.kr/srch/selectPORSrchArticle.do?cn=JAKO201372478761324">https://scienceon.kisti.re.kr/srch/selectPORSrchArticle.do?cn=JAKO201372478761324</a></li>
+<li><a href="http://www.dsds.co.kr/info_midas/index05_billprinter.html">http://www.dsds.co.kr/info_midas/index05_billprinter.html</a></li>
+</ul>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#영수증" class="yt1e5n3" data-toc-link data-depth="2"> 영수증 </a> </li><li class="depth-3"> <a href="#다양한-종류의-영수증" class="yt1e5n3" data-toc-link data-depth="3"> 다양한 종류의 영수증 </a> </li><li class="depth-3"> <a href="#개발-요건으로-추려보기" class="yt1e5n3" data-toc-link data-depth="3"> 개발 요건으로 추려보기 </a> </li><li class="depth-3"> <a href="#실제-구현하기" class="yt1e5n3" data-toc-link data-depth="3"> 실제 구현하기 </a> </li><li class="depth-3"> <a href="#영수증-컨텍스트-만들기" class="yt1e5n3" data-toc-link data-depth="3"> 영수증 컨텍스트 만들기 </a> </li><li class="depth-3"> <a href="#receipttsx" class="yt1e5n3" data-toc-link data-depth="3"> Receipt.tsx </a> </li><li class="depth-3"> <a href="#receipttypets" class="yt1e5n3" data-toc-link data-depth="3"> Receipt.type.ts </a> </li><li class="depth-3"> <a href="#사용해보기" class="yt1e5n3" data-toc-link data-depth="3"> 사용해보기 </a> </li><li class="depth-3"> <a href="#결과" class="yt1e5n3" data-toc-link data-depth="3"> 결과 </a> </li><li class="depth-2"> <a href="#끝으로" class="yt1e5n3" data-toc-link data-depth="2"> 끝으로 </a> </li><li class="depth-2"> <a href="#그-외" class="yt1e5n3" data-toc-link data-depth="2"> 그 외 </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>

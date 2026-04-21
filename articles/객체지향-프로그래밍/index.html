@@ -1,0 +1,411 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>객체지향 프로그래밍 · Vallista Blog</title><meta name="description" content><meta property="og:title" content="객체지향 프로그래밍 · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.bcqNdLA3.css">
+<link rel="stylesheet" href="/_astro/style.BR42T3NH.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 미분류 </span>  </div> <h1 class="o06wxs3">객체지향 프로그래밍</h1>  <div class="o06wxs5"> <time datetime="2019-05-01T18:46:16.000Z">2019.05.01</time> <span>·</span> <span>6 min read</span> <span>·</span> <span>2,985 words</span> </div> </header> <article class="o06wxs6">  <h2 id="oop-object-oriented-programming">OOP (Object Oriented Programming)<a aria-hidden="true" tabindex="-1" href="#oop-object-oriented-programming"><span class="icon icon-link"></span></a></h2>
+<h3 id="객체-지향-프로그래밍">객체 지향 프로그래밍<a aria-hidden="true" tabindex="-1" href="#객체-지향-프로그래밍"><span class="icon icon-link"></span></a></h3>
+<p>객체 지향 프로그래밍 전의 프로그래밍 패러다임은 컴퓨터가 사고하는 데로 프로그래밍을 했다면, 객체 지향 프로그래밍은 현실 세계를 프로그래밍으로 옮겨와 프로그래밍을 한다. 즉 <code>인간 중심적 프로그래밍 패러다임</code> 이라고 볼 수 있다.</p>
+<h3 id="장점">장점<a aria-hidden="true" tabindex="-1" href="#장점"><span class="icon icon-link"></span></a></h3>
+<ul>
+<li>OOP는 재사용성이 높은 코드를 작성할 수 있다.</li>
+</ul>
+<p>—> <strong>중복 소스 관리</strong> : 객체의 특징을 뽑아와서 코드로 작성하므로, 중첩되는 소스코드를 묶어서 관리하는 과정을 통해서 중복 소스를 줄일 수 있다</p>
+<p>—> <strong>재사용성 :</strong> 자주 사용 되는 로직을 라이브러리로 만들어 두면 계속해서 재사용 할 수 있다. 라이브러리를 재사용 하면 다음 프로젝트의 개발 시간이 줄어들고 사용할 때 마다 버그를 수정하면 신뢰성과 버그 감소 효과를 얻을 수 있다.</p>
+<p>—> <strong>공유 :</strong> 다른 사용자의 공개된 라이브러리를 사용하는 방법에 대해서만 인지하면 쉽게 사용할 수 있다. 이는 생산성 향상에 도움을 준다.</p>
+<p>—> <strong>디버그</strong> : 객체 단위로 디버깅을 쉽게 할 수 있다.
+—> <strong>프로그래밍</strong> : 데이터 모델링을 할 때 객체와 matcing 하는 게 수월하기 때문에 요구사항을 보다 명확하게 파악해서 프로그래밍 할 수 있다.</p>
+<h3 id="단점">단점<a aria-hidden="true" tabindex="-1" href="#단점"><span class="icon icon-link"></span></a></h3>
+<ul>
+<li>객체 간의 정보 교환이 모두 메시지 교환을 통해 이뤄지므로 시스템에 많은 Overhead가 발생한다.</li>
+</ul>
+<p>—> 하드웨어의 발전을 통해서 많은 부분 보완됨</p>
+<ul>
+<li>OOP의 단점은 함수형 프로그래밍 패러다임의 등장 배경을 통해서 알 수 있다. 바로 객체가 상태를 갖는다는 점이다. 변수가 존재하고 이 변수를 통해 객체가 예측할 수 없는 상태를 갖게 되어 애플리케이션 내부에서 버그를 발생 시킨다.</li>
+</ul>
+<h3 id="객체-지향적-설계-원칙-solid">객체 지향적 설계 원칙 (SOLID)<a aria-hidden="true" tabindex="-1" href="#객체-지향적-설계-원칙-solid"><span class="icon icon-link"></span></a></h3>
+<ul>
+<li>SRP (Single Responsibility Principle) : 단일 책임 원칙
+클래스는 단 하나의 책임을 가져야 하며 클래스를 변경하는 이유는 단 하나의 이유이어야 한다.</li>
+<li>OCP (Open-Closed Principle) : 개방-폐쇄 원칙
+확장에는 열려 있어야 하고 변경에는 닫혀 있어야 한다.</li>
+<li>LSP (Liskov Substitution Principle) : 리스코프 치환 원칙
+상위 타입의 객체를 하위 타입의 객체로 치환해도 상위 타입을 사용하는 프로그램은 정상적으로 작동해야 한다.</li>
+<li>ISP (Interface Segregation Principle) : 인터페이스 분리 원칙
+인터페이스는 그 인터페이스를 사용하는 클라이언트 기준으로 분리해야 한다.</li>
+<li>DIP (Dependency Inversion Principle) : 의존 역전 법칙
+고수준의 모듈은 저수준의 모듈의 구현에 의존되서는 안된다.</li>
+</ul>
+<blockquote>
+<p>객체(Object)와 클래스(Class)의 차이</p>
+</blockquote>
+<p>객체는 상태를 갖고있어 상태가 변경되는 변수나 클래스를 말한다.
+클래스는 객체를 만드는 추상적인 틀이라고 생각하면 된다.</p>
+<p>슈크림 붕어빵과 팥 붕어빵이 있다. 이 두 빵의 필수적인 요소를 간추려 내면 공통적인 붕어빵의 특징이 나온다. 이러한 과정을 후술할 <code>추상화</code>라고 한다.</p>
+<p>추상화로 만들어진 붕어빵은 <code>클래스</code>이다. 붕어빵 클래스로 슈크림 붕어빵과 팥 붕어빵을 만들어 낼 수 있다. 슈크림 붕어빵을 생성할 때 붕어빵 클래스의 변수 Type을 슈크림으로 하고 팥 붕어빵은 팥으로 지정하자. 그렇게 만들어진 슈크림 붕어빵과 팥 붕어빵은 <code>객체</code>이다. 이렇게 만드는 과정을 <code>인스턴스화</code> 라고 한다.</p>
+<h3 id="추상화">추상화<a aria-hidden="true" tabindex="-1" href="#추상화"><span class="icon icon-link"></span></a></h3>
+<p>추상화는 어떤 사물에 대해서 필수적인 요소 및 핵심 기능들을 간추려 내는 걸 뜻한다.</p>
+<p>예를 들어, 사과와 딸기의 필수적인 요소와 핵심 기능을 간추려 보자.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>사과 : 과일, 달다, 단단하다. 중간 정도의 크기, 빨간색 (풋사과도 있지만.)</span></span>
+<span class="line"><span>딸기 : 과일, 달다, 물렁하다. 작은 크기, 빨간색</span></span></code></pre>
+<p>그렇다면 정리된 걸 <code>추상화 계층</code>으로 표현할 수 있다</p>
+<blockquote>
+<p>추상화 계층</p>
+</blockquote>
+<p>각 레이어로 분리해서 구별하는 일을 추상화 계층이라고 한다.
+OSI 7계층 등이 추상화 계층에 해당된다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>   과일</span></span>
+<span class="line"><span>    |</span></span>
+<span class="line"><span>(사과, 딸기)</span></span></code></pre>
+<p>과일은 사과와 딸기를 포함하는 개념이다. 그러므로 과일은 사과와 딸기의 상위에 있는 상위 클래스가 된다.</p>
+<h3 id="상속">상속<a aria-hidden="true" tabindex="-1" href="#상속"><span class="icon icon-link"></span></a></h3>
+<p>객체 지향 프로그래밍에서 상속은 중요한 요소로 객체의 구조를 만들거나, 객체의 공통점을 뽑아내서 중복된 코드를 줄일 수 있다.</p>
+<p>예를 들어 수박과 사과를 파는 시뮬레이터를 제작한다고 가정하자. 그렇다면 수박과 사과의 특징을 추출해서 소스코드로 표현하면 아래와 같다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Apple</span></span>
+<span class="line"><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">public:</span></span>
+<span class="line"><span style="color:#6F42C1">  std</span><span style="color:#24292E">::string name;</span></span>
+<span class="line"><span style="color:#D73A49">  int</span><span style="color:#24292E"> price;</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> WaterMelon</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">public:</span></span>
+<span class="line"><span style="color:#6F42C1">  std</span><span style="color:#24292E">::string name;</span></span>
+<span class="line"><span style="color:#D73A49">  int</span><span style="color:#24292E"> price;</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>위의 소스코드를 봤을 때 중복되는 코드 이름과 가격이 보인다. 이걸 상속을 통해서 중복되는 코드를 줄일 수 있다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">public:</span></span>
+<span class="line"><span style="color:#6F42C1">  std</span><span style="color:#24292E">::string name;</span></span>
+<span class="line"><span style="color:#D73A49">  int</span><span style="color:#24292E"> price;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Apple</span><span style="color:#24292E"> : </span><span style="color:#D73A49">public</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> WaterMelon</span><span style="color:#24292E"> : </span><span style="color:#D73A49">public</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>과일 클래스를 만들어서 사과와 수박이 Fruit를 상속하도록 구현했다. 상속을 하니, 사과와 수박이 부모 클래스로 과일을 둔다는 걸 소스에서 명시적으로 알 수 있게 되었다. 객체의 구조에 대해서 명확하게 알 수 있으므로 효과적인 소스코드 커뮤니케이션이 가능해진다.</p>
+<h3 id="캡슐화-encapsulation">캡슐화 (Encapsulation)<a aria-hidden="true" tabindex="-1" href="#캡슐화-encapsulation"><span class="icon icon-link"></span></a></h3>
+<p>객체나 클래스를 작성할 때 외부에서 멤버 변수나 함수를 호출하여 값을 변경하면 안되는 상황이 존재한다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">public:</span></span>
+<span class="line"><span style="color:#6F42C1">  std</span><span style="color:#24292E">::string name;</span></span>
+<span class="line"><span style="color:#D73A49">  int</span><span style="color:#24292E"> price;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Apple</span><span style="color:#24292E"> : </span><span style="color:#D73A49">public</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> WaterMelon</span><span style="color:#24292E"> : </span><span style="color:#D73A49">public</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">Apple.name </span><span style="color:#D73A49">=</span><span style="color:#032F62"> '자두'</span></span>
+<span class="line"><span style="color:#24292E">WaterMelon.name </span><span style="color:#D73A49">=</span><span style="color:#032F62"> '사과'</span></span></code></pre>
+<p><code>Apple.name</code>, <code>WaterMelon.name</code> 객체의 멤버 변수에 직접 접근해서 이름을 바꿨다. 이런 상황이 존재하면 되는 걸까? 당연히 이런 상황이 발생하면 되지 않는다. 이런 접근을 막기 위해 숨기는 행동을 <code>은닉화</code>라 한다.</p>
+<p>은닉화에는 <code>public</code>, <code>protected</code>, <code>private</code> 3가지의 <code>접근 지정자</code>가 존재한다.</p>
+<ul>
+<li>public: 전체 공개</li>
+<li>protected: 상속받은 자식 클래스 내에서만 사용 가능</li>
+<li>private: 선언한 클래스만 사용 가능</li>
+</ul>
+<p>위의 이름을 바꾸지 못하게 하는 상황에서는 protected를 사용할 수 있다.</p>
+<p>부모 클래스에서 name, price 선언해 놓았고, Apple, WaterMelon의 내부에서는 이름을 초기화 해야 한다.
+그러므로, 자식 클래스에서 사용할 수 있게 Protected를 사용해야 한다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">protected:</span></span>
+<span class="line"><span style="color:#6F42C1">  std</span><span style="color:#24292E">::string name;</span></span>
+<span class="line"><span style="color:#D73A49">  int</span><span style="color:#24292E"> price;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Apple</span><span style="color:#24292E"> : </span><span style="color:#D73A49">public</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">  Apple</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.name </span><span style="color:#D73A49">=</span><span style="color:#032F62"> '사과'</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> WaterMelon</span><span style="color:#24292E"> : </span><span style="color:#D73A49">public</span><span style="color:#6F42C1"> Fruit</span><span style="color:#24292E"> {</span><span style="color:#6F42C1">Apple</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.name </span><span style="color:#D73A49">=</span><span style="color:#032F62"> '수박'</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">Apple.name </span><span style="color:#D73A49">=</span><span style="color:#032F62"> '자두'</span><span style="color:#6A737D"> // 에러!</span></span>
+<span class="line"><span style="color:#24292E">WaterMelon.name </span><span style="color:#D73A49">=</span><span style="color:#032F62"> '사과'</span><span style="color:#6A737D"> // 에러!</span></span></code></pre>
+<p>접근 지정자를 통해 데이터나 메소드를 숨겨두어 외부에서 접근이 불가능하게 만들면 예외 상황에 대해서 대응이 쉽게 가능하다. 또한 유지 보수가 쉽게 개발을 할 수 있게 설계할 수 있다. 이는 라이브러리를 제작할 때 매우 중요하다.</p>
+<h3 id="다형성-polymorphism">다형성 (Polymorphism)<a aria-hidden="true" tabindex="-1" href="#다형성-polymorphism"><span class="icon icon-link"></span></a></h3>
+<p>다형성은 프로그램의 각 요소들(상수, 변수, 식, 함수, 메소드)이 다양한 자료형에 속하는게 허가되는 성질을 뜻한다. 반댓말로 **단형성(Monomorphism)**이 있다. 단형성은 각 요소들이 한가지 형태만 가지는 성질을 말한다.</p>
+<p>OOP에서 상속은 중요한 위치를 가지고 있다. 상속은 앞서 말한대로 코드 길이도 줄여주고 구조를 직관적으로 알아볼 수 있게 해준다. 상속은 다형성의 중요한 예를 사용할 수 있는데, 아래와 같다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Parent</span><span style="color:#24292E"> {...}</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Child</span><span style="color:#24292E"> : Parent {...}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">Parent parent </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Parent</span><span style="color:#24292E">()</span><span style="color:#6A737D"> // 허용</span></span>
+<span class="line"><span style="color:#24292E">Child child </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Child</span><span style="color:#24292E">()</span><span style="color:#6A737D"> // 허용</span></span>
+<span class="line"><span style="color:#24292E">Parent parent </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Child</span><span style="color:#24292E">()</span><span style="color:#6A737D"> // 허용, 다형성</span></span>
+<span class="line"><span style="color:#24292E">Child child </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Parent</span><span style="color:#24292E">()</span><span style="color:#6A737D"> // 불가, 에러!</span></span></code></pre>
+<p><code>Parent parent = new Child()</code> 를 보면 <code>Parent</code> 타입 임에도 불구하고 <code>Child</code> 타입이 들어간다. 다형성이 뜻하는 <code>여러 타입에 속할 수 있다는걸 허가하는 성질</code>이다. 하지만 그 반대로 <code>Child child = new Parent()</code>는 에러가 나온다. 그 이유는 <code>Child</code> 타입은 <code>Parent</code>의 Property를 가지고 있지만, <code>Parent</code> 는 <code>Child</code>의 Property를 가지고 있지 않기 때문이다.</p>
+<p>정리하자면 형(Type)의 관점에서 상속받은 자식 클래스의 객체는 부모 클래스에 대해 다형성을 가질 수 있다.</p>
+<p>함수(Function)의 관점에서 다형성을 살펴보면 <code>함수(메소드) 오버라이딩(Overriding)</code>과 <code>함수(메소드) 오버로딩(Overloading)</code>두 가지로 나뉠 수 있다.</p>
+<blockquote>
+<p>함수(Function)와 메서드(Method)의 차이</p>
+</blockquote>
+<p><code>함수(Function)</code>는 전역, 지역에서 단독으로 작성될 수 있는 객체를 말한다.
+과거, 절차 지향적 프로세스의 기준으로 작성 되었을 때 반복적으로 사용되는 일을 함수로 만들어 전역에서 사용했다. 그렇기 때문에 함수는 독립적으로 존재해야 했다.</p>
+<p>시간이 지나면서 OOP의 개념이 대두되고 클래스나 객체 내부에서 사용되는 함수는 객체의 상태를 변경하거나 조작하는 일을 했다. 객체에 의존적인 관계가 되어 독립적인 일을 한다는 함수의 뜻과 다른 일을 하므로 명칭이 필요해졌고 <code>메서드(Method)</code> 라고 지칭하게 되었다.</p>
+<p><strong>함수(메소드) 오버로딩(Overloading)</strong></p>
+<p>오버로딩(Overloading) 단어에서 느껴지는 의미는 “불러올 때 한계치 위에 있는 걸 불러오는” 느낌이다. 오버로딩이 프로그래밍에서 쓰이는 뜻과 비슷하지만 약간 다르다. 프로그래밍에서 오버로딩은 <code>동일한 이름의 함수 혹은 메서드를 중복 선언하여 같은 이름, 다른 매개변수를 불러오는 방법</code> 을 뜻한다.</p>
+<p>두 함수는 동일한 역할과 같은 Parameter를 받기 때문에 에러가 나와 쓰지 못한다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">int</span><span style="color:#6F42C1"> Add</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> a</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> b</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">int</span><span style="color:#6F42C1"> Add</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> a</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> b</span><span style="color:#24292E">)</span><span style="color:#6A737D"> // 동일한 함수, 에러!</span></span></code></pre>
+<p>두 함수는 Parameter를 통해서 다른 역할을 하는 걸 알 수 있다. 첫 번째 함수는 a, b를 더하는 결과를 반환하고 두 번째 함수는 a, b, c를 덧셈한 결과를 반환한다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">int</span><span style="color:#6F42C1"> Add</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> a</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> b</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">int</span><span style="color:#6F42C1"> Add</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> a</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> b</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> c</span><span style="color:#24292E">)</span><span style="color:#6A737D"> // 다른 역할, 함수 오버로딩</span></span></code></pre>
+<p>오버로딩을 지원하지 않는다면 아래와 같이 써야 한다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">int</span><span style="color:#6F42C1"> AddDouble</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> a</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> b</span><span style="color:#24292E">);</span></span>
+<span class="line"><span style="color:#D73A49">int</span><span style="color:#6F42C1"> AddTriple</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> a</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> b</span><span style="color:#24292E">, </span><span style="color:#D73A49">int</span><span style="color:#E36209"> c</span><span style="color:#24292E">);</span></span></code></pre>
+<p>오버로딩으로 <code>동일한 Action을 하는 함수명을 Action 단위로 간략하게</code> 나타낼 수 있다.</p>
+<p><strong>함수(메소드) 오버라이딩(Overriding)</strong></p>
+<p>오버라이딩(Overriding) 단어에서 느껴지는 의미는 “위에 올라타는” 느낌이다. 오버라이딩이 프로그래밍에서 쓰이는 뜻과 비슷하다. 프로그래밍에서 오버라이딩은 <code>부모 클래스의 메소드의 동작 방법을 덮어써서 변경하는 것</code> 을 말한다.</p>
+<p>질럿과 드라군이라는 객체가 있다. 이 두 객체의 공격을 상속을 통해 구현하면 아래와 같다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Unit</span></span>
+<span class="line"><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">  virtual</span><span style="color:#D73A49"> void</span><span style="color:#6F42C1"> Attack</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> damage</span><span style="color:#24292E">, </span><span style="color:#6F42C1">Unit</span><span style="color:#D73A49">*</span><span style="color:#E36209"> Target</span><span style="color:#24292E">) {...}</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> zealot</span><span style="color:#24292E"> : Unit {...}</span></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> dragoon</span><span style="color:#24292E"> : Unit {...}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 사용</span></span>
+<span class="line"><span style="color:#24292E">zealot.</span><span style="color:#6F42C1">Attack</span><span style="color:#24292E">(...)</span></span>
+<span class="line"><span style="color:#24292E">draoon.</span><span style="color:#6F42C1">Attack</span><span style="color:#24292E">(...)</span></span></code></pre>
+<p>앗! 그런데 zealot은 2회 공격을 하기 때문에 일반 공격 메소드를 두 번 불러야 한다. 부모 클래스의 메소드 명과 같지만, 다른 행동이 필요할 때 사용하는게 오버라이딩이다. 오버라이딩을 통해 수정하면 아래와 같다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> zealot</span><span style="color:#24292E"> : Unit</span></span>
+<span class="line"><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#D73A49">  void</span><span style="color:#6F42C1"> Attack</span><span style="color:#24292E">(</span><span style="color:#D73A49">int</span><span style="color:#E36209"> damage</span><span style="color:#24292E">, </span><span style="color:#6F42C1">Unit</span><span style="color:#D73A49">*</span><span style="color:#E36209"> Target</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  {</span></span>
+<span class="line"><span style="color:#6F42C1">    Unit</span><span style="color:#24292E">::</span><span style="color:#6F42C1">Attack</span><span style="color:#24292E">(damage </span><span style="color:#D73A49">/</span><span style="color:#005CC5"> 2</span><span style="color:#24292E">, Target);</span></span>
+<span class="line"><span style="color:#6F42C1">    Unit</span><span style="color:#24292E">::</span><span style="color:#6F42C1">Attack</span><span style="color:#24292E">(damage </span><span style="color:#D73A49">/</span><span style="color:#005CC5"> 2</span><span style="color:#24292E">, Target);</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>이름을 바꾸지 않고 사용하는 이유를 스타크래프트의 드래그해서 유닛을 컨트롤하는 예시로 들 수 있다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="cpp"><code><span class="line"><span style="color:#24292E">Unit</span><span style="color:#D73A49">*</span><span style="color:#24292E"> controlUnits </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#24292E"> Unit[</span><span style="color:#005CC5">12</span><span style="color:#24292E">];</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">void</span><span style="color:#6F42C1"> Initialize</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">  for</span><span style="color:#24292E"> (</span><span style="color:#D73A49">int</span><span style="color:#24292E"> i </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">; i </span><span style="color:#D73A49">&#x3C;</span><span style="color:#005CC5"> 12</span><span style="color:#24292E">; i</span><span style="color:#D73A49">++</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E">(i </span><span style="color:#D73A49">%</span><span style="color:#005CC5"> 2</span><span style="color:#D73A49"> ==</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">) controlUnits[i] </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Zealot</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#D73A49">    else</span><span style="color:#24292E"> controlUnits[i] </span><span style="color:#D73A49">=</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Dragoon</span><span style="color:#24292E">();</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">void</span><span style="color:#6F42C1"> onRightClick</span><span style="color:#24292E">(</span><span style="color:#6F42C1">type</span><span style="color:#24292E">, </span><span style="color:#6F42C1">cursorPoint</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">  for</span><span style="color:#24292E"> (</span><span style="color:#D73A49">int</span><span style="color:#24292E"> i </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">; i </span><span style="color:#D73A49">&#x3C;</span><span style="color:#005CC5"> 12</span><span style="color:#24292E">; i</span><span style="color:#D73A49">++</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (type </span><span style="color:#D73A49">===</span><span style="color:#24292E"> CURSOR_TYPE.ATTACK) controlUnits[i].</span><span style="color:#6F42C1">Attack</span><span style="color:#24292E">(</span><span style="color:#005CC5">15</span><span style="color:#24292E">, ...);</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>오버라이딩을 통해서 동일한 함수를 호출하여 각기 다른 액션을 취하도록 구현할 수 있다.</p>
+<h2 id="추상-클래스abstract-class">추상 클래스(Abstract Class)<a aria-hidden="true" tabindex="-1" href="#추상-클래스abstract-class"><span class="icon icon-link"></span></a></h2>
+<p>코딩을 할 때 클래스를 이용해서 객체를 생성한다. 하지만 이 클래스가 추상화 레벨이 높다면, 객체로 생성해도 제대로 된 동작을 할 수 없다. 그래서 “이 클래스는 추상화 레벨이 높아 너무 추상적이야. 네가 원하는 게 제대로 안나올 수 있어” 라고 말해주는 것이 Abstract Class의 역할이다.</p>
+<p>여러 언어에서 추상 클래스는 <code>interface</code>혹은 <code>abstract</code> 로 구현된다. 두 가지 모두 제대로 된 객체를 만들어라 라고 경고하는 의미이다.</p>
+<h2 id="reference">Reference<a aria-hidden="true" tabindex="-1" href="#reference"><span class="icon icon-link"></span></a></h2>
+<p><a href="https://itewbm.tistory.com/entry/%EC%B6%94%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4abstract-class%EC%9D%98-%EC%A1%B4%EC%9E%AC-%EC%9D%B4%EC%9C%A0">추상클래스(abstract class)의 존재 이유?</a></p>
+<p><a href="https://ko.wikipedia.org/wiki/%EC%B6%94%EC%83%81_%EC%9E%90%EB%A3%8C%ED%98%95">추상 자료형 - 위키백과, 우리 모두의 백과사전</a></p>
+<p><a href="https://ko.wikipedia.org/wiki/%EC%B6%94%EC%83%81%ED%99%94_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)">추상화 (컴퓨터 과학) - 위키백과, 우리 모두의 백과사전</a></p>
+<p><a href="https://ko.wikipedia.org/wiki/%EB%8B%A4%ED%98%95%EC%84%B1_(%EC%BB%B4%ED%93%A8%ED%84%B0_%EA%B3%BC%ED%95%99)">다형성 (컴퓨터 과학) - 위키백과, 우리 모두의 백과사전</a></p>
+<p><a href="https://ko.wikipedia.org/wiki/%EC%83%81%EC%86%8D_(%EA%B0%9D%EC%B2%B4_%EC%A7%80%ED%96%A5_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)">상속 (객체 지향 프로그래밍) - 위키백과, 우리 모두의 백과사전</a></p>
+<p><a href="http://samchonlab.kr/221335478047">ToRy 삼촌 (http://samchonlab.kr) : 네이버 블로그</a></p>
+<p><a href="https://xxxelppa.tistory.com/31">함수와 메서드는 구분해서 말했으면 좋겠다</a></p>
+<p><a href="http://tcpschool.com/java/java_polymorphism_concept">코딩교육 티씨피스쿨</a></p>
+<p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Development_common_sense#object-oriented-programming">JaeYeopHan/Interview_Question_for_Beginner</a></p>
+<p><a href="https://opentutorials.org/course/2517/14133">오버로딩(Overloading) - 프로그래밍 입문</a></p>
+<p><a href="https://sourkent.tistory.com/entry/%EC%83%81%EC%86%8D%EC%8B%9C-%EB%B6%80%EB%AA%A8%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%A7%B4%EB%B2%84%ED%95%A8%EC%88%98-%EC%82%AC%EC%9A%A9">상속시 부모클래스 맴버함수 사용</a></p>
+<p><a href="https://javacpro.tistory.com/31">[JAVA객체지향디자인패턴] 캡슐화(Encapsulation) 란 무엇인가?</a></p>
+<p><a href="https://ko.wikipedia.org/wiki/%EC%BA%A1%EC%8A%90%ED%99%94">캡슐화 - 위키백과, 우리 모두의 백과사전</a></p>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#oop-object-oriented-programming" class="yt1e5n3" data-toc-link data-depth="2"> OOP (Object Oriented Programming) </a> </li><li class="depth-3"> <a href="#객체-지향-프로그래밍" class="yt1e5n3" data-toc-link data-depth="3"> 객체 지향 프로그래밍 </a> </li><li class="depth-3"> <a href="#장점" class="yt1e5n3" data-toc-link data-depth="3"> 장점 </a> </li><li class="depth-3"> <a href="#단점" class="yt1e5n3" data-toc-link data-depth="3"> 단점 </a> </li><li class="depth-3"> <a href="#객체-지향적-설계-원칙-solid" class="yt1e5n3" data-toc-link data-depth="3"> 객체 지향적 설계 원칙 (SOLID) </a> </li><li class="depth-3"> <a href="#추상화" class="yt1e5n3" data-toc-link data-depth="3"> 추상화 </a> </li><li class="depth-3"> <a href="#상속" class="yt1e5n3" data-toc-link data-depth="3"> 상속 </a> </li><li class="depth-3"> <a href="#캡슐화-encapsulation" class="yt1e5n3" data-toc-link data-depth="3"> 캡슐화 (Encapsulation) </a> </li><li class="depth-3"> <a href="#다형성-polymorphism" class="yt1e5n3" data-toc-link data-depth="3"> 다형성 (Polymorphism) </a> </li><li class="depth-2"> <a href="#추상-클래스abstract-class" class="yt1e5n3" data-toc-link data-depth="2"> 추상 클래스(Abstract Class) </a> </li><li class="depth-2"> <a href="#reference" class="yt1e5n3" data-toc-link data-depth="2"> Reference </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>TypeScript 디자인 패턴 - 메멘토 패턴 · Vallista Blog</title><meta name="description" content><meta property="og:title" content="TypeScript 디자인 패턴 - 메멘토 패턴 · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/TypeScript-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EB%A9%94%EB%A9%98%ED%86%A0-%ED%8C%A8%ED%84%B4/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.BR42T3NH.css">
+<link rel="stylesheet" href="/_astro/style.bcqNdLA3.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 프론트엔드 </span> <span class="_1df7oe00 _1df7oe02"> TypeScript 디자인 패턴 </span> </div> <h1 class="o06wxs3">TypeScript 디자인 패턴 - 메멘토 패턴</h1>  <div class="o06wxs5"> <time datetime="2020-06-07T18:41:05.000Z">2020.06.07</time> <span>·</span> <span>5 min read</span> <span>·</span> <span>2,273 words</span> </div> </header> <div class="y6w2c71"> <span class="y6w2c72" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"> <path d="M2 4.5a2 2 0 0 1 2-2h2M8 2.5h2a2 2 0 0 1 2 2M2 9.5a2 2 0 0 0 2 2h2M8 11.5h2a2 2 0 0 0 2-2"></path> <path d="M5 7h4"></path> </svg> </span> <span>이 글은 시리즈의 일부입니다 · <a href="/series/TypeScript-디자인-패턴" style="color: inherit; border-bottom: 1px solid currentColor;">TypeScript 디자인 패턴</a></span> </div> <details class="y6w2c70" open> <summary class="y6w2c73"> <div class="y6w2c74"> <span class="y6w2c75">Series</span> <span class="y6w2c76">TypeScript 디자인 패턴</span> </div> <div class="y6w2c77"> <span class="y6w2c78">3 / 3</span> <svg class="y6w2c79 y6w2c7a" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"> <path d="M3 5l4 4 4-4"></path> </svg> </div> </summary> <ol class="y6w2c7b"> <li> <a href="/articles/TypeScript-디자인-패턴-팩토리-패턴" class="y6w2c7c"> <span class="y6w2c7e">#01</span> <span class="y6w2c7f">TypeScript 디자인 패턴 - 팩토리 패턴</span> <time class="y6w2c7g" datetime="2020-05-05T20:44:56.000Z">2020.05.05</time> </a> </li><li> <a href="/articles/TypeScript-디자인-패턴-옵저버-패턴" class="y6w2c7c"> <span class="y6w2c7e">#02</span> <span class="y6w2c7f">TypeScript 디자인 패턴 - 옵저버 패턴</span> <time class="y6w2c7g" datetime="2020-05-22T20:30:33.000Z">2020.05.22</time> </a> </li><li> <a href="/articles/TypeScript-디자인-패턴-메멘토-패턴" class="y6w2c7c y6w2c7d" aria-current="page"> <span class="y6w2c7e">#03</span> <span class="y6w2c7f">TypeScript 디자인 패턴 - 메멘토 패턴</span> <time class="y6w2c7g" datetime="2020-06-07T18:41:05.000Z">2020.06.07</time> </a> </li> </ol> </details> <script type="module">function o(e){const n=e.querySelector("svg");n&&n.classList.toggle("is-open",e.open)}function t(){document.querySelectorAll("details").forEach(e=>{e.dataset.chevronBound||(e.dataset.chevronBound="1",e.addEventListener("toggle",()=>o(e)))})}t();document.addEventListener("vallista:page-load",t);document.addEventListener("astro:page-load",t);</script><article class="o06wxs6">  <p></p><figure class="img-card"><img src="/contents/articles/TypeScript-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EB%A9%94%EB%A9%98%ED%86%A0-%ED%8C%A8%ED%84%B4/assets/0.jpg" alt="이미지0" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지0</figcaption></figure><p></p>
+<h2 id="메멘토-패턴">메멘토 패턴<a aria-hidden="true" tabindex="-1" href="#메멘토-패턴"><span class="icon icon-link"></span></a></h2>
+<p>설계 문제에 대해서 해답을 문서화 해놓은 디자인 패턴에는 생성, 구조, 행동, 동시실행과 같은 분류가 있습니다. 그 중에서 메멘토 패턴은 동작에 대한 패턴입니다.</p>
+<p>메멘토 패턴은 초기 HP 제품을 위해 <code>Noah Thompson</code>과 <code>Dr.Drew Clinkenbeard</code>에 의해 제작되었으며, 객체는 <code>구현 변경 테스트 재사용이 쉬워야 한다</code> 는 것을 기술한 <code>23가지 GOF의 디자인패턴</code> 중 하나입니다.</p>
+<p>이 패턴이 해결할 수 있는 문제는 <code>객체 내부 상태를 저장하므로써 객체 상태가 변경되었을 때 이전 상태로의 복구</code> 입니다. 즉, 쉽게 이야기 하면 이전 상태(원상태)로 되돌리는 역할을 합니다. 이 패턴이 주요로 사용되는 곳은 에러 콜백, 삭제에 대한 되돌림와 같은 유저 액션에 대해서도 충분히 대응이 가능합니다.</p>
+<p>특히나 메멘토 패턴은 <code>캡슐화를 해치지 않는 선에서 내부 상태에 대한 원복</code>을 목표로 하기 때문에, 객체지향 관점에서 효과적이라 볼 수 있습니다. 하지만 캡슐화가 잘 된 객체는 데이터 구조가 잘 숨겨져 있기 때문에 객체의 외부에서 접근이 쉽지 않습니다. 어떻게 접근할 수 있을까요?</p>
+<h2 id="메멘토-패턴-1">메멘토 패턴<a aria-hidden="true" tabindex="-1" href="#메멘토-패턴-1"><span class="icon icon-link"></span></a></h2>
+<p>메멘토 패턴은 캡슐화가 잘 된 객체에 접근할 수 있도록 3가지 객체로 이루어집니다.</p>
+<h3 id="오리지네이터-originator">오리지네이터 (Originator)<a aria-hidden="true" tabindex="-1" href="#오리지네이터-originator"><span class="icon icon-link"></span></a></h3>
+<p>오리지네이터는 내부의 상태를 가지고 있는 객체입니다.</p>
+<ul>
+<li>객체에 내부 상태를 저장</li>
+<li>객체로부터 이전 상태를 복구</li>
+</ul>
+<p>오리지네이터는 단독으로 객체에 접근할 수 있습니다.</p>
+<h3 id="케어테이커-caretaker">케어테이커 (Caretaker)<a aria-hidden="true" tabindex="-1" href="#케어테이커-caretaker"><span class="icon icon-link"></span></a></h3>
+<p>케어테이커는 오리지네이터에 대해서 액션을 제공하지만, 변경에 대한 취소 및 저장에 대해서만 제공합니다. 다른 기능도 제공하게 되면 단일-책임원칙에 위배되기 때문입니다.</p>
+<h3 id="메멘토-memento">메멘토 (Memento)<a aria-hidden="true" tabindex="-1" href="#메멘토-memento"><span class="icon icon-link"></span></a></h3>
+<p>메멘토 객체는 Originator와 반대로, 변경되기 이 전의 상태를 갖고있는 객체입니다.</p>
+<br>
+<p>위의 3가지 객체는 아래의 순서대로 작동합니다.</p>
+<ol>
+<li>케어테이커는 오리지네이터에 대해서 변경에 대한 실행 취소를 진행합니다.</li>
+<li>그러기 위해 오리지네이터에게 메멘토 객체를 요청합니다.</li>
+<li>오리지네이터는 내부 상태를 변경하기위해서 메멘토 객체를 반환하며 케어테이커는 반환된 메멘토 객체를 적용합니다.</li>
+</ol>
+<br>
+<p>케어테이커(클라이언트)는 오리지네이터로 부터 메멘토를 요청합니다. 이는 오리지네이터의 내부 상태를 저장하기 위함이며, 오리지네이터에게 메멘토를 다시 돌려줄 수 있습니다.</p>
+<h2 id="구조">구조<a aria-hidden="true" tabindex="-1" href="#구조"><span class="icon icon-link"></span></a></h2>
+<p></p><figure class="img-card"><img src="/contents/articles/TypeScript-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EB%A9%94%EB%A9%98%ED%86%A0-%ED%8C%A8%ED%84%B4/assets/1.jpg" alt="이미지1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지1</figcaption></figure>
+(사진 1. 메멘토의 구조)<p></p>
+<br>
+<p></p><figure class="img-card"><img src="/contents/articles/TypeScript-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EB%A9%94%EB%A9%98%ED%86%A0-%ED%8C%A8%ED%84%B4/assets/2.jpg" alt="이미지2" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지2</figcaption></figure>
+(사진 2. Saving, Restoring 프로세스)<p></p>
+<br>
+<p>이 프로세스를 React 프로젝트를 적용하기 이전에 코드를 살펴봅시다.</p>
+<br>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Originator</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  public</span><span style="color:#E36209"> state1</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#D73A49">  public</span><span style="color:#E36209"> state2</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  constructor</span><span style="color:#24292E">(</span><span style="color:#E36209">state1</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">, </span><span style="color:#E36209">state2</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.state1 </span><span style="color:#D73A49">=</span><span style="color:#24292E"> state1</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.state2 </span><span style="color:#D73A49">=</span><span style="color:#24292E"> state2</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  createMemento</span><span style="color:#24292E">()</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Memento</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Memento</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">.state1, </span><span style="color:#005CC5">this</span><span style="color:#24292E">.state2)</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  restoreMemento</span><span style="color:#24292E">(</span><span style="color:#E36209">memento</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Memento</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.state1 </span><span style="color:#D73A49">=</span><span style="color:#24292E"> memento.state1</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.state2 </span><span style="color:#D73A49">=</span><span style="color:#24292E"> memento.state2</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Memento</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#E36209"> state1</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#D73A49">  readonly</span><span style="color:#E36209"> state2</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  constructor</span><span style="color:#24292E">(</span><span style="color:#E36209">state1</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">, </span><span style="color:#E36209">state2</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.state1 </span><span style="color:#D73A49">=</span><span style="color:#24292E"> state1</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.state2 </span><span style="color:#D73A49">=</span><span style="color:#24292E"> state2</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> CareTaker</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#E36209"> memento</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Memento</span><span style="color:#24292E">[] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  saving</span><span style="color:#24292E">(</span><span style="color:#E36209">originator</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Originator</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.memento.</span><span style="color:#6F42C1">push</span><span style="color:#24292E">(originator.</span><span style="color:#6F42C1">createMemento</span><span style="color:#24292E">())</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  restoring</span><span style="color:#24292E">(</span><span style="color:#E36209">originator</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Originator</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#005CC5">this</span><span style="color:#24292E">.memento.</span><span style="color:#005CC5">length</span><span style="color:#D73A49"> ===</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">) </span><span style="color:#D73A49">return</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    originator.</span><span style="color:#6F42C1">restoreMemento</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">.memento[</span><span style="color:#005CC5">this</span><span style="color:#24292E">.memento.</span><span style="color:#005CC5">length</span><span style="color:#D73A49"> -</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">])</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> originator</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Originator</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Originator</span><span style="color:#24292E">(</span><span style="color:#032F62">'first'</span><span style="color:#24292E">, </span><span style="color:#032F62">'one'</span><span style="color:#24292E">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> careTaker</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> CareTaker</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> CareTaker</span><span style="color:#24292E">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">careTaker.</span><span style="color:#6F42C1">saving</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">originator.state1 </span><span style="color:#D73A49">=</span><span style="color:#032F62"> 'second'</span></span>
+<span class="line"><span style="color:#24292E">originator.state2 </span><span style="color:#D73A49">=</span><span style="color:#032F62"> 'two'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">console.</span><span style="color:#6F42C1">log</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">careTaker.</span><span style="color:#6F42C1">restoring</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">console.</span><span style="color:#6F42C1">log</span><span style="color:#24292E">(originator)</span></span></code></pre>
+<p><code>careTaker</code> 객체는 originator 객체를 받아 저장 및 복원을 진행합니다. Originator는 Memento를 만들어낼 뿐이지, 자신의 상태에 대해서만 가지고 있습니다. 실제로 일을 하는 곳은 <code>CareTaker</code>라 보시면되고, 스냅샷을 <code>Memento</code>라고 이해하시면 되겠습니다.</p>
+<p>그렇다면 이렇게 이해한 코드를 바탕으로 구현을 해보도록 합시다.</p>
+<h2 id="구현">구현<a aria-hidden="true" tabindex="-1" href="#구현"><span class="icon icon-link"></span></a></h2>
+<p>해당 코드는 <a href="https://github.com/Vallista/React-Memento-Pattern-Use-TypeScript">React-Memento-Pattern-Use-TypeScript</a>에서 확인할 수 있습니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/TypeScript-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EB%A9%94%EB%A9%98%ED%86%A0-%ED%8C%A8%ED%84%B4/assets/_remote/28b6c2ceb787.gif" alt="1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">1</figcaption></figure>
+(사진 3. 실행 결과)<p></p>
+<p>Todo List 예시를 사용하여 변화에 대해서 롤백할 수 있는 기능을 메멘토 패턴으로 추가를 해보겠습니다.</p>
+<h3 id="모델">모델<a aria-hidden="true" tabindex="-1" href="#모델"><span class="icon icon-link"></span></a></h3>
+<p><strong>src/models/memento.ts</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> interface</span><span style="color:#6F42C1"> IOriginator</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">T</span><span style="color:#24292E">> {</span></span>
+<span class="line"><span style="color:#6F42C1">  createMemento</span><span style="color:#24292E">()</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> T</span></span>
+<span class="line"><span style="color:#6F42C1">  restoreMemento</span><span style="color:#24292E">(</span><span style="color:#E36209">memento</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> T</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> class</span><span style="color:#6F42C1"> CareTaker</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">T</span><span style="color:#24292E">> {</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#E36209"> mementoList</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> T</span><span style="color:#24292E">[] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  saving</span><span style="color:#24292E">(</span><span style="color:#E36209">originator</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> IOriginator</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">T</span><span style="color:#24292E">>)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.mementoList.</span><span style="color:#6F42C1">push</span><span style="color:#24292E">(originator.</span><span style="color:#6F42C1">createMemento</span><span style="color:#24292E">())</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  restoring</span><span style="color:#24292E">(</span><span style="color:#E36209">originator</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> IOriginator</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">T</span><span style="color:#24292E">>)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#005CC5">this</span><span style="color:#24292E">.mementoList.</span><span style="color:#005CC5">length</span><span style="color:#D73A49"> ===</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">) </span><span style="color:#D73A49">return</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    originator.</span><span style="color:#6F42C1">restoreMemento</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">.mementoList[</span><span style="color:#005CC5">this</span><span style="color:#24292E">.mementoList.</span><span style="color:#005CC5">length</span><span style="color:#D73A49"> -</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">])</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.mementoList.</span><span style="color:#6F42C1">splice</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">.mementoList.</span><span style="color:#005CC5">length</span><span style="color:#D73A49"> -</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">, </span><span style="color:#005CC5">1</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>메멘토 패턴에 들어가는 기본적인 인터페이스와 클래스입니다.</p>
+<p>IOriginator는 Original 객체에 대해서 느슨한 결합으로 추가할 수 있게 도와줍니다. 현재 객체의 상태에 대해서 저장하기 위해, Generic으로 T를 받아, 해당 타입을 반환하고 restore시 parameter로 받을 수 있도록 함수를 만듭니다.</p>
+<p>CareTaker는 단독으로 사용될 수 있어야 합니다. 그렇기 때문에 느슨한 연결보다, 클래스로 기능을 명시합니다. CareTaker에서 진행할 내용은 저장과 롤백 두 가지 기능을 진행할 것 입니다. 해당 객체에 대해서 상태를 저장할 수 있도록 generic으로 T를 받고, T 타입에 대해서 상태를 여러개 물 수 있도록 T[] 와같은 배열 형태로 구현합니다. 이 배열은 힙으로 사용할 예정입니다. 저장할 때에는 T를 받아 push를 진행해주고, 롤백시에는 힙으로 사용하므로 가장 뒤에 있는 T를 가져와 적용하고, replacement 하도록 설계합니다.</p>
+<br>
+<p><strong>src/models/Removable</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> enum</span><span style="color:#6F42C1"> RemoveState</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">  IDLE</span><span style="color:#D73A49"> =</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#005CC5">  REMOVE</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> interface</span><span style="color:#6F42C1"> IRemovable</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">  getRemoveState</span><span style="color:#24292E">()</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> RemoveState</span></span>
+<span class="line"><span style="color:#6F42C1">  remove</span><span style="color:#24292E">()</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>Removable은 상태에 대한 enum 값과, 삭제가능한 객체인지를 알려주는 Interface로 구성됩니다. Removable을 구현하는 클래스는 느슨한 결합으로 쉽게 추가하고 붙일 수 있습니다.</p>
+<br>
+<p><strong>Todo.ts</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { IRemovable, RemoveState } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> "./Removable"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> Todo</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> IRemovable</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#E36209"> removeState</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> RemoveState</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#D73A49"> readonly</span><span style="color:#E36209"> message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  constructor</span><span style="color:#24292E">(</span><span style="color:#E36209">message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.removeState </span><span style="color:#D73A49">=</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">IDLE</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.message </span><span style="color:#D73A49">=</span><span style="color:#24292E"> message</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.remove </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.remove.</span><span style="color:#6F42C1">bind</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  getMessage</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.message</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  getRemoveState</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.removeState</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  remove</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#005CC5">this</span><span style="color:#24292E">.removeState </span><span style="color:#D73A49">!==</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">REMOVE</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#005CC5">      this</span><span style="color:#24292E">.removeState </span><span style="color:#D73A49">=</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">REMOVE</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> Todo</span></span></code></pre>
+<p>Todo 객체를 추상화한 Todo 클래스는 삭제상태와 메시지를 멤버 변수로 갖고 있습니다. 캡슐화를 완성하기 위해서 멤버변수는 은닉화를 해주었고, 외부 진입에 대해서 한정적이게 하도록 get 함수로 외부로의 연결통로를 두었습니다.</p>
+<br>
+<p><strong>TodoList.ts</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> Todo </span><span style="color:#D73A49">from</span><span style="color:#032F62"> "./Todo"</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { RemoveState, IRemovable } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './Removable'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> TodoList</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> IRemovable</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#E36209"> todos</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Todo</span><span style="color:#24292E">[]</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#E36209"> removeState</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> RemoveState</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">IDLE</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  constructor</span><span style="color:#24292E">(</span><span style="color:#E36209">todos</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Todo</span><span style="color:#24292E">[] </span><span style="color:#D73A49">|</span><span style="color:#005CC5"> null</span><span style="color:#D73A49"> =</span><span style="color:#005CC5"> null</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (todos) {</span></span>
+<span class="line"><span style="color:#005CC5">      this</span><span style="color:#24292E">.todos </span><span style="color:#D73A49">=</span><span style="color:#24292E"> todos</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">      return</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.todos </span><span style="color:#D73A49">=</span><span style="color:#24292E"> [</span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> Todo</span><span style="color:#24292E">(</span><span style="color:#032F62">'테스트'</span><span style="color:#24292E">)]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.add </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.add.</span><span style="color:#6F42C1">bind</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.remove </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.remove.</span><span style="color:#6F42C1">bind</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  getTodos</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.todos.</span><span style="color:#6F42C1">filter</span><span style="color:#24292E">((</span><span style="color:#E36209">todo</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> todo.</span><span style="color:#6F42C1">getRemoveState</span><span style="color:#24292E">() </span><span style="color:#D73A49">!==</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">REMOVE</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  add</span><span style="color:#24292E">(</span><span style="color:#E36209">message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.todos.</span><span style="color:#6F42C1">push</span><span style="color:#24292E">(</span><span style="color:#D73A49">new</span><span style="color:#6F42C1"> Todo</span><span style="color:#24292E">(message))</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  remove</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (</span><span style="color:#005CC5">this</span><span style="color:#24292E">.removeState </span><span style="color:#D73A49">!==</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">REMOVE</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#005CC5">      this</span><span style="color:#24292E">.removeState </span><span style="color:#D73A49">=</span><span style="color:#24292E"> RemoveState.</span><span style="color:#005CC5">REMOVE</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  getRemoveState</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.removeState</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> TodoList</span></span></code></pre>
+<p>TodoList는 생성 말고도 데이터를 덮어쓰기 가능하도록 constructor에 예외를 줍니다. 해당 부분은 뒤에서 설명이 좀 더 이루어 집니다.</p>
+<br>
+<p><strong>TodoListCollection.ts</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> TodoList </span><span style="color:#D73A49">from</span><span style="color:#032F62"> "./TodoList"</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { IOriginator } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> "./Memento"</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> Todo </span><span style="color:#D73A49">from</span><span style="color:#032F62"> "./Todo"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">class</span><span style="color:#6F42C1"> TodoListCollection</span><span style="color:#D73A49"> implements</span><span style="color:#6F42C1"> IOriginator</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">TodoListCollection</span><span style="color:#24292E">> {</span></span>
+<span class="line"><span style="color:#D73A49">  private</span><span style="color:#E36209"> todoList</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">[] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  constructor</span><span style="color:#24292E">(</span><span style="color:#E36209">list</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">[] </span><span style="color:#D73A49">|</span><span style="color:#005CC5"> null</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (list) </span><span style="color:#005CC5">this</span><span style="color:#24292E">.todoList </span><span style="color:#D73A49">=</span><span style="color:#24292E"> list</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  setTodoList</span><span style="color:#24292E">(</span><span style="color:#E36209">list</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">[]) {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.todoList </span><span style="color:#D73A49">=</span><span style="color:#24292E"> list</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  getTodoList</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> this</span><span style="color:#24292E">.todoList</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  createMemento</span><span style="color:#24292E">()</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoListCollection</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> TodoListCollection</span><span style="color:#24292E">(</span><span style="color:#005CC5">this</span><span style="color:#24292E">.todoList.</span><span style="color:#6F42C1">map</span><span style="color:#24292E">(</span><span style="color:#E36209">list</span><span style="color:#D73A49"> =></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">      const</span><span style="color:#005CC5"> todoList</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">(list.</span><span style="color:#6F42C1">getTodos</span><span style="color:#24292E">().</span><span style="color:#6F42C1">map</span><span style="color:#24292E">(</span><span style="color:#E36209">todo</span><span style="color:#D73A49"> =></span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> Todo</span><span style="color:#24292E">(todo.</span><span style="color:#6F42C1">getMessage</span><span style="color:#24292E">())))</span></span>
+<span class="line"><span style="color:#D73A49">      return</span><span style="color:#24292E"> todoList</span></span>
+<span class="line"><span style="color:#24292E">    }))</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  restoreMemento</span><span style="color:#24292E">(</span><span style="color:#E36209">memento</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoListCollection</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">    this</span><span style="color:#24292E">.todoList </span><span style="color:#D73A49">=</span><span style="color:#24292E"> memento.</span><span style="color:#6F42C1">getTodoList</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> TodoListCollection</span></span></code></pre>
+<p>TodoListCollection은 실제 렌더링은 되지 않지만 상태를 갖고있는 Originator 클래스 입니다.</p>
+<p>해당 클래스에서 메멘토를 만들고, 상태에 대해서 적용하는 코드가 탄생합니다.</p>
+<p>createMemento에서는 TodoListCollection단위로 객체를 재 생성합니다. 이렇게 재생성 하는 이유는 JavaScript의 Prototype의 한계가 있기 때문입니다. 그래서 DeepCopy를 통해 데이터를 재바인딩 합니다.</p>
+<h2 id="react-component-hooks-구현">React component, hooks 구현<a aria-hidden="true" tabindex="-1" href="#react-component-hooks-구현"><span class="icon icon-link"></span></a></h2>
+<p>이제 이 모델을 사용해야하는데 React와 객체지향 모델과의 결합을 하는 예제는 많지 않기 때문에 생소할 수 있습니다. 그래서, 최근 가장 많이 사용한다는 hooks와 functional component 형태로 제작해보겠습니다.</p>
+<br>
+<p><strong>src/hooks/useTodo.tsx</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { useState } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> TodoList </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../models/TodoList'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { CareTaker } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../models/Memento'</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> TodoListCollection </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../models/TodoListCollection'</span><span style="color:#24292E">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> careTaker</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> CareTaker</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">TodoListCollection</span><span style="color:#24292E">>()</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> originator</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> TodoListCollection</span><span style="color:#24292E">([])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">function</span><span style="color:#6F42C1"> useTodo</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> [</span><span style="color:#005CC5">todoListCollection</span><span style="color:#24292E">, </span><span style="color:#005CC5">setTodoListCollection</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> useState</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">TodoList</span><span style="color:#24292E">[]>([])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> reRender</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> (</span><span style="color:#E36209">other</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">[] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">    setTodoListCollection</span><span style="color:#24292E">(</span></span>
+<span class="line"><span style="color:#24292E">      [</span><span style="color:#D73A49">...</span><span style="color:#24292E">todoListCollection, </span><span style="color:#D73A49">...</span><span style="color:#24292E">other]</span></span>
+<span class="line"><span style="color:#24292E">    )</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> addTodoList</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    originator.</span><span style="color:#6F42C1">setTodoList</span><span style="color:#24292E">(todoListCollection)</span></span>
+<span class="line"><span style="color:#24292E">    careTaker.</span><span style="color:#6F42C1">saving</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    const</span><span style="color:#005CC5"> todoList</span><span style="color:#D73A49"> =</span><span style="color:#D73A49"> new</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">    reRender</span><span style="color:#24292E">([todoList])</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> addTodo</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> (</span><span style="color:#E36209">TodoList</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">, </span><span style="color:#E36209">message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    originator.</span><span style="color:#6F42C1">setTodoList</span><span style="color:#24292E">(todoListCollection)</span></span>
+<span class="line"><span style="color:#24292E">    careTaker.</span><span style="color:#6F42C1">saving</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    TodoList.</span><span style="color:#6F42C1">add</span><span style="color:#24292E">(message)</span></span>
+<span class="line"><span style="color:#6F42C1">    reRender</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> allAddTodo</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> (</span><span style="color:#E36209">message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    originator.</span><span style="color:#6F42C1">setTodoList</span><span style="color:#24292E">(todoListCollection)</span></span>
+<span class="line"><span style="color:#24292E">    careTaker.</span><span style="color:#6F42C1">saving</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">    todoListCollection.</span><span style="color:#6F42C1">forEach</span><span style="color:#24292E">((</span><span style="color:#E36209">list</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">      list.</span><span style="color:#6F42C1">add</span><span style="color:#24292E">(message)</span></span>
+<span class="line"><span style="color:#24292E">    })</span></span>
+<span class="line"><span style="color:#6F42C1">    reRender</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> allRemoveTodo</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> (window.</span><span style="color:#6F42C1">confirm</span><span style="color:#24292E">(</span><span style="color:#032F62">'정말 삭제하시겠습니까?'</span><span style="color:#24292E">)) {</span></span>
+<span class="line"><span style="color:#24292E">      originator.</span><span style="color:#6F42C1">setTodoList</span><span style="color:#24292E">(todoListCollection)</span></span>
+<span class="line"><span style="color:#24292E">      careTaker.</span><span style="color:#6F42C1">saving</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">      console.</span><span style="color:#6F42C1">log</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">      todoListCollection.</span><span style="color:#6F42C1">forEach</span><span style="color:#24292E">((</span><span style="color:#E36209">list</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">        list.</span><span style="color:#6F42C1">getTodos</span><span style="color:#24292E">().</span><span style="color:#6F42C1">forEach</span><span style="color:#24292E">(</span><span style="color:#E36209">todo</span><span style="color:#D73A49"> =></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">          todo.</span><span style="color:#6F42C1">remove</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">        })</span></span>
+<span class="line"><span style="color:#24292E">      })</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">      reRender</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#6F42C1"> rollback</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    careTaker.</span><span style="color:#6F42C1">restoring</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"><span style="color:#24292E">    console.</span><span style="color:#6F42C1">log</span><span style="color:#24292E">(originator)</span></span>
+<span class="line"><span style="color:#6F42C1">    setTodoListCollection</span><span style="color:#24292E">(originator.</span><span style="color:#6F42C1">getTodoList</span><span style="color:#24292E">())</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    todoListCollection,</span></span>
+<span class="line"><span style="color:#24292E">    addTodoList,</span></span>
+<span class="line"><span style="color:#24292E">    addTodo,</span></span>
+<span class="line"><span style="color:#24292E">    allAddTodo,</span></span>
+<span class="line"><span style="color:#24292E">    allRemoveTodo,</span></span>
+<span class="line"><span style="color:#24292E">    rollback</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> useTodo</span></span></code></pre>
+<p>custom hook인 useTodo 입니다. 모델과 대응되고 있으며, 모델의 코드를 프론트에 제공해주기 위해 리액트 코드로 변환하는 과정입니다.</p>
+<ol>
+<li>CareTaker와 originator를 최상단에 선언해줍니다. hooks안에 선언하면 매 갱신시마다 새로 할당이 되므로, 메모리에서 못써먹습니다. 그러므로 useHooks 파일이 불렸을 때 메모리에 로드되도록 선언합니다.</li>
+<li>custom hooks의 todoListCollection을 useState로 상태를 만듭니다. 상태의 타입은 모델이므로 TodoList[]로 지정합니다. 해당 부분을 TodoListCollection Class로 하지 않는 이유는, 상태 변경으로 리스트 갱신이 React에서는 클래스 단일로 진행하기 어렵기 때문입니다.</li>
+<li>reRender 함수는 shallow copy를 통해 React Component가 재랜더링 할 수 있도록 도와주는 함수입니다.</li>
+<li>addTodoList, addTodo등 추가하거나 삭제하는 함수들의 내부에서는 상태 변경 전에 현재 스냅샷을 찍어 originator에 등록하고, careTaker에서 배열에 저장합니다.</li>
+</ol>
+<p>그리고 상태와 함수를 추출하여 밖으로 내보냅니다.</p>
+<br>
+<p><strong>src/components/Todo.tsx</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#032F62"> '../App.css'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> IProps</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> Todo</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> React</span><span style="color:#24292E">.</span><span style="color:#6F42C1">FC</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">IProps</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> ({ </span><span style="color:#E36209">message</span><span style="color:#24292E"> }) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> &#x3C;</span><span style="color:#22863A">div</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">'todo'</span><span style="color:#24292E">>{message}&#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> Todo</span></span></code></pre>
+<p>Todo Component는 간단하게 message만 prop으로 받아서 렌더링을 해줍니다.</p>
+<br>
+<p><strong>src/components/Todos.tsx</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#032F62"> '../App.css'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> TodoList </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../models/TodoList'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> Todo </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './Todo'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { convertNumberToKorean } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../utils'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> IProps</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  todos</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span></span>
+<span class="line"><span style="color:#E36209">  index</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#6F42C1">  addTodo</span><span style="color:#24292E">(</span><span style="color:#E36209">TodoList</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> TodoList</span><span style="color:#24292E">, </span><span style="color:#E36209">message</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> void</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> Todos</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> React</span><span style="color:#24292E">.</span><span style="color:#6F42C1">FC</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">IProps</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> ({ </span><span style="color:#E36209">todos</span><span style="color:#24292E">, </span><span style="color:#E36209">index</span><span style="color:#24292E">, </span><span style="color:#E36209">addTodo</span><span style="color:#24292E"> }) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#22863A">div</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">"todos"</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#22863A">h1</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">"todos-title"</span><span style="color:#24292E">>{</span><span style="color:#6F42C1">convertNumberToKorean</span><span style="color:#24292E">(index)}&#x3C;/</span><span style="color:#22863A">h1</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#22863A">div</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">"todos-wrapper"</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        {todos.</span><span style="color:#6F42C1">getTodos</span><span style="color:#24292E">().</span><span style="color:#6F42C1">map</span><span style="color:#24292E">((</span><span style="color:#E36209">todo</span><span style="color:#24292E">, </span><span style="color:#E36209">idx</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> &#x3C;</span><span style="color:#005CC5">Todo</span><span style="color:#6F42C1"> message</span><span style="color:#D73A49">=</span><span style="color:#24292E">{todo.</span><span style="color:#6F42C1">getMessage</span><span style="color:#24292E">()} </span><span style="color:#6F42C1">key</span><span style="color:#D73A49">=</span><span style="color:#24292E">{idx} />)}</span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#22863A">button</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">"button bottom-absolute"</span><span style="color:#6F42C1"> onClick</span><span style="color:#D73A49">=</span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#24292E">        () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> { </span><span style="color:#6F42C1">addTodo</span><span style="color:#24292E">(todos, </span><span style="color:#032F62">`${</span><span style="color:#24292E">todos</span><span style="color:#032F62">.</span><span style="color:#6F42C1">getTodos</span><span style="color:#032F62">().</span><span style="color:#005CC5">length</span><span style="color:#032F62">} 번째 테스트`</span><span style="color:#24292E">) }</span></span>
+<span class="line"><span style="color:#24292E">      }>+&#x3C;/</span><span style="color:#22863A">button</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> Todos</span></span></code></pre>
+<p>Todos에서는 TodoList 모델을 받아서 렌더링 해줍니다.</p>
+<ol>
+<li>index를 받는 이유는 실행하고 하나, 둘, 셋 등의 한국말로 텍스트를 띄워주기 위해 index 번호를 받습니다.</li>
+<li>addTodo는 추가 된 후 렌더링을 해주어야 하므로 hooks에서 만든 함수를 Prop Drilling 으로 내려줍니다.</li>
+<li>convertNumberToKorean은 하나, 둘, 셋 과 같이 한글 숫자로 번역해주도록 만든 함수입니다.</li>
+</ol>
+<br>
+<h2 id="app-적용">App 적용<a aria-hidden="true" tabindex="-1" href="#app-적용"><span class="icon icon-link"></span></a></h2>
+<p>App에서 실제로 적용해줍니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React, { useEffect } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#032F62"> './App.css'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> useTodo </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './hooks/useTodo'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> Todos </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './components/Todos'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> App</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#24292E"> { </span><span style="color:#005CC5">todoListCollection</span><span style="color:#24292E">, </span><span style="color:#005CC5">addTodoList</span><span style="color:#24292E">, </span><span style="color:#005CC5">addTodo</span><span style="color:#24292E">, </span><span style="color:#005CC5">allAddTodo</span><span style="color:#24292E">, </span><span style="color:#005CC5">allRemoveTodo</span><span style="color:#24292E">, </span><span style="color:#005CC5">rollback</span><span style="color:#24292E"> } </span><span style="color:#D73A49">=</span><span style="color:#6F42C1"> useTodo</span><span style="color:#24292E">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">  useEffect</span><span style="color:#24292E">(() </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">    addTodoList</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  }, [])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#22863A">div</span><span style="color:#6F42C1"> id</span><span style="color:#D73A49">=</span><span style="color:#032F62">'app'</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#22863A">div</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">'collection'</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        {todoListCollection.</span><span style="color:#6F42C1">map</span><span style="color:#24292E">((</span><span style="color:#E36209">todoList</span><span style="color:#24292E">, </span><span style="color:#E36209">index</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">          &#x3C;</span><span style="color:#005CC5">Todos</span><span style="color:#6F42C1"> todos</span><span style="color:#D73A49">=</span><span style="color:#24292E">{todoList} </span><span style="color:#6F42C1">index</span><span style="color:#D73A49">=</span><span style="color:#24292E">{index </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">} </span><span style="color:#6F42C1">addTodo</span><span style="color:#D73A49">=</span><span style="color:#24292E">{addTodo} </span><span style="color:#6F42C1">key</span><span style="color:#D73A49">=</span><span style="color:#24292E">{index} /></span></span>
+<span class="line"><span style="color:#24292E">        ))}</span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;</span><span style="color:#22863A">button</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#032F62">'button'</span><span style="color:#6F42C1"> onClick</span><span style="color:#D73A49">=</span><span style="color:#24292E">{addTodoList}></span></span>
+<span class="line"><span style="color:#24292E">          콜렉션 추가</span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;/</span><span style="color:#22863A">button</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;</span><span style="color:#22863A">button</span></span>
+<span class="line"><span style="color:#6F42C1">          className</span><span style="color:#D73A49">=</span><span style="color:#032F62">'button'</span></span>
+<span class="line"><span style="color:#6F42C1">          onClick</span><span style="color:#D73A49">=</span><span style="color:#24292E">{() </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">            allAddTodo</span><span style="color:#24292E">(</span><span style="color:#032F62">'전체 추가'</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#24292E">          }}</span></span>
+<span class="line"><span style="color:#24292E">        ></span></span>
+<span class="line"><span style="color:#24292E">          전체 추가</span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;/</span><span style="color:#22863A">button</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;</span><span style="color:#22863A">button</span></span>
+<span class="line"><span style="color:#6F42C1">          className</span><span style="color:#D73A49">=</span><span style="color:#032F62">'button'</span></span>
+<span class="line"><span style="color:#6F42C1">          onClick</span><span style="color:#D73A49">=</span><span style="color:#24292E">{() </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">            allRemoveTodo</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">          }}</span></span>
+<span class="line"><span style="color:#24292E">        ></span></span>
+<span class="line"><span style="color:#24292E">          전체 삭제</span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;/</span><span style="color:#22863A">button</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;</span><span style="color:#22863A">button</span></span>
+<span class="line"><span style="color:#6F42C1">          className</span><span style="color:#D73A49">=</span><span style="color:#032F62">'button'</span></span>
+<span class="line"><span style="color:#6F42C1">          onClick</span><span style="color:#D73A49">=</span><span style="color:#24292E">{() </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">            rollback</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">          }}</span></span>
+<span class="line"><span style="color:#24292E">        ></span></span>
+<span class="line"><span style="color:#24292E">          롤백</span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;/</span><span style="color:#22863A">button</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> App</span></span></code></pre>
+<h2 id="실행">실행<a aria-hidden="true" tabindex="-1" href="#실행"><span class="icon icon-link"></span></a></h2>
+<p></p><figure class="img-card"><img src="/contents/articles/TypeScript-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4-%EB%A9%94%EB%A9%98%ED%86%A0-%ED%8C%A8%ED%84%B4/assets/_remote/28b6c2ceb787.gif" alt="2" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">2</figcaption></figure>
+(사진 4: 결과)<p></p>
+<p>실행을 해보면 롤백이 제대로 동작하는 걸 볼 수 있습니다.</p>
+<h2 id="결론">결론<a aria-hidden="true" tabindex="-1" href="#결론"><span class="icon icon-link"></span></a></h2>
+<p>메멘토 패턴을 사용해 현재 상태를 저장하고, 롤백하는 구현을 쉽게 진행하였습니다. 다만 상태가 많아지면 메모리를 많이 먹으므로 최대 배열의 갯수를 잡아 코딩을 진행하는게 좋습니다.</p>
+<p>또한 메멘토 패턴은 커멘드 패턴을 통해 커맨드에 대한 롤백 및 미래에 대한 커맨드를 기억하고 추가하거나 하여 시뮬레이팅 시스템을 구현할 수도 있습니다.</p>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#메멘토-패턴" class="yt1e5n3" data-toc-link data-depth="2"> 메멘토 패턴 </a> </li><li class="depth-2"> <a href="#메멘토-패턴-1" class="yt1e5n3" data-toc-link data-depth="2"> 메멘토 패턴 </a> </li><li class="depth-3"> <a href="#오리지네이터-originator" class="yt1e5n3" data-toc-link data-depth="3"> 오리지네이터 (Originator) </a> </li><li class="depth-3"> <a href="#케어테이커-caretaker" class="yt1e5n3" data-toc-link data-depth="3"> 케어테이커 (Caretaker) </a> </li><li class="depth-3"> <a href="#메멘토-memento" class="yt1e5n3" data-toc-link data-depth="3"> 메멘토 (Memento) </a> </li><li class="depth-2"> <a href="#구조" class="yt1e5n3" data-toc-link data-depth="2"> 구조 </a> </li><li class="depth-2"> <a href="#구현" class="yt1e5n3" data-toc-link data-depth="2"> 구현 </a> </li><li class="depth-3"> <a href="#모델" class="yt1e5n3" data-toc-link data-depth="3"> 모델 </a> </li><li class="depth-2"> <a href="#react-component-hooks-구현" class="yt1e5n3" data-toc-link data-depth="2"> React component, hooks 구현 </a> </li><li class="depth-2"> <a href="#app-적용" class="yt1e5n3" data-toc-link data-depth="2"> App 적용 </a> </li><li class="depth-2"> <a href="#실행" class="yt1e5n3" data-toc-link data-depth="2"> 실행 </a> </li><li class="depth-2"> <a href="#결론" class="yt1e5n3" data-toc-link data-depth="2"> 결론 </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>TypeScript의 interface와 type alias · Vallista Blog</title><meta name="description" content><meta property="og:title" content="TypeScript의 interface와 type alias · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/TypeScript%EC%9D%98-interface%EC%99%80-type-alias/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.bcqNdLA3.css">
+<link rel="stylesheet" href="/_astro/style.BR42T3NH.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 프론트엔드 </span>  </div> <h1 class="o06wxs3">TypeScript의 interface와 type alias</h1>  <div class="o06wxs5"> <time datetime="2021-10-10T16:07:18.000Z">2021.10.10</time> <span>·</span> <span>6 min read</span> <span>·</span> <span>2,785 words</span> </div> </header> <article class="o06wxs6">  <p></p><figure class="img-card"><img src="/contents/articles/TypeScript%EC%9D%98-interface%EC%99%80-type-alias/assets/1.jpeg" alt="이미지1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지1</figcaption></figure><p></p>
+<p>타입스크립트의 Type Alias는 장점이면서 동시에 단점도 갖고있는 양날의 검입니다. 다양한 타입을 만들어낼 수도 있는 장점을 갖고 있지만, 다양한 타입을 만들어내므로써 쓸데없이 타입이 꼬이게 만들어 코드를 복잡하게 만든다는 단점도 존재합니다.</p>
+<p>이번 글에서는 타입스크립트에서 interface와 type alias가 어떠한 용도로 쓰여야 하는지, 각자 어떤 장점을 갖고 있는지 이야기해보도록 하겠습니다.</p>
+<h2 id="type-alias">Type Alias<a aria-hidden="true" tabindex="-1" href="#type-alias"><span class="icon icon-link"></span></a></h2>
+<p>type alias는 타입스크립트에서 빼놓을 수 없는 아주 중요한 매커니즘이며 잊으면 안되는 키워드입니다. type으로 하여금 여러 타입의 유니온을 만들 수 있습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> StringLiteralUnion</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> 'Hello'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'World'</span></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> NumberLiteralUnion</span><span style="color:#D73A49"> =</span><span style="color:#005CC5"> 1</span><span style="color:#D73A49"> |</span><span style="color:#005CC5"> 2</span><span style="color:#D73A49"> |</span><span style="color:#005CC5"> 3</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> UnionType</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> StringLiteralUnion</span><span style="color:#D73A49"> |</span><span style="color:#6F42C1"> NumberLiteralUnion</span></span>
+<span class="line"><span style="color:#6A737D">// 'Hello' | 'world' | 1 | 2 | 3</span></span></code></pre>
+<p><code>StringLiteralUnion</code>과 <code>NumberLiteralUnion</code>은 각각의 리터럴 타입에 대한 유니온입니다. 이 유니온을 합쳐서 또 하나의 유니온을 만들 수 있습니다.</p>
+<p>조금 더 복잡한 타입을 만들어보겠습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> IOS</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  type</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'iOS'</span></span>
+<span class="line"><span style="color:#E36209">  AppleChipVersion</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'A5'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'A6'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'A7'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Android</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  type</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'android'</span></span>
+<span class="line"><span style="color:#E36209">  apu</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'SnapDragon'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'Exynos'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> MobilePhone</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> IOS</span><span style="color:#D73A49"> |</span><span style="color:#6F42C1"> Android</span></span>
+<span class="line"><span style="color:#6A737D">// type이 iOS일 때 IOS의 인터페이스로 추론되고 android일 때 android의 인터페이스로 추론된다,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// ex)</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> myIOSPhone</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> MobilePhone</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  type: </span><span style="color:#032F62">'iOS'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  AppleChipVersion: </span><span style="color:#032F62">'A5'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> myAndroidPhone</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> MobilePhone</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  type: </span><span style="color:#032F62">'android'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  AppleChipVersion: </span><span style="color:#032F62">'A5'</span></span>
+<span class="line"><span style="color:#6A737D">  //~~~~~~~~~~~~~~~~~~~~~~ Error!</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>예제는 두 개의 인터페이스를 하나의 타입 유니온에 병합하여, 두 케이스별로 타입 추론이 다르게 되도록 하는 예제입니다. 이 예제에서 알다시피, 타입을 합치거나 선언하여 named type(명명된 타입)을 만들 수 있습니다.</p>
+<p>그런데 여기서 의문점이 생깁니다. type alias는 다양한 타입의 유니온을 만들 수 있다고 했습니다. 그렇다면 <code>interface IOS</code>와 <code>interface Android</code> 또한 type alias로 명명된 타입을 만들 수 있지 않을까요?</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> IOS</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  type</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'iOS'</span></span>
+<span class="line"><span style="color:#E36209">  AppleChipVersion</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'A5'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'A6'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'A7'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> Android</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  type</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'android'</span></span>
+<span class="line"><span style="color:#E36209">  apu</span><span style="color:#D73A49">:</span><span style="color:#032F62"> 'SnapDragon'</span><span style="color:#D73A49"> |</span><span style="color:#032F62"> 'Exynos'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> MobilePhone</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> IOS</span><span style="color:#D73A49"> |</span><span style="color:#6F42C1"> Android</span></span>
+<span class="line"><span style="color:#6A737D">// type이 iOS일 때 IOS의 인터페이스로 추론되고 android일 때 android의 인터페이스로 추론된다,</span></span></code></pre>
+<p>잘 됩니다. 그렇다면 인터페이스를 쓸 필요 없이 명명된 타입으로 모든 타입을 제공하면 되겠네요?</p>
+<h2 id="interface">Interface<a aria-hidden="true" tabindex="-1" href="#interface"><span class="icon icon-link"></span></a></h2>
+<p>Type Alias로 모든 타입 명세를 변경하기 전에, 잠깐만요. 무언가 이상합니다. 그렇다면 타입스크립트에서 인터페이스를 왜 만들걸까요?</p>
+<p>객체지향 프로그래밍에서 이야기하는 명세와 추상 인터페이스를 만들기 위해서 단순히 객체지향적 개념을 사용하는 사람을 위해서 제공한걸까요?</p>
+<p>사실 그렇지 않습니다. Interface는 Type Alias와 다른 성격을 갖고있습니다.</p>
+<p>아래의 타입에 대한 확장 예시를 보도록 하겠습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> ValidateProperties</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  errorMessage</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> FormProperties</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  disabled</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> =</span></span>
+<span class="line"><span style="color:#D73A49">  |</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ValidateProperties</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#D73A49">  |</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">FormProperties</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#D73A49">  |</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">      infoMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span></code></pre>
+<p>위의 예제는 ValidateProperties와 FormProperties 두 타입을 type ButtonProps에 확장의 개념으로 추가한 코드입니다.</p>
+<p>위 ButtonProps를 설명하면 아래와 같이 해석할 수 있습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> i_am_not_validate_properties</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ValidateProperties</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  errorMessage: </span><span style="color:#032F62">'string'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> button</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> i_am_not_validate_properties</span></span></code></pre>
+<p>그렇습니다. <code>type ButtonProps</code>는 <code>Partial&#x3C;ValidateProperties> | Partial&#x3C;FormProperties> | { infoMessage?: string }</code> 이므로, 세 개중 하나가 들어가도 문제가 없다는 코드가 되는 것입니다. (왜냐하면 |로 합집합을 만들었기 때문이죠.) 이는 인터페이스를 사용하여 읽는이에게 명확하게 전달해야합니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> ValidateProperties</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  errorMessage</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> FormProperties</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  disabled</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ValidateProperties</span><span style="color:#24292E">>, </span><span style="color:#6F42C1">Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">FormProperties</span><span style="color:#24292E">> {</span></span>
+<span class="line"><span style="color:#E36209">  infoMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> i_am_not_validate_properties</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">ValidateProperties</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  errorMessage: </span><span style="color:#032F62">'string'</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> button</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> i_am_not_validate_properties</span></span></code></pre>
+<p>물론 이렇게해도, 타입스크립트의 구조적 서브 타이핑 시스템은 <code>i_am_not_validate_properties</code>를 허용합니다. 하지만, <code>interface extends ?</code>로 인해, 확장이라는 명시를 해주게 되었습니다.</p>
+<p>정리를 하자면.</p>
+<ul>
+<li>개별적으로 타입이 허용될 수 있다는 의미를 부여하기보다, interface를 사용하여 ButtonProps에 확장하는 형태로 ButtonProps를 온전히 사용하라는 의미를 부여하므로써 협업하면서 장점을 가지도록 제공할 수 있습니다.</li>
+<li>| 로 인한 합집합을 해석하는것은 코드가 굉장히 길어지므로 별로 좋은 코드는 아닙니다. 또한 해당 코드는 Type Alias의 장점을 쓰지 않으므로, 굳이 사용할 이유가 없습니다.</li>
+</ul>
+<h3 id="react-component-props">React Component Props<a aria-hidden="true" tabindex="-1" href="#react-component-props"><span class="icon icon-link"></span></a></h3>
+<p>이러한 상황을 실제로 적용해보도록 합시다. 흔하게 쓰이는 리액트에서의 컴포넌트 코드입니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#6A737D">// Button.tsx</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React, { ReactNode, forwardRef } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  disabled</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#E36209">  danger</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#E36209">  errorMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#E36209">  infoMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#E36209">  children</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReactNode</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> Button</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> forwardRef</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">HTMLButtonElement</span><span style="color:#24292E">, </span><span style="color:#6F42C1">ButtonProps</span><span style="color:#24292E">>(</span></span>
+<span class="line"><span style="color:#24292E">  (</span><span style="color:#E36209">props</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#24292E">, </span><span style="color:#E36209">ref</span><span style="color:#24292E">) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">    const</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">      errorMessage</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#005CC5">      infoMessage</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#005CC5">      danger</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#005CC5">      children</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#D73A49">      ...</span><span style="color:#005CC5">otherProps</span></span>
+<span class="line"><span style="color:#24292E">    } </span><span style="color:#D73A49">=</span><span style="color:#24292E"> props</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#22863A">button</span><span style="color:#24292E"> {</span><span style="color:#D73A49">...</span><span style="color:#24292E">otherProps} </span><span style="color:#6F42C1">ref</span><span style="color:#D73A49">=</span><span style="color:#24292E">{ref}></span></span>
+<span class="line"><span style="color:#24292E">        {children}</span></span>
+<span class="line"><span style="color:#24292E">        // {</span><span style="color:#D73A49">...</span><span style="color:#24292E"> 그 외 에러 메시지 처리}</span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;/</span><span style="color:#22863A">button</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">    )</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">)</span></span></code></pre>
+<p>흔히, 이러한 코드를 많이 보았을 것입니다. 이 코드에서 ButtonProps를 type alias로 구현했습니다. 이 코드의 문제는 이렇게 구현했을 때가 아닙니다. 추후 확장을 할 때 불편함을 마주하게 됩니다.</p>
+<p>아래의 상황을 보겠습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#6A737D">// type.ts</span></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> CommonComponentProps</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  disabled</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#E36209">  danger</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Button.tsx</span></span>
+<span class="line"><span style="color:#24292E">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">CommonComponentProps</span><span style="color:#24292E">> </span><span style="color:#D73A49">|</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  errorMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#E36209">  infoMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#E36209">  children</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReactNode</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">...</span></span></code></pre>
+<p>Button 뿐만 아니라, Input이나 다양한 Component에서 사용하는 공통된 Prop을 하나의 명명된 타입으로 만들었습니다.</p>
+<p>앞으로 이러한 것들이 얼마나 추가가 될 지 모릅니다. 지금 당장은 몇 개 추가 안되므로 상관이 없지만, 이렇게 계속 생기게 되면 어디에 계속 추가해야할까요?</p>
+<p><code>Partial&#x3C;CommonComponentProps></code> 뒤에 계속 추가하는게 맞을까요? 아니면 ButtonProps가 실제로 갖고 있는 타입의 뒤에 붙이는게 맞을까요?</p>
+<p>이러한 것들은 사실상 담당 개발자가 로테이셔닝되고 손보는 사람이 많아질수록 고민을 줄여야 하는 포인트입니다.</p>
+<p>또한 위의 코드는 type alias의 장점 중 하나인 union type으로 만들어 복잡한 타입을 명명해서 사용하는 취지와 맞지도 않습니다.</p>
+<p>그러므로 코드는 아래와 같이 작성해야합니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="tsx"><code><span class="line"><span style="color:#6A737D">// type.ts</span></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> CommonComponentProps</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  disabled</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#E36209">  danger</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> boolean</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Button.tsx</span></span>
+<span class="line"><span style="color:#D73A49">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> ButtonProps</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> Partial</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">CommonComponentProps</span><span style="color:#24292E">> {</span></span>
+<span class="line"><span style="color:#E36209">  errorMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#E36209">  infoMessage</span><span style="color:#D73A49">?:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#E36209">  children</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ReactNode</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">...</span></span></code></pre>
+<p>그렇습니다. 인터페이스의 장점중 하나를 길게 설명했습니다. 정리를 하면 다음과 같습니다.</p>
+<ul>
+<li><strong>로직의 확장에 대한 처리가 타입보다 유용하며, 다양한 개발자가 협업해야하는 환경에서 Type alias보다 명확성을 부여합니다</strong></li>
+<li>무언가 데이터를 명세하고 공통 인터페이스를 만들어 제공할 때 interface를 써야합니다. type alias는 interface로 만들어진 이러한 날 것의 데이터를 실제 사용처에서 가공하여 이름을 명명하여 사용하는 곳에 집중해야합니다.</li>
+</ul>
+<h3 id="구조적-서브-타이핑">구조적 서브 타이핑<a aria-hidden="true" tabindex="-1" href="#구조적-서브-타이핑"><span class="icon icon-link"></span></a></h3>
+<p>먼저, type과 명세는 다릅니다.</p>
+<ul>
+<li>type은 string, number, interface, object 등을 읽컫습니다. 조금 더 나아가 union type은 이러한 타입의 집합을 나타냅니다.</li>
+<li>명세는 어떤 property가 존재하는지, 실제 어떤 데이터가 필요한지에 대해서 알 수 있는 이름과 타입의 나열입니다.</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> Property</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  a</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Property</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  a</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>두 개는 읽히기에 다릅니다. <code>type alias로 명명된 Property</code>는 앞으로 단순 문자열이 들어올 지, 숫자가 들어올 지, 오브젝트가 들어올 지, 인터페이스가 들어올 지 알 수가 없습니다.
+말 그대로 타입의 모음이기 때문이죠. 그래서 이름에 큰 의존을 해야합니다. 예제처럼 Property라고 하면 무엇인 지 쉽게 알 수가 없죠.</p>
+<p><code>interface Property</code>는 이와 다르게, object 형태로 기본적인 틀이 지정됩니다. 그렇기 때문에 object 안에 어떤 키와 type이 들어갈 지 명세로 인지할 수 있죠.</p>
+<p>그렇기 때문에, interface는 명세적인 성격이 강하며, type은 어떤 타입들의 모음의 성격이 강합니다.</p>
+<p>그렇다면, 현재 챕터인 구조적 서브 타이핑과는 어떤 연관관계가 있을까요?</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Vector1D</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  x</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  x</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#E36209">  y</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Vector3D</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  x</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#E36209">  y</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#E36209">  z</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">function</span><span style="color:#6F42C1"> Distance</span><span style="color:#24292E">(</span><span style="color:#E36209">base</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#24292E">, </span><span style="color:#E36209">target</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> Math.</span><span style="color:#6F42C1">sqrt</span><span style="color:#24292E">(Math.</span><span style="color:#6F42C1">pow</span><span style="color:#24292E">(target.x </span><span style="color:#D73A49">-</span><span style="color:#24292E"> base.x, </span><span style="color:#005CC5">2</span><span style="color:#24292E">) </span><span style="color:#D73A49">+</span><span style="color:#24292E"> Math.</span><span style="color:#6F42C1">pow</span><span style="color:#24292E">(target.y </span><span style="color:#D73A49">-</span><span style="color:#24292E"> base.y, </span><span style="color:#005CC5">2</span><span style="color:#24292E">))</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> a</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector3D</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> { x: </span><span style="color:#D73A49">-</span><span style="color:#005CC5">7</span><span style="color:#24292E">, y: </span><span style="color:#005CC5">6</span><span style="color:#24292E">, z: </span><span style="color:#005CC5">0</span><span style="color:#24292E"> }</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> b</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> { x: </span><span style="color:#005CC5">5</span><span style="color:#24292E">, y: </span><span style="color:#005CC5">11</span><span style="color:#24292E"> }</span></span>
+<span class="line"><span style="color:#24292E">console.</span><span style="color:#6F42C1">log</span><span style="color:#24292E">(</span><span style="color:#6F42C1">Distance</span><span style="color:#24292E">(a, b)) </span><span style="color:#6A737D">// 13</span></span></code></pre>
+<p>일반적인 정적타입 언어에서는 타입이 동일해야 연산이 된다는. nominal typing의 방식을 취하고 있었습니다. 하지만 structural(구조적) typing 방식에서는 이러한 서브타입들이 동일한 집합을 갖고 있다면 타입 체커가 통과시킵니다.</p>
+<p>여기서 얻을 수 있는 중요한 점은 명세를 구성할 때 같은 집합을 들고 있다면, 또 명명할 필요 없이 중복되는 속성을 줄이는게 핵심입니다.</p>
+<p>그렇기에 아래와 같이 작성할 수 있습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Vector1D</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  x</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> Vector1D</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  y</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> Vector3D</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  z</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">function</span><span style="color:#6F42C1"> Distance</span><span style="color:#24292E">(</span><span style="color:#E36209">base</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#24292E">, </span><span style="color:#E36209">target</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> Math.</span><span style="color:#6F42C1">sqrt</span><span style="color:#24292E">(Math.</span><span style="color:#6F42C1">pow</span><span style="color:#24292E">(target.x </span><span style="color:#D73A49">-</span><span style="color:#24292E"> base.x, </span><span style="color:#005CC5">2</span><span style="color:#24292E">) </span><span style="color:#D73A49">+</span><span style="color:#24292E"> Math.</span><span style="color:#6F42C1">pow</span><span style="color:#24292E">(target.y </span><span style="color:#D73A49">-</span><span style="color:#24292E"> base.y, </span><span style="color:#005CC5">2</span><span style="color:#24292E">))</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> a</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector3D</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> { x: </span><span style="color:#D73A49">-</span><span style="color:#005CC5">7</span><span style="color:#24292E">, y: </span><span style="color:#005CC5">6</span><span style="color:#24292E">, z: </span><span style="color:#005CC5">0</span><span style="color:#24292E"> }</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> b</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Vector2D</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> { x: </span><span style="color:#005CC5">5</span><span style="color:#24292E">, y: </span><span style="color:#005CC5">11</span><span style="color:#24292E"> }</span></span>
+<span class="line"><span style="color:#24292E">console.</span><span style="color:#6F42C1">log</span><span style="color:#24292E">(</span><span style="color:#6F42C1">Distance</span><span style="color:#24292E">(a, b)) </span><span style="color:#6A737D">// 13</span></span></code></pre>
+<p>정리하면 다음과 같습니다.</p>
+<ul>
+<li>구조적 서브 타이핑에서는 집합에 포함되어있는지로 타입체커가 통과판단을 진행합니다.</li>
+<li>그러므로, 명세 단계에서 최대한 중복을 줄이는 형태로 extends 를 진행하여 설계를 하는게 핵심입니다.</li>
+<li>만약 중복이 여기저기서 되는 구조로 설계가 된다면, 왜 타입이 통과되는지 모를 수 있으며 큰 문제 발생을 야기시킬 수 있습니다.</li>
+</ul>
+<h3 id="인터페이스-선언-병합-declaration-merging">인터페이스 선언 병합 (declaration merging)<a aria-hidden="true" tabindex="-1" href="#인터페이스-선언-병합-declaration-merging"><span class="icon icon-link"></span></a></h3>
+<p>인터페이스는 선언 병합이라는 기능을 가지고 있습니다. 선언 병합은 주로, type declaration 파일 (.d.ts) 등에서 사용됩니다.</p>
+<p>이 선언 병합이 가장 잘 활용되는 곳은 라이브러리간의 adapter를 만들때 주로 사용됩니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#6A737D">// @emotion/react/types</span></span>
+<span class="line"><span style="color:#D73A49">...</span></span>
+<span class="line"><span style="color:#6A737D">// tslint:disable-next-line: no-empty-interface</span></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> interface</span><span style="color:#6F42C1"> Theme</span><span style="color:#24292E"> {}</span></span>
+<span class="line"><span style="color:#D73A49">...</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// emotion.d.ts</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#032F62"> '@emotion/react'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">declare</span><span style="color:#D73A49"> module</span><span style="color:#032F62"> '@emotion/react'</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  export</span><span style="color:#D73A49"> interface</span><span style="color:#6F42C1"> Theme</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">    colors</span><span style="color:#D73A49">:</span><span style="color:#D73A49"> typeof</span><span style="color:#24292E"> Colors</span></span>
+<span class="line"><span style="color:#E36209">    layers</span><span style="color:#D73A49">:</span><span style="color:#D73A49"> typeof</span><span style="color:#24292E"> Layers</span></span>
+<span class="line"><span style="color:#E36209">    shadow</span><span style="color:#D73A49">:</span><span style="color:#24292E"> { </span><span style="color:#E36209">default</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">; </span><span style="color:#E36209">large</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E"> }</span></span>
+<span class="line"><span style="color:#E36209">    weight</span><span style="color:#D73A49">:</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">      bold</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#E36209">      medium</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#E36209">      regular</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>예시로 emotion.js의 theme 확장 기능을 예시로 들었습니다.</p>
+<p>emotion.js의 react 내 types를 보면, <code>export interface Theme</code>을 빈 공간으로 제공합니다.
+이 공간으로 하여금, 실제 사용하는 코드로 갖고와서 선언 병합을 진행할 수 있습니다.</p>
+<p>아래의 emotion.d.ts 처럼 선언병합을 진행하게되면 이제 해당 property들을 사용할 수 있게 됩니다.</p>
+<ul>
+<li>라이브러리와 같이 다양한 부분에서 interface를 활용해 확장시킬 수 있도록 제공합니다.</li>
+<li>해당 확장을 통해 커스터마이징을 할 수 있고, 이런 기능을 통해 개발자간 작업 캡슐화 및 확장을 유연하게 하도록 제공할 수 있습니다.</li>
+</ul>
+<h2 id="type-alias를-적극-활용해야할-때">Type Alias를 적극 활용해야할 때<a aria-hidden="true" tabindex="-1" href="#type-alias를-적극-활용해야할-때"><span class="icon icon-link"></span></a></h2>
+<p>그렇다면, Type Alias를 적극 활용해야할 때는 언제일까요?</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> NumberTuple</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> [</span><span style="color:#005CC5">number</span><span style="color:#24292E">, </span><span style="color:#005CC5">number</span><span style="color:#24292E">]</span></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> StringTuple</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> [</span><span style="color:#005CC5">string</span><span style="color:#24292E">, </span><span style="color:#005CC5">string</span><span style="color:#24292E">]</span></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> A</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> [</span><span style="color:#6F42C1">NumberTuple</span><span style="color:#24292E">, </span><span style="color:#6F42C1">StringTuple</span><span style="color:#24292E">, </span><span style="color:#D73A49">...</span><span style="color:#005CC5">string</span><span style="color:#24292E">[]]</span></span></code></pre>
+<p>먼저, 튜플을 사용할 때는 type alias를 사용하는 것이 좋습니다. 이 것을 interface로 사용하면 다음과 같습니다.</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> A</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">  0</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> NumberTuple</span></span>
+<span class="line"><span style="color:#005CC5">  1</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> StringTuple</span></span>
+<span class="line"><span style="color:#E36209">  length</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> 2</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>굳이 이렇게 할 필요가 없겠죠? 한 줄을 구현하기 위해서 몇 줄을 코딩을 더 했습니다. 그럴 필요가 없습니다. 이런 경우는 type alias로 해주는게 낫습니다.</p>
+<p>또 다른 경우는 공변성과 반변성을 활용하여 적절히 타입을 제작할 수 있는데, 요 이야기는 길어지니 다음에 하도록 하겠습니다.</p>
+<p>정리하면,</p>
+<ul>
+<li>Type Alias를 이용해 튜플 타입을 만들면 편합니다.</li>
+<li>유니온 타입, 복잡한 타입일 때 적극적으로 사용하세요.</li>
+</ul>
+<h2 id="결론">결론<a aria-hidden="true" tabindex="-1" href="#결론"><span class="icon icon-link"></span></a></h2>
+<ol>
+<li>명세는 interface로 작성하세요. type alias로 명세를 해봐야 장점이 없으며, interface를 통해 extends 확장과 의미를 더 명확하게 부여할 수 있습니다.</li>
+<li>interface의 property를 중복되지 않도록 명세 설계를 하고, 실제 사용처에서 type alias를 이용해 명명된 타입을 만들어 사용하세요.</li>
+<li>선언 병합을 사용하여 각 모듈간 커뮤니케이션을 쉽게 진행할 수 있도록 제공하세요.</li>
+<li>튜플과 같은 타입은 type alias로 만드세요.</li>
+<li>interface와 type alias의 장점을 잘 파악해서 사용하세요.</li>
+</ol>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#type-alias" class="yt1e5n3" data-toc-link data-depth="2"> Type Alias </a> </li><li class="depth-2"> <a href="#interface" class="yt1e5n3" data-toc-link data-depth="2"> Interface </a> </li><li class="depth-3"> <a href="#react-component-props" class="yt1e5n3" data-toc-link data-depth="3"> React Component Props </a> </li><li class="depth-3"> <a href="#구조적-서브-타이핑" class="yt1e5n3" data-toc-link data-depth="3"> 구조적 서브 타이핑 </a> </li><li class="depth-3"> <a href="#인터페이스-선언-병합-declaration-merging" class="yt1e5n3" data-toc-link data-depth="3"> 인터페이스 선언 병합 (declaration merging) </a> </li><li class="depth-2"> <a href="#type-alias를-적극-활용해야할-때" class="yt1e5n3" data-toc-link data-depth="2"> Type Alias를 적극 활용해야할 때 </a> </li><li class="depth-2"> <a href="#결론" class="yt1e5n3" data-toc-link data-depth="2"> 결론 </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>

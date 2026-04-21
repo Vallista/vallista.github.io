@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>효율적인 Storybook 컴포넌트 구조 만들기 · Vallista Blog</title><meta name="description" content><meta property="og:title" content="효율적인 Storybook 컴포넌트 구조 만들기 · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.bcqNdLA3.css">
+<link rel="stylesheet" href="/_astro/style.BR42T3NH.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 프론트엔드 </span>  </div> <h1 class="o06wxs3">효율적인 Storybook 컴포넌트 구조 만들기</h1>  <div class="o06wxs5"> <time datetime="2020-04-26T15:19:08.000Z">2020.04.26</time> <span>·</span> <span>5 min read</span> <span>·</span> <span>2,226 words</span> </div> </header> <article class="o06wxs6">  <p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/0.jpg" alt="이미지0" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지0</figcaption></figure><p></p>
+<p>최근 Storybook을 활용한 디자인 시스템 개발을 많은 회사에서 진행하고 있습니다. 디자인 시스템을 구축하면서 수많은 컴포넌트가 생성되고 사라지고를 반복하는데 이러한 컴포넌트 관리를 위해 <code>Atomic Design</code>을 많은 회사에서 채택하고 있는 듯 보입니다.</p>
+<p>여기서 <code>Atomic Design</code>을 채택한다는 것은 <code>컴포넌트를 재사용할 수 있는 단위로 나눈다</code> 라는 것 입니다. <a href="https://vallista.kr/2020/03/29/Component-%EB%B6%84%EB%A6%AC%EC%9D%98-%EB%AF%B8%ED%95%99/">이전 글</a>에서도 언급했지만, 컴포넌트를 분리한다는 것은 그저 보기좋게 변경을 하는게 아닙니다.</p>
+<p>실용적이고 아름다운 스트럭쳐를 구현하는 것이 컴포넌트를 효율적으로 분리하는거라 볼 수 있고, <code>Atomic Design</code>을 사용해서 그저 컴포넌트의 크기로 무분별하게 <code>Atomic하게</code> 나눈 것은 올바른 사용방법이 아니라고 생각합니다.</p>
+<p>중요한 포인트는 <code>Atomic Design 재사용될 수 있는 레이아웃 컴포넌트를 나누는 기준</code> 입니다. 이번 글에서는 <code>Atomic Design</code>에 집중해서 구현하기보다, 더 효율저으로 구현할 수 있는 방법에 대해서 나름대로 찾은 컴포넌트 구조를 설명합니다.</p>
+<br>
+<blockquote>
+<p>디자인 시스템이란?
+_ > [<a href="https://story.pxd.co.kr/1434%5D(%EB%94%94%EC%9E%90%EC%9D%B8">https://story.pxd.co.kr/1434](디자인</a> 시스템) 포스트를 보면 더 도움이 될 수 있습니다.
+“쉽게 말하면 디자인 시스템은 디자인 원칙, 규격, 다시 사용할 수 있는 UI 패턴과 컴포넌트, 코드를 포괄하는 종합 세트입니다.”</p>
+</blockquote>
+<h2 id="스토리북">스토리북<a aria-hidden="true" tabindex="-1" href="#스토리북"><span class="icon icon-link"></span></a></h2>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/1.png" alt="이미지1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지1</figcaption></figure><p></p>
+<p>(예시 이미지: 스토리북으로 디자인 시스템을 구현중인 화면)</p>
+<p>예시 링크: <a href="https://github.com/Vallista/DesignSystem">https://github.com/Vallista/DesignSystem</a></p>
+<h3 id="스토리북이란">스토리북이란?<a aria-hidden="true" tabindex="-1" href="#스토리북이란"><span class="icon icon-link"></span></a></h3>
+<p>스토리북(Storybook)은 UI를 개발하고 플레이그라운드에서 테스트를 해볼 수 있는 UI Component 개발을 위한 툴 입니다. 테스팅, 프리뷰와 같은 기능을 사용할 수 있으며, 카테고리별로 컴포넌트를 열람할 수 있기 때문에 최근 디자인 시스템을 구축하는데 편리해 많이 사용되고 있습니다</p>
+<h3 id="사용하기">사용하기<a aria-hidden="true" tabindex="-1" href="#사용하기"><span class="icon icon-link"></span></a></h3>
+<p><a href="https://github.com/Vallista/DesignSystem#issue">Create React App에서 Storybook 추가하는 방법</a>을 참고하시면 쉬운 환경설정을 하실 수 있습니다.</p>
+<p>Storybook은 <a href="https://github.com/Vallista/DesignSystem/blob/master/src/products/Blog/Card/index.stories.tsx">Stories 파일</a>에 작업을 해서 Storybook에서 보일 수 있게 설정할 수 있으며 링크를 달아놓은 Stories 파일을 클릭해 들어가보시면, 아래와 같은 코드가 나오게 됩니다.</p>
+<p><strong>Card/index.stories.tsx</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { withKnobs, text, number } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '@storybook/addon-knobs'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> Card, { ITheme } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './index'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { ColorPalette } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../../../models/color'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { Background } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> '../_common'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  title: </span><span style="color:#032F62">'Card'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  component: Card</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#6F42C1"> Default</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> title</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> text</span><span style="color:#24292E">(</span><span style="color:#032F62">'타이틀'</span><span style="color:#24292E">, </span><span style="color:#032F62">'컴포넌트 관리 기법'</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> description</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> text</span><span style="color:#24292E">(</span><span style="color:#032F62">'설명'</span><span style="color:#24292E">, </span><span style="color:#032F62">'안녕하세요 오늘은 컴포넌트 관리에 대해서 알아볼 것이에요'</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> image</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> text</span><span style="color:#24292E">(</span></span>
+<span class="line"><span style="color:#032F62">    '이미지'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#032F62">    'http://img.lifestyler.co.kr/uploads/program/1/1765/menu/2/html/f131755988183457049(0).jpg'</span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> viewCount</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> number</span><span style="color:#24292E">(</span><span style="color:#032F62">'열람 수'</span><span style="color:#24292E">, </span><span style="color:#005CC5">5</span><span style="color:#24292E">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#005CC5">Background</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#005CC5">Card</span><span style="color:#6F42C1"> title</span><span style="color:#D73A49">=</span><span style="color:#24292E">{title} </span><span style="color:#6F42C1">description</span><span style="color:#D73A49">=</span><span style="color:#24292E">{description} </span><span style="color:#6F42C1">image</span><span style="color:#D73A49">=</span><span style="color:#24292E">{image} </span><span style="color:#6F42C1">viewCount</span><span style="color:#D73A49">=</span><span style="color:#24292E">{viewCount} /></span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#005CC5">Background</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> const</span><span style="color:#6F42C1"> White</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> () </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> theme</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> ITheme</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">    backgroundColor: ColorPalette.White.</span><span style="color:#005CC5">WHITE</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">    textColor: {</span></span>
+<span class="line"><span style="color:#24292E">      title: ColorPalette.Black.</span><span style="color:#005CC5">LIGHT</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">      description: ColorPalette.Gray.</span><span style="color:#005CC5">DARK</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">      viewCount: ColorPalette.Black.</span><span style="color:#005CC5">LIGHT</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> title</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> text</span><span style="color:#24292E">(</span><span style="color:#032F62">'타이틀'</span><span style="color:#24292E">, </span><span style="color:#032F62">'컴포넌트 관리 기법'</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> description</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> text</span><span style="color:#24292E">(</span><span style="color:#032F62">'설명'</span><span style="color:#24292E">, </span><span style="color:#032F62">'안녕하세요 오늘은 컴포넌트 관리에 대해서 알아볼 것이에요'</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> image</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> text</span><span style="color:#24292E">(</span></span>
+<span class="line"><span style="color:#032F62">    '이미지'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#032F62">    'http://img.lifestyler.co.kr/uploads/program/1/1765/menu/2/html/f131755988183457049(0).jpg'</span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> viewCount</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> number</span><span style="color:#24292E">(</span><span style="color:#032F62">'열람 수'</span><span style="color:#24292E">, </span><span style="color:#005CC5">5</span><span style="color:#24292E">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#005CC5">Background</span><span style="color:#6F42C1"> background</span><span style="color:#D73A49">=</span><span style="color:#24292E">{ColorPalette.Gradient.</span><span style="color:#005CC5">RED_TO_YELLOW</span><span style="color:#24292E">}></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#005CC5">Card</span><span style="color:#6F42C1"> title</span><span style="color:#D73A49">=</span><span style="color:#24292E">{title} </span><span style="color:#6F42C1">description</span><span style="color:#D73A49">=</span><span style="color:#24292E">{description} </span><span style="color:#6F42C1">image</span><span style="color:#D73A49">=</span><span style="color:#24292E">{image} </span><span style="color:#6F42C1">viewCount</span><span style="color:#D73A49">=</span><span style="color:#24292E">{viewCount} </span><span style="color:#6F42C1">theme</span><span style="color:#D73A49">=</span><span style="color:#24292E">{theme} /></span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#005CC5">Background</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">Default.story </span><span style="color:#D73A49">=</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  name: </span><span style="color:#032F62">'Default'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  decorators: [withKnobs]</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">White.story </span><span style="color:#D73A49">=</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  name: </span><span style="color:#032F62">'White'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  decorators: [withKnobs]</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>이렇게 코드를 작성하면 아래와 같은 이미지로 스토리북에서 출력됩니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/2.png" alt="이미지2" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지2</figcaption></figure><p></p>
+<h3 id="component-story-format-csf">Component Story Format (CSF)<a aria-hidden="true" tabindex="-1" href="#component-story-format-csf"><span class="icon icon-link"></span></a></h3>
+<p>위 스토리북 코드는 기존 스토리북을 사용하셨던 분이라면, 익숙하지 않을 소스일텐데요. 최근 스토리북 5.2 버전 이상에서는 <a href="https://storybook.js.org/docs/formats/component-story-format/">Component Story Format (CSF)</a> 형식으로 stories를 작성하도록 권장하고 있습니다.</p>
+<p><strong>기존 스토리북 사용법</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#6F42C1">storiesOf</span><span style="color:#24292E">(</span><span style="color:#032F62">'Button'</span><span style="color:#24292E">, </span><span style="color:#005CC5">module</span><span style="color:#24292E">).</span><span style="color:#6F42C1">addDecorator</span><span style="color:#24292E">(withKnobs).</span><span style="color:#6F42C1">addParameters</span><span style="color:#24292E">({ notes: someNotes })</span></span></code></pre>
+<p><strong>변경된 스토리북 사용법</strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">  title: </span><span style="color:#032F62">'Button'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  component: </span><span style="color:#005CC5">module</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  decorators: [withKnobs],</span></span>
+<span class="line"><span style="color:#24292E">  parameters: [{ notes: someNotes }]</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>변경이 되면서 기존 스토리북을 사용하던때와 달리, JS 친화적으로 변경된 걸 볼 수 있습니다. 기존에 문제였었던, component 안에 인라인 ReactNode가 들어가거나 Decorator가 많아져서 행이 추가되는 문제점이 사라져 가독성이 좋아지는 효과를 얻을 수 있었습니다.</p>
+<h2 id="컴포넌트-관리">컴포넌트 관리<a aria-hidden="true" tabindex="-1" href="#컴포넌트-관리"><span class="icon icon-link"></span></a></h2>
+<p>Storybook을 사용해서 디자인 시스템을 구현하다보면 컴포넌트가 점점 많아져서 분리가 필요합니다. 이 분리라는 것은 컴포넌트를 물리적으로 분리하는 것도 있지만 가시적으로도 분리가 되어 보이도록 구현을 해야합니다.</p>
+<h3 id="분리하기">분리하기<a aria-hidden="true" tabindex="-1" href="#분리하기"><span class="icon icon-link"></span></a></h3>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/3.png" alt="이미지3" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지3</figcaption></figure><p></p>
+<p>최초로 분리해야 하는 것은 <code>외장(external)</code> 컴포넌트와 <code>내장(internal)</code> 컴포넌트의 분리입니다.</p>
+<p>위의 그림처럼 internal 컴포넌트는 internal component 내부에서 사용될 수 있으며, 그렇게 서로 사용되어 만들어진 컴포넌트를 external 컴포넌트에서 가져와 사용할 수 있습니다.</p>
+<h4 id="내장-컴포넌트">내장 컴포넌트<a aria-hidden="true" tabindex="-1" href="#내장-컴포넌트"><span class="icon icon-link"></span></a></h4>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/5.png" alt="이미지5" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지5</figcaption></figure><p></p>
+<p>내장 컴포넌트는 스토리북에서 보여지지 않지만, <strong>외장 컴포넌트에서 사용되는 재사용 가능한 레이아웃 컴포넌트 요소</strong>를 일컫습니다. 이 요소들은 레이아웃 단위로 재사용되기 때문에 <strong>Atomic Design</strong>을 사용하여 분리하면 효율적입니다.</p>
+<p><strong><a href="https://github.com/Vallista/DesignSystem/blob/master/src/components/molecules/Block/index.tsx">component/molecules/Block/index.tsx</a></strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> classNames </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'classnames'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { IComponentProps } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'models/common'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> { CalculateBox } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'utils'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> styles </span><span style="color:#D73A49">from</span><span style="color:#032F62"> './style.module.scss'</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> enum</span><span style="color:#6F42C1"> Direction</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">  ROW</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> 'row'</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> enum</span><span style="color:#6F42C1"> Sort</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#005CC5">  TOP_LEFT</span><span style="color:#D73A49"> =</span><span style="color:#005CC5"> 11</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  ...</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">interface</span><span style="color:#6F42C1"> IProps</span><span style="color:#D73A49"> extends</span><span style="color:#6F42C1"> IComponentProps</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  children</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> React</span><span style="color:#24292E">.</span><span style="color:#6F42C1">ReactNode</span></span>
+<span class="line"><span style="color:#E36209">  direction</span><span style="color:#D73A49">?:</span><span style="color:#6F42C1"> Direction</span></span>
+<span class="line"><span style="color:#E36209">  sort</span><span style="color:#D73A49">?:</span><span style="color:#6F42C1"> Sort</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> CalculateSort</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> (</span><span style="color:#E36209">sort</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Sort</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">[] </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> horizontalNumber</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> sort </span><span style="color:#D73A49">%</span><span style="color:#005CC5"> 10</span></span>
+<span class="line"><span style="color:#D73A49">  ...</span></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> [ horizontal, vertical ]</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> Block</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> React</span><span style="color:#24292E">.</span><span style="color:#6F42C1">FC</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">IProps</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> ({</span></span>
+<span class="line"><span style="color:#24292E">  children,</span></span>
+<span class="line"><span style="color:#24292E">  className,</span></span>
+<span class="line"><span style="color:#24292E">  direction </span><span style="color:#D73A49">=</span><span style="color:#24292E"> Direction.</span><span style="color:#005CC5">ROW</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  sort </span><span style="color:#D73A49">=</span><span style="color:#24292E"> Sort.</span><span style="color:#005CC5">CENTER_CENTER</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#24292E">  margin </span><span style="color:#D73A49">=</span><span style="color:#24292E"> [ </span><span style="color:#005CC5">0</span><span style="color:#24292E"> ],</span></span>
+<span class="line"><span style="color:#24292E">  padding </span><span style="color:#D73A49">=</span><span style="color:#24292E"> [ </span><span style="color:#005CC5">0</span><span style="color:#24292E"> ],</span></span>
+<span class="line"><span style="color:#24292E">  style</span></span>
+<span class="line"><span style="color:#24292E">}) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  const</span><span style="color:#005CC5"> classProps</span><span style="color:#D73A49"> =</span><span style="color:#6F42C1"> classNames</span><span style="color:#24292E">(styles.default, className)</span></span>
+<span class="line"><span style="color:#D73A49">  ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#22863A">div</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#24292E">{classProps} </span><span style="color:#6F42C1">style</span><span style="color:#D73A49">=</span><span style="color:#24292E">{styleProps}></span></span>
+<span class="line"><span style="color:#24292E">      {children}</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#22863A">div</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> Block</span></span></code></pre>
+<p>위 코드는 레이아웃에 대한 정렬 및 위치 조정을 담당하는 Block 컴포넌트 입니다. 해당 컴포넌트는 외장 컴포넌트에서 배치를 효율적으로 하는데 도움을 줍니다</p>
+<h4 id="외장-컴포넌트">외장 컴포넌트<a aria-hidden="true" tabindex="-1" href="#외장-컴포넌트"><span class="icon icon-link"></span></a></h4>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/4.png" alt="이미지4" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지4</figcaption></figure><p></p>
+<p>외장 컴포넌트는 스토리북에서 보여지는 컴포넌트를 일컫습니다. 위의 사진에서 왼쪽의 Sidebar에 Libraries, Products로 분리가 되어있는걸 볼 수 있는데요. Libraries와 Products 분리는 조금 있다가 다루도록하고, 중요하게 봐야하는 점은 보여지는 컴포넌트들이 <strong>외장 컴포넌트</strong> 라는 것 입니다.</p>
+<p>이 컴포넌트는 실제 프로덕트 레벨에서 사용되는 컴포넌트이며, 디자인 요소가 완성된 컴포넌트입니다. 추후에 rollup 등의 패키지 매니저들로 export 되어 사용됩니다.</p>
+<p><strong><a href="https://github.com/Vallista/DesignSystem/blob/master/src/products/Blog/Card/index.tsx">products/Card/index.tsx</a></strong></p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="jsx"><code><span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> React </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'react'</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> classNames </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'classnames'</span></span>
+<span class="line"><span style="color:#D73A49">...</span></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> Block, { Direction, Sort } </span><span style="color:#D73A49">from</span><span style="color:#032F62"> 'components/molecules/Block'</span></span>
+<span class="line"><span style="color:#D73A49">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#6F42C1"> BlogCard</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> React</span><span style="color:#24292E">.</span><span style="color:#6F42C1">FC</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">IProps</span><span style="color:#24292E">> </span><span style="color:#D73A49">=</span><span style="color:#24292E"> ({</span></span>
+<span class="line"><span style="color:#24292E">  className,</span></span>
+<span class="line"><span style="color:#24292E">  image,</span></span>
+<span class="line"><span style="color:#24292E">  title,</span></span>
+<span class="line"><span style="color:#24292E">  description,</span></span>
+<span class="line"><span style="color:#24292E">  viewCount,</span></span>
+<span class="line"><span style="color:#24292E">  theme </span><span style="color:#D73A49">=</span><span style="color:#24292E"> defaultTheme,</span></span>
+<span class="line"><span style="color:#24292E">  margin</span></span>
+<span class="line"><span style="color:#24292E">}) </span><span style="color:#D73A49">=></span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">  ...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">  return</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;</span><span style="color:#005CC5">Card</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#24292E">{classProps} </span><span style="color:#6F42C1">style</span><span style="color:#D73A49">=</span><span style="color:#24292E">{styleProps} </span><span style="color:#6F42C1">radius</span><span style="color:#D73A49">=</span><span style="color:#24292E">{[ </span><span style="color:#005CC5">12</span><span style="color:#24292E"> ]} </span><span style="color:#6F42C1">margin</span><span style="color:#D73A49">=</span><span style="color:#24292E">{margin}></span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;</span><span style="color:#005CC5">Block</span></span>
+<span class="line"><span style="color:#6F42C1">        className</span><span style="color:#D73A49">=</span><span style="color:#24292E">{styles.card}</span></span>
+<span class="line"><span style="color:#6F42C1">        direction</span><span style="color:#D73A49">=</span><span style="color:#24292E">{Direction.</span><span style="color:#005CC5">COLUMN</span><span style="color:#24292E">}</span></span>
+<span class="line"><span style="color:#6F42C1">        padding</span><span style="color:#D73A49">=</span><span style="color:#24292E">{isWhiteTheme </span><span style="color:#D73A49">?</span><span style="color:#24292E"> [ </span><span style="color:#005CC5">42</span><span style="color:#24292E">, </span><span style="color:#005CC5">12</span><span style="color:#24292E">, </span><span style="color:#005CC5">24</span><span style="color:#24292E">, </span><span style="color:#005CC5">12</span><span style="color:#24292E"> ] </span><span style="color:#D73A49">:</span><span style="color:#24292E"> [ </span><span style="color:#005CC5">24</span><span style="color:#24292E"> ]}</span></span>
+<span class="line"><span style="color:#6F42C1">        style</span><span style="color:#D73A49">=</span><span style="color:#24292E">{{ background: backgroundColor }}</span></span>
+<span class="line"><span style="color:#6F42C1">        sort</span><span style="color:#D73A49">=</span><span style="color:#24292E">{isWhiteTheme </span><span style="color:#D73A49">?</span><span style="color:#24292E"> Sort.</span><span style="color:#005CC5">SPACE_BETWEEN_CENTER</span><span style="color:#D73A49"> :</span><span style="color:#24292E"> Sort.</span><span style="color:#005CC5">BOTTOM_LEFT</span><span style="color:#24292E">}</span></span>
+<span class="line"><span style="color:#24292E">      ></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;</span><span style="color:#005CC5">Block</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#24292E">{styles.header}></span></span>
+<span class="line"><span style="color:#24292E">          &#x3C;</span><span style="color:#22863A">img</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#24292E">{styles.watchIcon} </span><span style="color:#6F42C1">src</span><span style="color:#D73A49">=</span><span style="color:#24292E">{isWhiteTheme </span><span style="color:#D73A49">?</span><span style="color:#24292E"> WatchIconBlack </span><span style="color:#D73A49">:</span><span style="color:#24292E"> WatchIcon} </span><span style="color:#6F42C1">alt</span><span style="color:#D73A49">=</span><span style="color:#032F62">'watch-icon'</span><span style="color:#24292E"> /></span></span>
+<span class="line"><span style="color:#24292E">          &#x3C;</span><span style="color:#005CC5">Span</span><span style="color:#6F42C1"> className</span><span style="color:#D73A49">=</span><span style="color:#24292E">{styles.watchCount} </span><span style="color:#6F42C1">color</span><span style="color:#D73A49">=</span><span style="color:#24292E">{theme.textColor.viewCount} </span><span style="color:#6F42C1">size</span><span style="color:#D73A49">=</span><span style="color:#24292E">{</span><span style="color:#005CC5">16</span><span style="color:#24292E">} </span><span style="color:#6F42C1">weight</span><span style="color:#D73A49">=</span><span style="color:#24292E">{</span><span style="color:#005CC5">500</span><span style="color:#24292E">} </span><span style="color:#6F42C1">lineHeight</span><span style="color:#D73A49">=</span><span style="color:#24292E">{</span><span style="color:#005CC5">1.4</span><span style="color:#24292E">}></span></span>
+<span class="line"><span style="color:#24292E">            {viewCount}</span></span>
+<span class="line"><span style="color:#24292E">          &#x3C;/</span><span style="color:#005CC5">Span</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        &#x3C;/</span><span style="color:#005CC5">Block</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">        ...</span></span>
+<span class="line"><span style="color:#24292E">      &#x3C;/</span><span style="color:#005CC5">Block</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">    &#x3C;/</span><span style="color:#005CC5">Card</span><span style="color:#24292E">></span></span>
+<span class="line"><span style="color:#24292E">  )</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">export</span><span style="color:#D73A49"> default</span><span style="color:#24292E"> BlogCard</span></span></code></pre>
+<p>내장 컴포넌트를 적극적으로 사용하여 외장 컴포넌트를 제작하였습니다.</p>
+<h4 id="결과">결과<a aria-hidden="true" tabindex="-1" href="#결과"><span class="icon icon-link"></span></a></h4>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/6.png" alt="이미지6" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지6</figcaption></figure><p></p>
+<p>간단하게 컴포넌트를 두 종류로 나누어보았습니다. 코드 상에서도 같은 레벨의 컴포넌트를 호출하지 않고 분기를 주니, 파일을 불러올 때도 일관적으로 변경이 된 걸 볼 수 있습니다. 또한 이미지나 폰트등의 디자인이 변경되거나 할 때 내장 컴포넌트를 한번 변경해주면 모두 동일하게 변경이 될 수 있어 용이합니다.</p>
+<h3 id="심화">심화<a aria-hidden="true" tabindex="-1" href="#심화"><span class="icon icon-link"></span></a></h3>
+<p>이렇게 진행하다보면, 외장 컴포넌트가 비대해지는 걸 볼 수 있습니다. 외장 컴포넌트가 내장 컴포넌트를 사용하는데 같은 외장 컴포넌트끼리 중복되는 코드가 많아질 것 입니다. 이를 방지하기 위해 외장 컴포넌트에 레이어 하나를 더 추가하면 좋습니다.</p>
+<h4 id="libraries">Libraries<a aria-hidden="true" tabindex="-1" href="#libraries"><span class="icon icon-link"></span></a></h4>
+<p>위에서 언급했던 Libraries가 여기서 출현했습니다. Libraries는 외장 컴포넌트에서 외장 컴포넌트끼리의 동일한 코드를 묶는 역할도 담당하지만 가장 중요한 내용이 있습니다. 바로 <strong>도메인에 영향받지 않는 공통 컴포넌트</strong> 라는 점입니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/7.png" alt="이미지7" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지7</figcaption></figure>
+(이미지 참고: <a href="https://story.pxd.co.kr/1434">https://story.pxd.co.kr/1434</a>)<p></p>
+<p>카카오톡을 예시로 들어봅시다. 카카오톡이 성공하고 플랫폼이 커짐에 따라 카카오맵, 카카오스타일 등의 여러 서비스가 추가로 나오고 있습니다. 카카오톡에서 이후로 나오는 서비스들은 <strong>카카오가 만들었어요!</strong> 라는 느낌이 들어야 할 것 입니다. 그렇기 때문에 <strong>디자인 일관성</strong>을 주어야 하는데, 이 작업을 위해서 디자인 시스템을 만들어 매니지먼트를 하는게 가장 편할 것입니다.</p>
+<p>하지만 여기서 중요한 점은 <strong>동일한 컴포넌트를 사용해도 레이아웃이 조금은 달라질 수 있다는 점</strong> 입니다. 예를들어 카카오페이와 카카오톡이 100% 동일한 레이아웃이 아닌 것처럼, <strong>각 도메인에 따라 레이아웃이 달라질 수 있다</strong> 라는 것 입니다.</p>
+<p>그래서, <strong>Libraries는 동일한 레이아웃, 레이아웃 디자인을 일관성 있는 컴포넌트 꾸러미</strong>라면, <strong>Products는 각 도메인에 맞는 레이아웃 디자인 컴포넌트 꾸러미</strong> 라고 할 수 있습니다.</p>
+<br>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/8.png" alt="이미지8" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지8</figcaption></figure>
+(clean architecture와 흡사한 형태의 구현이 된다)<p></p>
+<h4 id="결과-1">결과<a aria-hidden="true" tabindex="-1" href="#결과-1"><span class="icon icon-link"></span></a></h4>
+<p></p><figure class="img-card"><img src="/contents/articles/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-Storybook-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EA%B5%AC%EC%A1%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0/assets/9.png" alt="이미지9" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지9</figcaption></figure><p></p>
+<p>왼쪽은 내장, 오른쪽은 외장 컴포넌트 입니다. 어느정도 규격이 잡혀가는 걸 볼 수 있습니다. 외장 컴포넌트에서 Products, Libraries는 번들링되어 프로덕트 레벨에서도 사용되지만, Libraries는 Products 레벨에서도 사용됩니다. 이렇게 구현하면 중복코드가 줄어듦을 확인할 수 있습니다.</p>
+<h2 id="정리">정리<a aria-hidden="true" tabindex="-1" href="#정리"><span class="icon icon-link"></span></a></h2>
+<ol>
+<li>외장, 내장 컴포넌트 분리를 하여 사용 용도에 맞게 컴포넌트를 분리하는게 좋다.</li>
+<li>외장 컴포넌트에서도 레벨을 나누어 클린아키텍쳐 형태로 구현하면 재사용 가능한 컴포넌트도 늘어나고, 코드 개선에 도움이 된다.</li>
+<li>Atomic Design에 몰입해서 컴포넌트 분리를 <code>atomic</code> 에만 의존하지 말자.</li>
+</ol>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#스토리북" class="yt1e5n3" data-toc-link data-depth="2"> 스토리북 </a> </li><li class="depth-3"> <a href="#스토리북이란" class="yt1e5n3" data-toc-link data-depth="3"> 스토리북이란? </a> </li><li class="depth-3"> <a href="#사용하기" class="yt1e5n3" data-toc-link data-depth="3"> 사용하기 </a> </li><li class="depth-3"> <a href="#component-story-format-csf" class="yt1e5n3" data-toc-link data-depth="3"> Component Story Format (CSF) </a> </li><li class="depth-2"> <a href="#컴포넌트-관리" class="yt1e5n3" data-toc-link data-depth="2"> 컴포넌트 관리 </a> </li><li class="depth-3"> <a href="#분리하기" class="yt1e5n3" data-toc-link data-depth="3"> 분리하기 </a> </li><li class="depth-3"> <a href="#심화" class="yt1e5n3" data-toc-link data-depth="3"> 심화 </a> </li><li class="depth-2"> <a href="#정리" class="yt1e5n3" data-toc-link data-depth="2"> 정리 </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>

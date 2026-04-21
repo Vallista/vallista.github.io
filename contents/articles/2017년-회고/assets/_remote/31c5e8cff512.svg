@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="450" fill="#eff4ff"/>
+  <g fill="#2b6cff">
+        <rect x="40" y="60" width="200" height="150" rx="8" opacity="0.15"/>
+        <rect x="140" y="110" width="240" height="150" rx="8" opacity="0.3"/>
+        <rect x="280" y="80" width="260" height="180" rx="8" opacity="0.5"/>
+      </g>
+  <g transform="translate(48 48)">
+        <rect width="60" height="26" rx="13" fill="#eff4ff"/>
+        <text x="30" y="17" text-anchor="middle" font-family="'Pretendard Variable', sans-serif" font-size="12" font-weight="500" fill="#2b6cff" letter-spacing="0.02em">회고</text>
+      </g>
+  <text x="48" y="320" font-family="'Pretendard Variable', 'Pretendard', -apple-system, sans-serif" font-size="36" font-weight="700" fill="#0b1220" letter-spacing="-0.5">2017년 회고</text>
+  <rect x="48" y="406" width="24" height="2" fill="#2b6cff"/>
+  <text x="80" y="412" font-family="'JetBrains Mono', monospace" font-size="10" fill="#9aa1b4" letter-spacing="0.12em">COVER · PLACEHOLDER</text>
+</svg>

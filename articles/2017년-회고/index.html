@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>2017년 회고 · Vallista Blog</title><meta name="description" content><meta property="og:title" content="2017년 회고 · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/2017%EB%85%84-%ED%9A%8C%EA%B3%A0/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.BR42T3NH.css">
+<link rel="stylesheet" href="/_astro/style.bcqNdLA3.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 회고 </span>  </div> <h1 class="o06wxs3">2017년 회고</h1>  <div class="o06wxs5"> <time datetime="2017-12-25T18:00:55.000Z">2017.12.25</time> <span>·</span> <span>5 min read</span> <span>·</span> <span>2,433 words</span> </div> </header> <article class="o06wxs6">  <p></p><figure class="img-card"><img src="/contents/articles/2017%EB%85%84-%ED%9A%8C%EA%B3%A0/assets/_remote/31c5e8cff512.svg" alt="이미지1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">이미지1</figcaption></figure><p></p>
+<p>돌이켜보면, 2017년은 나에게 많은 변화가 있는 해였던 것 같다. 모든 것이 끝나고, 새로 시작하였으며 지리적 위치 및 만나는 사람들도 달라졌기 때문이다.</p>
+<p>또한 공부하는 것이 바뀌었고 공부 방법도 바뀌었다. 프로그래밍의 대세도 점차 다양하게 변화하고 있었고, 업계도 AI, 머신러닝등 수많은 기존의 기술들이 화두에 오르기 시작했다.</p>
+<p>첫 회고이다보니 능수능란하게 회고를 작성할 수는 없을 것 같아서, 각 달마다 회고를 작성해보도록 하였다.</p>
+<h1 id="회고">회고<a aria-hidden="true" tabindex="-1" href="#회고"><span class="icon icon-link"></span></a></h1>
+<h2 id="1월">1월<a aria-hidden="true" tabindex="-1" href="#1월"><span class="icon icon-link"></span></a></h2>
+<p>1월은 병특회사를 다니면서 게임을 제작하던 시기였다. 이 때 게임 개발에 가장 큰 회의감을 느끼고 있었고, 커리어 전환을 생각하던 시기였다.</p>
+<p>유니티를 이용해 VR 태권도를 개발했는데 기술 문제 및 잘못된 선택에 의해서 제대로 된 결과물이 나오지 못했고 이러한 문제는 팀 자체의 열정 고갈로 인한 문제도 있었다.</p>
+<p>회사에서는 열심히 하는 만큼 직원에게 그만큼의 금액을 줘야 한다고 생각한다. 아무리 열심히 해도 성과금이 더 나오지 않는 회사는 직원으로써 다닐 이유가 없다. 물론 성과금이 아닌, 비전이 보이고 지분을 받는다면 이야기가 달라지겠지만 그것도 아니었고 그러한 환경에서 더 이상 일하기 싫었다.</p>
+<p>또한 1월은 내가 게임회사에 입사한 지 3년차가 되는 달 이었다. unity 게임 개발자로써 <a href="https://vallista.tistory.com">vallista.tistory.com</a>에 상당히 많은 자료들을 올렸다. 2014년에는 세미프로젝트도 진행했지만 이제는 그러한 힘도 남지 않았었다.</p>
+<p>여러모로 1월은 힘든 시기였다. 추웠고, 나 자체도 열심히 하는 노력이 없었고 돌파구가 필요했다.</p>
+<h2 id="2월">2월<a aria-hidden="true" tabindex="-1" href="#2월"><span class="icon icon-link"></span></a></h2>
+<p>게임에서 커리어 전환을 확정 한 달이다.
+친한 선배가 서비스 쪽에서 일하고 있었고, 서비스 쪽으로 오라며 손짓을 하였고 나는 서비스 쪽의 정보를 찾아봤다.</p>
+<p>서비스 쪽은 매력이 있었다. 수많은 기술들이 집합해 있었고, 게임과는 사뭇 다른 느낌이었다. 게임은 엔진 하나에 기술이 다 집합해 있다면 서비스는 오픈소스에 다양한 사람들이 모여서 큰 나무를 만드는 느낌이었다. 어떤 사람은 가지를 만들고… 그 가지에 나뭇잎을 만들고…</p>
+<p>오픈소스를 좋아하고 공유하고 피드백을 받는 일이 좋았던 나에게 좋은 경험이 될 것 같아서 결심하고 node.js + express.js 를 공부하기 시작했다. 시작은 백앤드로 시작하였고 친한 선배에게 도움을 많이 받았다.</p>
+<p>다만 이때는 백앤드 프론트엔드 개념만 알고 제대로 모르는 상태였다.</p>
+<p>iOS에도 관심이 많아서 다양한 경험을 해보다가, Story board 없이 퓨어한 앱을 제작하는 것이 편해서 boilerplate를 하나 만들었다.. 걍 템플릿이지만..</p>
+<p><a href="https://github.com/Vallista/NoUseStoryboard-BoilerPlate">Storyboard 없이 구축하는 iOS 앱</a></p>
+<h2 id="3월">3월<a aria-hidden="true" tabindex="-1" href="#3월"><span class="icon icon-link"></span></a></h2>
+<p>본격적으로 커리어 전환을 위해 포트폴리오를 작성하고 있었다.
+아직 웹쪽의 정보를 잘 모르고 백앤드 노드 서버만 공부하던 시기였다.</p>
+<p>이때 로드밸런스, node.js express static files, 등등 파일 분산화등의 코딩을 해봤고 토이 프로젝트를 여러개 해보는 시기였다.</p>
+<h2 id="4월-5월">4월-5월<a aria-hidden="true" tabindex="-1" href="#4월-5월"><span class="icon icon-link"></span></a></h2>
+<p>혼자 공부하는게 지쳐서 아무것도 안했다… (띠용;;)
+그냥 도큐먼트 조금 본 정도였다.. (반성해야한다)</p>
+<h2 id="6월">6월<a aria-hidden="true" tabindex="-1" href="#6월"><span class="icon icon-link"></span></a></h2>
+<p>병특이 마무리 되는 달이다. 출장 및 외근을 많이 다녔고 이러한 상황에서 머리는 정리되지 않아서 계속 놀기만 했다.</p>
+<p>하지만 말 일쯤에 각오하고 정리했다. 슬슬 새로운 직장을 구하기 시작했고, 웹쪽 신입으로 입사하고자 javascript 공부를 진행했다.</p>
+<h2 id="7월">7월<a aria-hidden="true" tabindex="-1" href="#7월"><span class="icon icon-link"></span></a></h2>
+<p>병특이 끝나서 일반인으로 되었다. 3년간 고생 많았다 라고 생각한다.</p>
+<p>그리고 취업 준비를 하는데, 마침 딱 끝나자마자 <a href="https://reviewrepublic.net/">ReviewRepublic</a> 서비스를 운영하는 facebook 리뷰왕 김리뷰 페이지의 김리뷰가 구인을 하고 있었고 지원 신청을 넣었다. 그리고 이력서와 포트폴리오를 만들어서 넣었다.</p>
+<p>경쟁률이 치열할 것 같고 서비스 지식도 없어서 떨어질 것 같았는데 운좋게 면접까지 붙었다. 면접을 붙고 면접에서 이야기를 하고 어찌 어찌 붙어서 운좋게 바로 입사하여 다니게 되었다.</p>
+<p>일주일 쉬고 바로 취업을 하니 기분이 좀 색달랐다. 낮선 환경에서의 새로운 사람들과 작업을 한다 하니 이상한 기분이었지만 모두 재밋고 좋은 사람이라서 즐겁게 작업했다.</p>
+<p>한달간 업무 인수인계를 받고 백앤드 인프라 관련해서 많은 공부를 했다. AWS 서비스 및 digital ocean 등의 호스팅 서비스, mongoDB, mlab 등의 데이터베이스 서비스를 얕게나마 보았다.</p>
+<p>그리고 jenkins - docker로 이어지는 devops도 잠시나마 경험하였다.</p>
+<h2 id="8월---10월">8월 - 10월<a aria-hidden="true" tabindex="-1" href="#8월---10월"><span class="icon icon-link"></span></a></h2>
+<p>프론트엔드 쪽을 인수인계 받고 새로운 기능을 추가하고 버그 픽스를 많이 했다. 그러면서 남의 소스 보는 법을 공부를 다수 한 것 같다. 또한 es6 js 문법을 적극 활용하면서 class 기반의 객체지향 형식으로 구현했다.</p>
+<p>스타트업 문화에 대해서도 상당히 많이 알아가는 달 이었는데, 엑셀러레이터, 엔젤투자, 씨드, 피봇등 다양한 용어를 많이 알았다.</p>
+<h2 id="10월">10월<a aria-hidden="true" tabindex="-1" href="#10월"><span class="icon icon-link"></span></a></h2>
+<p>10월에는 Deview가 있었는데 표가 없어서 전전긍긍 하다가 페이스북을 통해서 1,2일차 전부 티켓을 어찌어찌 받았다. 휴.</p>
+<p>Deview 2017에서는 분산 플랫폼, 네트워크 모니터링, 머신러닝, AI등 최근의 대세 기술들에 접목해서 많이 알았다.</p>
+<p>REST API를 사용할 때 HATEOS을 지키는 방법이나, 어떤 것이 REST API인가에 대한 정보, 머신러닝에 대해 잘은 모르지만 용어라던가, 네이버에서 밀고있는 오픈소스 표준등에 대해서 공부했다.</p>
+<h2 id="11월">11월<a aria-hidden="true" tabindex="-1" href="#11월"><span class="icon icon-link"></span></a></h2>
+<p>지난 10월 피봇을 결정하고 달리는데 내부 불화 및 제대로 된 수익구조가 없어서 권고사직이 날라왔고, 11월을 끝으로 회사에서 퇴사하기로 했다.</p>
+<h2 id="12월">12월<a aria-hidden="true" tabindex="-1" href="#12월"><span class="icon icon-link"></span></a></h2>
+<p>못했던 프로그래밍 공부와 포트폴리오 작성을 시작했다.</p>
+<p>React와 Vue를 써보고자 React로는 <a href="https://github.com/Vallista/portfolio">포트폴리오</a>를 제작했다.</p>
+<p>Vue로는 <a href="https://github.com/Vallista/blog-source-code">블로그</a>를 제작중이다.</p>
+<p>디자인도 같이 공부중이라 좀 느린건 함정이다.</p>
+<hr>
+<h2 id="이번년도는">이번년도는..<a aria-hidden="true" tabindex="-1" href="#이번년도는"><span class="icon icon-link"></span></a></h2>
+<p>이번년도는 본격적으로 내가 탄력을 받기 시작했고, 프로그래밍도 되게 잘 되는 년도인 것 같다. 새해가 되자마자 하루에 16시간 및 1일 커밋을 실천하고 있다. 정리를 해보면.</p>
+<h4 id="일일-커밋-하기">일일 커밋 하기<a aria-hidden="true" tabindex="-1" href="#일일-커밋-하기"><span class="icon icon-link"></span></a></h4>
+<p>2018년도는 일일커밋을 실천하도록 할 것 이다. 현재 이 Repository, TIL은 일일 커밋을 실천하도록 하는 Github repository이며 좋은 탄력 개발이 될 것 같다.</p>
+<h4 id="다양한-스터디-참가">다양한 스터디 참가<a aria-hidden="true" tabindex="-1" href="#다양한-스터디-참가"><span class="icon icon-link"></span></a></h4>
+<p>현재 2018년이 되고 vue study 한개만 들고 있는데, 가서 자신의 테크닉을 테스트하고 다양한 사람과 만나서 인맥을 쌓는 한 해가 되었으면 한다.</p>
+<h4 id="발표-한번-하기">발표 한번 하기<a aria-hidden="true" tabindex="-1" href="#발표-한번-하기"><span class="icon icon-link"></span></a></h4>
+<p>강사를 약 3년 하면서 학생들 앞에서의 특강 이런게 아닌, 개발자 앞에서의 떳떳한 나의 모습을 보여주고 싶다.
+올해는 프론트엔드쪽으로 확실한 뭔가를 보여주고 싶은 한해가 될 것 같다.</p>
+<h4 id="영어-공부">영어 공부<a aria-hidden="true" tabindex="-1" href="#영어-공부"><span class="icon icon-link"></span></a></h4>
+<p>못했던 영어 공부를 해야한다. 개발자에게 영어는 필수이고, 회화까지 되는게 훨씬 도움이 되니까. Read는 원서 수준, Write는 이메일 전송, Talk about은 원어민 수준으로 이번년도에 발전하길 바란다.</p>
+<h4 id="세미-프로젝트-3개-이상-완성">세미 프로젝트 3개 이상 완성<a aria-hidden="true" tabindex="-1" href="#세미-프로젝트-3개-이상-완성"><span class="icon icon-link"></span></a></h4>
+<p>웹, 앱등 가리지않고 세미프로젝트를 혼자 진행하여 완성시켰으면 좋겠다. 아이디어, 구조, 디자인까지 혼자 다 해보고 개자이너가 되고 싶다..</p>
+<h4 id="개발자-컨퍼런스-참가">개발자 컨퍼런스 참가<a aria-hidden="true" tabindex="-1" href="#개발자-컨퍼런스-참가"><span class="icon icon-link"></span></a></h4>
+<p>컨퍼런스를 작년에는 Deview 밖에 참가를 하지 못했는데 이번년도에는 다양한 컨퍼런스에 참가하고 싶다.</p>
+<hr>
+<h2 id="마치며">마치며<a aria-hidden="true" tabindex="-1" href="#마치며"><span class="icon icon-link"></span></a></h2>
+<p>이번년도에 할 목표는 뚜렷한 것 같다. 프론트 엔드쪽으로 갈래를 좀 더 확실히 잡은 것 같고, 프론트 엔드를 집중으로 하되, 백앤드도 공부를 해야한다. 혼자 서비스를 만들 수 있는 풀스택 프로그래머가 되었으면 하는 한 해이다.</p>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#1월" class="yt1e5n3" data-toc-link data-depth="2"> 1월 </a> </li><li class="depth-2"> <a href="#2월" class="yt1e5n3" data-toc-link data-depth="2"> 2월 </a> </li><li class="depth-2"> <a href="#3월" class="yt1e5n3" data-toc-link data-depth="2"> 3월 </a> </li><li class="depth-2"> <a href="#4월-5월" class="yt1e5n3" data-toc-link data-depth="2"> 4월-5월 </a> </li><li class="depth-2"> <a href="#6월" class="yt1e5n3" data-toc-link data-depth="2"> 6월 </a> </li><li class="depth-2"> <a href="#7월" class="yt1e5n3" data-toc-link data-depth="2"> 7월 </a> </li><li class="depth-2"> <a href="#8월---10월" class="yt1e5n3" data-toc-link data-depth="2"> 8월 - 10월 </a> </li><li class="depth-2"> <a href="#10월" class="yt1e5n3" data-toc-link data-depth="2"> 10월 </a> </li><li class="depth-2"> <a href="#11월" class="yt1e5n3" data-toc-link data-depth="2"> 11월 </a> </li><li class="depth-2"> <a href="#12월" class="yt1e5n3" data-toc-link data-depth="2"> 12월 </a> </li><li class="depth-2"> <a href="#이번년도는" class="yt1e5n3" data-toc-link data-depth="2"> 이번년도는.. </a> </li><li class="depth-2"> <a href="#마치며" class="yt1e5n3" data-toc-link data-depth="2"> 마치며 </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>

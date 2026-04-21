@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="ko-KR"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><!-- MPA View Transitions: 같은 origin 간 navigation에 브라우저가 자동 crossfade 적용
+         (Chrome 126+, Safari 18+). 미지원 브라우저는 아래 body fade-in 애니메이션으로 fallback --><meta name="view-transition" content="same-origin"><link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg"><link rel="alternate icon" href="/favicon/favicon.ico"><link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/manifest.json"><meta name="theme-color" content="#ffffff"><title>2020년 상반기 회고 · Vallista Blog</title><meta name="description" content><meta property="og:title" content="2020년 상반기 회고 · Vallista Blog"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://vallista.kr/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/"><!-- FOUC 방지 + 테마 토글 전역 함수 정의. 매 페이지 렌더마다 lightClass/darkClass
+         최신값을 window에 주입하여 어떤 시점에 onclick 호출되어도 안전하게 동작. --><script>(function(){const lightClass = "d38j3a1l";
+const darkClass = "d38j3a1m";
+
+      ;(function () {
+        var KEY = 'theme'
+        function currentMode() {
+          var v = localStorage.getItem(KEY)
+          return v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+        }
+        function resolve(mode) {
+          if (mode !== 'system') return mode
+          return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        function apply(mode) {
+          var dark = resolve(mode) === 'dark'
+          var root = document.documentElement
+          root.classList.toggle(window.__vallistaDarkClass || darkClass, dark)
+          root.classList.toggle(window.__vallistaLightClass || lightClass, !dark)
+          root.classList.toggle('theme-dark', dark)
+          root.classList.toggle('theme-light', !dark)
+        }
+        function cycle() {
+          // 현재 화면에 실제로 적용된 테마(system의 경우 resolved 결과)를 기준으로
+          // 반대로 토글. "다크면 라이트, 라이트면 다크" — 한 번만 누르면 전환.
+          var resolved = resolve(currentMode())
+          var next = resolved === 'dark' ? 'light' : 'dark'
+          localStorage.setItem(KEY, next)
+          apply(next)
+        }
+
+        window.__vallistaLightClass = lightClass
+        window.__vallistaDarkClass = darkClass
+        window.__vallistaThemeApply = apply
+        window.__vallistaThemeCycle = cycle
+
+        apply(currentMode())
+
+        if (!window.__vallistaThemeMediaBound) {
+          window.__vallistaThemeMediaBound = true
+          matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            if (currentMode() === 'system') apply('system')
+          })
+        }
+      })()
+    })();</script><!-- Pretendard Variable --><link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"><!-- JetBrains Mono --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"><link rel="stylesheet" href="/_astro/style.bcqNdLA3.css">
+<link rel="stylesheet" href="/_astro/style.BR42T3NH.css"></head> <body> <a href="#main" class="skip-link">본문으로 바로 가기</a> <header class="_9wcd361"> <a href="/" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <div class="_9wcd367"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <button type="button" class="_9wcd368" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu-overlay" data-menu-open> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="M3 5h12M3 9h12M3 13h12"></path> </svg> </button> </div> </header> <div id="mobile-menu-overlay" class="_9wcd369" aria-hidden="true" data-menu-overlay> <div class="_9wcd36b"> <div class="_9wcd36c"> <a href="/about" class="_9wcd362"> <span class="_9wcd363"> <span class="_9wcd365" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_9wcd364" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_9wcd366">Vallista</span> </a> <button type="button" class="_9wcd368" aria-label="메뉴 닫기" data-menu-close> <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <path d="m4 4 10 10M14 4 4 14"></path> </svg> </button> </div> <form class="_9wcd36d" action="/articles" role="search"> <span class="_9wcd36f" aria-hidden="true"> <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="6" cy="6" r="4.5"></circle> <path d="m10 10 3 3" stroke-linecap="round"></path> </svg> </span> <input type="search" class="_9wcd36e" placeholder="글 검색…" aria-label="글 검색" data-menu-search> </form> <nav class="_9wcd36g" aria-label="모바일 주 메뉴"> <a href="/" class="_9wcd36h"> <span>Home</span> </a> <a href="/articles" class="_9wcd36h" aria-current="page"> <span>Articles</span> <span class="_9wcd36i">44</span> </a> <a href="/notes" class="_9wcd36h"> <span>Notes</span> <span class="_9wcd36i">0</span> </a> <a href="/projects" class="_9wcd36h"> <span>Projects</span> <span class="_9wcd36i">0</span> </a> <a href="/tags" class="_9wcd36h"><span>Tags</span></a> </nav> <div class="_9wcd36j"> <a href="/series" class="_9wcd36k" style="text-decoration: none;">Series</a> <div class="_9wcd36l"> <a class="_1df7oe00 _1df7oe02" href="/series/TypeScript-디자인-패턴"> TypeScript 디자인 패턴 · 3 </a><a class="_1df7oe00 _1df7oe02" href="/series/React로-영수증-개발하기"> React로 영수증 개발하기 · 2 </a><a class="_1df7oe00 _1df7oe02" href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서"> 모바일 웹뷰를 탐험하는 개발자를 위한 안내서 · 2 </a> </div> </div> <div class="_9wcd36m"> <span>© 2026 Vallista</span> <a href="/rss.xml" class="_9wcd36n">RSS</a> <a href="https://github.com/vallista" class="_9wcd36n" target="_blank" rel="noopener noreferrer">GitHub</a> </div> </div> </div> <script type="module">function d(){const n=document.querySelector("[data-menu-open]"),o=document.querySelector("[data-menu-close]"),e=document.querySelector("[data-menu-overlay]");if(!n||!o||!e||e.dataset.bound==="1")return;e.dataset.bound="1";const s="mobile-menu-open";function c(){e.style.display="block",e.setAttribute("aria-hidden","false"),n.setAttribute("aria-expanded","true"),document.body.classList.add(s);const t=e.querySelector("[data-menu-search]");setTimeout(()=>t?.focus(),40)}function a(){e.style.display="none",e.setAttribute("aria-hidden","true"),n.setAttribute("aria-expanded","false"),document.body.classList.remove(s)}n.addEventListener("click",c),o.addEventListener("click",a),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.getAttribute("aria-hidden")==="false"&&a()}),e.addEventListener("click",t=>{t.target.closest("a[href]")&&a()})}d();document.addEventListener("vallista:page-load",d);document.addEventListener("astro:page-load",d);</script> <div class="layout"> <aside class="_1ughcdc0"> <a href="/about" class="_1ughcdc1"> <span class="_1ughcdc2"> <span class="_1ughcdc4" aria-hidden="true">V</span> <img src="https://avatars.githubusercontent.com/u/6455767?v=4" alt="" class="_1ughcdc3" onerror="this.style.display='none'" loading="eager" decoding="async"> </span> <span class="_1ughcdc5"> <span class="_1ughcdc6">Vallista</span> <span class="_1ughcdc7">software engineer</span> </span> </a> <nav class="_1ughcdc9" aria-label="주 메뉴"> <div class="_1ughcdc8">Navigation</div> <a href="/" class="_1ughcdca">
+Home
+</a> <a href="/articles" class="_1ughcdca" aria-current="page">
+Articles
+<span class="_1ughcdcb">44</span> </a> <a href="/notes" class="_1ughcdca">
+Notes
+<span class="_1ughcdcb">0</span> </a> <a href="/projects" class="_1ughcdca">
+Projects
+<span class="_1ughcdcb">0</span> </a> <a href="/tags" class="_1ughcdca">Tags</a> </nav> <div class="_1ughcdce"> <a href="/series" class="_1ughcdcf" style="text-decoration: none;">Series</a> <a href="/series/TypeScript-디자인-패턴" class="_1ughcdcg"> <span>TypeScript 디자인 패턴</span> <span class="_1ughcdch">3</span> </a><a href="/series/React로-영수증-개발하기" class="_1ughcdcg"> <span>React로 영수증 개발하기</span> <span class="_1ughcdch">2</span> </a><a href="/series/모바일-웹뷰를-탐험하는-개발자를-위한-안내서" class="_1ughcdcg"> <span>모바일 웹뷰를 탐험하는 개발자를 위한 안내서</span> <span class="_1ughcdch">2</span> </a> </div> <footer class="_1ughcdcc"> <button type="button" class="_14h4omm0" aria-label="테마 변경" onclick="window.__vallistaThemeCycle && window.__vallistaThemeCycle()"> <svg class="_14h4omm1" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"> <circle cx="8" cy="8" r="3"></circle> <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"></path> </svg> <svg class="_14h4omm2" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <path d="M13 9.5A5 5 0 1 1 6.5 3a4 4 0 0 0 6.5 6.5Z"></path> </svg> </button> <a href="/rss.xml" class="_1ughcdcd">RSS</a> <a href="/feed" class="_1ughcdcd">Feed</a> </footer> </aside> <main id="main" class="layout__main"> <div id="main-content" class="page-body page-fade">  <div class="o06wxs0" data-progress></div> <header class="o06wxs1"> <div class="o06wxs2"> <span class="_1df7oe00 _1df7oe01"> 회고 </span>  </div> <h1 class="o06wxs3">2020년 상반기 회고</h1>  <div class="o06wxs5"> <time datetime="2020-07-11T23:57:59.000Z">2020.07.11</time> <span>·</span> <span>15 min read</span> <span>·</span> <span>7,210 words</span> </div> </header> <article class="o06wxs6">  <p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/0.jpg" alt="0" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">0</figcaption></figure><p></p>
+<p>2020년, 올해 상반기는 많은 일이 있었습니다. 그래서 2020년 12월에 총합한 회고를 하기보다 중간 점검을 통해 한번 짚고 넘어가는게 좋을거라 생각되어 회고를 진행하려 합니다.</p>
+<h2 id="변화">변화<a aria-hidden="true" tabindex="-1" href="#변화"><span class="icon icon-link"></span></a></h2>
+<p>작년과 올해는 **코로나바이러스 감염증 (COVID-19)**로 크나큰 변화가 있었습니다. 재택근무로 업무의 형태에 변화가 생겼고, 모임이나 만남도 온라인 미팅으로 적극적으로 변화하였습니다. 이 변화는 재택근무로 진행하여도 회사는 잘 운영될 수 있다는 걸 증명하게 된 계기가 아닐까 생각합니다. 하지만 회사가 잘 운영되는 것과 개발이 잘 진행되는 것은 별도의 이야기 라고 생각합니다. 그래서 협업에 대해 깊게 생각해보는 계기가 되었습니다.</p>
+<h3 id="협업">협업<a aria-hidden="true" tabindex="-1" href="#협업"><span class="icon icon-link"></span></a></h3>
+<p>협업을 잘 진행하려면 커뮤니케이션이 중요합니다. 온라인 협업은 오프라인보다 직접 이야기를 진행하는게 어려워진 만큼, 최대한 자신이 이야기할 수 있는 논리를 잘 함축해서 글로 녹여내야 합니다. 이렇듯 글의 중요성이 커지니 저절로 어떤 글이 좋은 글인가? 하는 생각이 들어 정리를 하게 되었습니다.</p>
+<br>
+<p><strong>커뮤니케이션을 할 때 어떤 글이 좋은 글인가?</strong></p>
+<ol>
+<li>쉬운 단어를 사용하여 빠르게 이해되도록 한다.</li>
+<li>하고자 하는 목적을 정확하게 표현하여 전달한다</li>
+<li>쓸데없이 길게 글을 표현하지 않는다.</li>
+<li>자신 기준으로 생각하지 말고, 전달받는 사람 기준으로 설명한다.</li>
+</ol>
+<p>과거 제 커뮤니케이션을 비추어 생각해보니, 1번과 3번은 잘 지켜지고 있었으나 여전히 2번과 4번은 잘 지켜지지 않았습니다. 그래서 2번과 4번을 해결하기 위해서 아래와 같은 노력을 진행하였습니다.</p>
+<p><strong>더 좋은 글을 쓰기위해</strong></p>
+<ol>
+<li>독서를 작년과 비교해 2배 정도 시간을 내어 진행 (작년 주 평균 2시간)</li>
+<li>한번 더 목적, 전달받는 이를 생각하고 수정</li>
+<li>작성해서 보내기 전에 맞춤법 검사</li>
+<li>매우, 가장 등의 부사를 제외</li>
+</ol>
+<p>간단한 방법이지만, 월 초의 커뮤니케이션을 진행하던 때와 많이 달라졌습니다. (1번)독서를 작년보다 많이 진행하므로써 의도를 파악하는데 걸리는 시간이 짧아졌고, 보내기 전 한번 더 (2번)목적과 전달받는 이를 생각하므로써 커뮤니케이션 시간을 줄일 수 있었습니다. 3,4번을 진행하니 글의 전문성이 높아진 덤이구요.</p>
+<p>이 변화는 제 블로그 글을 통해서도 확인을 할 수 있습니다.</p>
+<h3 id="가치관">가치관<a aria-hidden="true" tabindex="-1" href="#가치관"><span class="icon icon-link"></span></a></h3>
+<p>많은 변화가 일어나면서 가치관이 달라졌습니다. 기존에는 막연하게 “오늘 뿌듯했다” 혹은 “오늘 일 많이했다” 등의 감상적인 경험을 바탕으로 하루에 대해서 평가했다고 하면, 현재는 공부할 것도 많아지고 (왜 많아졌는지는 아래에서 서술) 여러가지 사이드를 진행하면서 시간에 대해 받아들이는 가치관이 달라졌습니다.</p>
+<h4 id="데일리-리포트">데일리 리포트<a aria-hidden="true" tabindex="-1" href="#데일리-리포트"><span class="icon icon-link"></span></a></h4>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/1.png" alt="1" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">1</figcaption></figure><p></p>
+<p>최근 몇 년간 <strong>데일리리포트</strong>를 하루마다 작성해서 시간단위로 평가를 진행했었습니다. 하지만 시간단위 평가에 대해서 후하게 점수를 주고 있어 제대로 된 평가가 어려웠습니다. 그래서 좀 더 확실한 평가를 위해 체계화를 진행했습니다.</p>
+<br>
+<p><strong>기존 시간 단위의 평가</strong></p>
+<ol>
+<li>시간을 사용하고 무얼 썻는지 적는다</li>
+<li>시간 제대로 못썻다면 감상적으로 평가한다.</li>
+<li>자기 전 다음날 할 일과 오늘 못한 일을 정리한다.</li>
+</ol>
+<p><strong>변화</strong></p>
+<ol>
+<li>할 일에 대한 견적(시간)을 정하고 착수한다.</li>
+<li>제한 시간동안 진행하고 해당 시간내에 작업에 대한 회고를 진행하면 PERFECT, 아니라면 GOOD을 준다.</li>
+<li>시간을 넘기거나 연장하면 BAD를 준다</li>
+<li>연장을 2번 이상, 완수 실패 시 POOL을 준다.</li>
+<li>오늘 하루 더 효율적으로 진행할 수 있었던 일에 대해 자기 전, 고민을 하는 시간을 가진다.</li>
+</ol>
+<p>약 3개월간 시간단위 평가를 수정하여 반영했습니다. 이 전보다 확실히 일의 능률이 향상되었으나, 집중도가 올라가서 스트레스가 많이 쌓이게 되었습니다. 그래서 효율적인 스트레스 해결 수단을 찾고있는 중 입니다.</p>
+<p>최근에는 게임을 하면서 풀어보려 하고 있습니다.</p>
+<h4 id="과외">과외<a aria-hidden="true" tabindex="-1" href="#과외"><span class="icon icon-link"></span></a></h4>
+<p>작년까지는 지식에 대해서 네이버 카페나 오픈톡방에서 이야기를 통해 무보수로 많은 일을 해주었지만, 올해부터는 가치관이 조금 달라졌습니다. 알려주는 것에 대해서 별 생각이 없었던게 지금은 알려줄거면 제대로 알려주고, 해당 시간에 대해서 보수를 받아 의무를 가져 확실히 처리하자 라는 마인드로 말이죠.</p>
+<p>올해는 그래서, 시간에 대해 내가 제공받아야 하는 금액은 얼마인지, 내가 가치를 더 올리려면 어떤 것을 해야하는지에 대해 고민을 하게 되었습니다. 그래서 패스트캠퍼스, 과외와 같은 일을 점차 늘려나갔습니다.</p>
+<p>이러한 일들은 비단 돈으로만 이익이 돌아오는게 아닙니다. 돈도 돈이지만 나 자신에게도 성장이 되는 요소가 있습니다.</p>
+<br>
+<p><strong>과외로 이룬 성장</strong></p>
+<ol>
+<li>과외를 하기 위해서 준비를 하게되며, 기본기를 튼튼하게 공부하고 과외하면서 복습하게 됩니다.</li>
+<li>다른 사람을 가르치는 일을 하므로써 커뮤니케이션 능력이 올라갑니다.</li>
+</ol>
+<h3 id="기록">기록<a aria-hidden="true" tabindex="-1" href="#기록"><span class="icon icon-link"></span></a></h3>
+<p>집에서 화상으로 일을 하게 되면서 궁금한 점이 생기면 바로 물어보기가 힘들어졌습니다. Google Meet은 한 번에 한 명에 대해서만 마이크가 켜지다보니 갑자기 궁금증이 있어도 말을 못하게 되는 것이죠. 그러다보니 맥락에 대한 이야기가 다 끝나야 다른 이야기를 할 수 있어, 언제 말할 지 몰라 기록을 하게 되었습니다.</p>
+<p>3개월, 5개월 점점 기록하고 하는 행위가 길어짐에 따라 지금은 하나의 라이프사이클이 되어 아이패드에 적게 되었습니다. 이렇게 되니, 어떤 일을 언제 했고 어느 걸 챙겨야하는지 기억에도 잘 남게 되어 좋았습니다.</p>
+<h2 id="공부">공부<a aria-hidden="true" tabindex="-1" href="#공부"><span class="icon icon-link"></span></a></h2>
+<p>웹 프런트엔드 개발자로써 트랜드, 기본기를 계속 공부해나가고 있습니다. 올해 상반기에 공부하고 경함한 내용은 다음과 같습니다.</p>
+<ul>
+<li>하드웨어 가속과 웹 성능 개선</li>
+<li>React App 컴포넌트 설계</li>
+<li>React hooks와 TypeScript를 이용한 모델 기반 설계 및 개발</li>
+<li>디자인 시스템</li>
+<li>에러 핸들링 / 트러블 슈팅</li>
+<li>테스트 (통합, e2e)</li>
+<li>Rust</li>
+</ul>
+<br>
+<ol>
+<li>
+<p>신규 프로젝트를 맡다보니 계속 보다 좋은 설계를 통해 유지보수를 쉽게 할 수 있도록 설계 공부와 성능 개선 쪽을 중점적으로 보고 있습니다. 지금 만들고 있는 구조가 완벽하다고 생각은 하지 않기에 코딩을 할 때마다 아쉬운 점들이 많은데 시간을 어떻게 짜내어도 리펙토링 할 시간이 부족합니다. 하반기에는 이런 부족한 부분을 중심으로 개선해나가고 싶습니다.</p>
+</li>
+<li>
+<p>Store에서 데이터를 선형적으로 관리를 하다보면 배열을 처리할 때 index를 가져와서 삭제하거나 보여주지 않는 행위를 하면서 로직이 복잡해집니다. 그래서 객체 내부에서 자신을 삭제하거나 내용물을 바꾸거나 하는 형태를 가질 수 있도록 모델을 구현했습니다. 이렇게 하게 되니 인덱스로 찾는 코드 없이, 객체만 전달해주면 되어서 훨씬 로직이 간단해졌습니다.</p>
+</li>
+<li>
+<p>요즘 핫한 디자인 시스템을 이해를 하고자 자료를 읽고 적용을 해보고 있습니다. 디자인 시스템을 왜 써야하는지, 어떤 효과가 있는지는 이해를 하였으나 디자인 시스템을 구현하므로써 어떤 효과를 극대화 할 수 있는지는 아직 감이 와닿지는 않습니다. 회사의 웹 프로덕트에도 적용은 해놓았으나 개발자의 기준으로 만들어 놓다보니 부족한 점이 많습니다. 하반기 혹은 내년 상반기 쯤에는 디자인 시스템을 디자인 직군, 기획 직군과 함께 기획하여 고도화를 시키고 싶습니다.</p>
+</li>
+<li>
+<p>운영을 진행하면서 인원이 적다보니 안정적인 웹 제공을 위해 에러에 대한 처리, 해결 방법에 대해 고민을 하고 있습니다. 범용적이고 응집도 있게 코딩을 작성해야 하다보니 에러 로직에 대한 부분이 중앙집중 형태로 작성이 되는 걸 볼 수 있었습니다. 일반적으로 에러가 많이 나오는 부분은 API를 호출하거나 받아서 처리를 하는 부분입니다. HTTP 응답에 대해 래핑을 해놓은 클래스를 구현하거나 모듈을 사용한다면 서버 개발자와 HTTP Response 코드를 맞추어 에러를 처리할 것입니다. 그렇기 때문에 대다수의 경우 400, 403, 404 등 400대의 에러를 핸들링 하고, 이러한 에러 처리에 대해서 클라이언트에게 피드백을 주도록 구현을 하게 됩니다. 그렇게 앞서 서술한 생각을 바탕으로 코딩을 작성하고 있었는데, 마침 <a href="https://ui.toast.com/weekly-pick/ko_20200623/">리액트 앱에서의 중앙 집중식 API 에러 핸들링</a>라는 글을 발견하여 읽게 되었습니다. 그래서 이 글에서 영감을 많이 얻은 부분이 있어 혹시나 동일하거나 비슷한 사례를 가지신 분이라면 글을 읽어보시길 권합니다.</p>
+</li>
+<li>
+<p>테스트 코드를 하반기에는 강제적으로 팀에 도입하려 생각중입니다. 저희 회사의 결제 프로세스는 대부분 웹으로 작업되기 때문에 테스트가 매우 중요합니다. 물론 우스갯소리로 <code>QDD(QA Driven Develop)</code> 이라고 말하긴 합니다만 QA에서 모든 예외상황이 캐치될 수는 없습니다. 그렇기 때문에 테스트 프로세스는 필수불가결하며 적용을 할 수록 안정성 있는 웹이 완성됩니다.
+그래서 테스트 코드를 어디서부터 추가를 하면 좋을까 고민을 하게 되었습니다. 저희 코드는 레이아웃 상태를 모델에서 데이터가 수정되는데로 prop drilling으로 렌더링 해주기만 하기 때문에 컴포넌트 테스트를 할 필요가 없었습니다. 그래서 유닛테스트는 최우선 테스트는 아니라고 판단이 되었습니다.
+또한 유닛테스트의 큰 부분 중, React 기능에 대한 테스트도 포함되어 있는데 React가 빌드되기 전에 많은 QA를 거쳤을꺼라 생각되기 때문에 React를 믿는걸로 진행하였습니다. 통합 테스트와 e2e 테스트 둘 중에 무얼 먼저 할까 고민을 해본 결과, e2e 테스트가 더 중요하다고 생각이 들었습니다. 그 이유는 e2e 테스트에서 통합 테스트 부분까지 테스트를 할 수 있다고 생각했기 때문입니다. 그래서 e2e 테스트로 정상적인 행동에 대한 테스트 코드를 작성하고 예외적인 부분을 통합 테스트로 가져가면 좋을 것 같다는 판단이 들었습니다.</p>
+</li>
+<li>
+<p>최근 Deno가 가파르게 성장하고 있습니다. deno는 node.js가 가지던 문제점을 해결 할 수 있다고 이야기가 많습니다. 특히 중앙 집중형 모듈 시스템의 탈피 라던가, TypeScript를 어셈블리 레벨로 바로 컴파일 한다던가. 우리가 여태까지 겪고 있던 문제를 해결해줄 수 있다고 생각합니다. 저는 deno가 node.js를 대체할 수 있다고 믿습니다. 당장은 아니지만 근 미래에는 말이죠. 그렇기 때문에 Rust 언어를 공부하기 시작했습니다. Rust 자체도 큰 규모로 성장하고 있고 Deno도 성장하고 있으니 Rust를 공부하면서 Deno의 오픈소스들에 기여할 수 있게 말이죠.</p>
+</li>
+</ol>
+<br>
+<p>많은 기술이 대두되면서 생각이 깊어졌습니다. 과연 이 기술을 익히는게 올바른걸까? 하고 말이죠. 그래서 점점 깊이있게 이 기술의 근본기술은 무엇이고, 왜 이렇게 만들었는지에 대해서 고민하게 되었습니다. 점점 깊게 파고드니 기술의 철학에 대해서 고민하게 되었습니다. 이렇게 고민하니 확실하게 왜 써야하고, 어느 순간에 해결을 잘 해줄 수 있는지, 어떻게 구현해야 하는지 알 수 있게 되었습니다.</p>
+<p>이번 상반기는 당연하게 생각하던 기술이나 철학에 대해서 더 깊게 파고들고 공부를 심도있게 하는 방법을 익힌 상반기였습니다.</p>
+<h2 id="회사">회사<a aria-hidden="true" tabindex="-1" href="#회사"><span class="icon icon-link"></span></a></h2>
+<p>상반기동안 프로덕트의 발전을 위해 많은 기여를 하고자 노력했습니다. 일반적으로 프로덕트의 발전이라고 한다면 프로덕트를 더 이쁘게 만들고 성능을 좋게 만드는 작업을 일컫을 것 입니다. 하지만 제 생각은 좀 다릅니다. <strong>좋은 프로덕트는 혼자 만드는게 아닙니다.</strong> 프로덕트에 기여하는 개발자, 마케터, 디자이너 등등.. 다양한 직군의 사람이 모여 좋은 프로덕트를 만듭니다. 그런 의미에서, 프로덕트에 관여하는 팀원이 퍼포먼스가 훌륭하게 나온다면 1 + 1 = 3 이상이 될 수 있다고 생각합니다.</p>
+<p>그래서 내가 가진 기술로 어떻게 하면 팀원의 퍼포먼스를 높일 수 있을까 고민했습니다.</p>
+<h3 id="이벤트-페이지-자동화">이벤트 페이지 자동화<a aria-hidden="true" tabindex="-1" href="#이벤트-페이지-자동화"><span class="icon icon-link"></span></a></h3>
+<p>작년과 올해 상반기까지 이벤트 페이지를 개발자가 만들거나 마케터분이 이벤트 페이지를 만들었습니다. 그렇게 되다보니 자잘하게 텍스트가 틀리거나 기능이 제대로 동작을 안하는 휴먼에러가 가끔 발생했습니다. 그래서 이벤트 페이지를 자동화를 해야겠다는 생각이 들어, 남는 업무 시간과 개인시간을 투자해서 이벤트 페이지 자동화 툴을 개발했습니다. 혼자 기획, 개발, 디자인, 인프라를 개발했고 개발 기간은 한 달정도 걸렸습니다.</p>
+<p>지금 B마트의 대다수의 마케팅 페이지는 이벤트 페이지 자동화 툴에서 제작이 되고 있습니다. 지속적인 유지보수를 통해 신규 기능을 추가하고 있으며, 이벤트의 안정성이 높아지고 있습니다.</p>
+<h3 id="개발-어드민-개발">개발 어드민 개발<a aria-hidden="true" tabindex="-1" href="#개발-어드민-개발"><span class="icon icon-link"></span></a></h3>
+<p>B마트 개발을 하면서 필요한 필수적인 키값, 가상 주문을 넣어주는 어드민을 개발했습니다. 기존에는 서버 로그에서 가져오거나 앱에서 발급을 받았다면 이 부분을 커스텀하게 할 수 있도록 어드민을 개발하였습니다.</p>
+<p>이 시점에 개발을 하려고 하던 차, 웹 프론트엔드 개발자가 새로 입사하셔서 함께 합을 맞춰본 프로젝트 였습니다.</p>
+<h3 id="개편">개편<a aria-hidden="true" tabindex="-1" href="#개편"><span class="icon icon-link"></span></a></h3>
+<p>업무를 진행하면서 점진적으로 Vue에서 React로 옮기고 있습니다. 1년 가까이 진행을 하고 있는 프로젝트였으며 곧 운영에 배포 될 예정이라 두근거리기도 합니다. 기술 스택은 React + Redux + TypeScript + hooks 조합으로 개발하고 있으며 여타 프로젝트와 좀 다른 점은 객체지향 형태로 모델을 만들고 모델 기반으로 데이터를 담고 있습니다.</p>
+<p>B마트는 급성장을 하고 있고 급성장을 함에 따라 외부의 요건들이 급작스럽게 변경되는 것이 많습니다. 예를 들자면 API, 타 팀의 데이터를 끌어오기 위한 모듈 등이 해당됩니다. 그래서 아래와 같은 구조를 설계했습니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/2.png" alt="2" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">2</figcaption></figure>
+(적용하고 있는 구조)<p></p>
+<ol>
+<li>
+<p>모델의 분리: 서버와 연계되는 다양한 응답 및 요청이 클라이언트에 즉각적으로 영향도가 있다면 서버 데이터가 변경이 되었을때 영향 받는 범위가 넓고 취약한 코드를 작성하게 됩니다. 그래서 내부에서 사용되는 웹 프론트엔드 전용 모델과 Request, Response 모델을 분리했습니다. 이렇게 되면 Request, Response 모델이 수정이 된다 하더라도 내부에서 사용되는 웹 프론트엔드 용 모델에서 변경을 해주면 실제 프로덕트 요소에는 큰 영향이 가지 않도록 구현할 수 있습니다.</p>
+</li>
+<li>
+<p>비즈니스 영역: 비즈니스 영역은 프로덕트 단위의 노드가 존재합니다. 해당 영역에서는 Core에서 나온 레이아웃과 Model 데이터를 가지고 프로덕트를 개발합니다. 그래서 비즈니스 로직, API 연계 등 레거시 코드들이 중앙으로 모이게 됩니다. 그래서 레거시 코드에 대한 리펙토링은 이 영역을 중심으로 구현하면 되며 Core와 Model은 고도화를 계속 진행하면 됩니다.</p>
+</li>
+<li>
+<p>코어 디자인 시스템: 공통 레이아웃을 가지고 있는 라이브러리입니다. 디자인 시스템의 역할도 하며 atomic design으로 구현되어 있습니다.</p>
+</li>
+</ol>
+<p>B마트 프로젝트는 앱 위에 출력이 되므로, 앱의 native storage를 잘 이용하면 어떨까? 하는 생각이 들었습니다. 그래서 공통 모델을 만들어 두고 데이터가 fetch 될 때, native storage에 해당 데이터를 주입하고 모든 지면에서 사용할 수 있도록 설계를 하고 있습니다. 특히 유저 데이터의 경우에는 공통적으로 사용되므로 이러한 데이터를 웹 지면에서 편리하게 가져다 쓸 수 있도록 구현하는 방법을 고민중입니다.</p>
+<p>이렇게 분리하게되면 테스트를 하는데도 큰 장점이 있습니다. 프로덕트 단위로 e2e, 통합 테스트를 진행하면되고, Core와 Model에서 유닛 테스트 진행을 해주면 됩니다.</p>
+<h3 id="코드리뷰">코드리뷰<a aria-hidden="true" tabindex="-1" href="#코드리뷰"><span class="icon icon-link"></span></a></h3>
+<p>상반기부터 코드리뷰를 빡세게 진행하고 있습니다. 하반기에는 코드리뷰 및 테스트 커버리지가 일정 수준 되지 않으면 머지할 수 없도록 고민중입니다. 이 코드리뷰는 웹 프론트엔드 개발자가 직접 핸들링하는 앱의 웹지면 뿐만 아니라, WMS 모바일 웹 지면에 대해서도 까다롭게 코드리뷰를 하고 있습니다. 이렇게 진행을 하니 코드가 전반적으로 어떻게 돌아가는지, 누가 어떤 작업을 하는지, 상대방이 코드를 어떻게 짜는지도 알 수 있게 되어 큰 도움이 되고 있습니다.</p>
+<p>바빠서 못한다는 코드리뷰보다 바쁘기 때문에 코드리뷰 한다는 생각을 갖고 리뷰를 하고 있습니다. 바쁘면 그만큼 실수를 잦게 할 수 있기 때문입니다.</p>
+<h3 id="회고">회고<a aria-hidden="true" tabindex="-1" href="#회고"><span class="icon icon-link"></span></a></h3>
+<p>웹 프론트엔드 개발을 혼자 진행할 때에는 자체적으로 혼자 회고를 했으나, 이번에는 웹 개발자가 두 명이기 때문에 회고를 주마다 진행하고 있습니다. 그러면서 서로 어떤 점을 진행했는지, 무얼 앞으로 해야하는지, 정기배포에는 무엇이나가야 하는지, 그 외 잡담 등등 다양한 이야기를 하고 있습니다. 어서 B마트 프론트엔드 개발자가 많이 늘어나서 더 성숙한 회고 문화를 잡아가고 싶습니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/4.png" alt="4" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">4</figcaption></figure>
+(벌써 16주차 회고와 2020년 상반기 회고를 진행했습니다.)<p></p>
+<h2 id="블로그">블로그<a aria-hidden="true" tabindex="-1" href="#블로그"><span class="icon icon-link"></span></a></h2>
+<p>상반기에 블로그 글을 꾸준히 쓰려 노력했지만 점점 글에 대해서 퀄리티에 집착하게 되어 간단한 글 조차 제대로 쓰지 않는다면 내 자신에게 컨펌이 안나고 있습니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/3.png" alt="3" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">3</figcaption></figure>
+(제발 날 내보내줘!!)<p></p>
+<p>이 글들이 컨펌이 나지 않는 이유는 퀄리티가 낮다고 개인적으로 판단을 했습니다. 구글 검색을 한번만 하면 나오는 정보보다 깊은 수준의 지식이 더 많으면 했으나 그러기 쉽지 않았습니다. 계속 글을 작성하다보면 깊은 수준의 지식을 이해시키려 더 어려운 지식을 인용하고 있어서 글의 내용이 매끄럽지 않았습니다.</p>
+<p>추후에 나갈 글은 TypeScript 디자인 패턴 글과 TypeScript로 Redux, Redux saga를 아름답게 개발하는 방법이 퍼블리시 될 것 같습니다.</p>
+<h3 id="성장">성장<a aria-hidden="true" tabindex="-1" href="#성장"><span class="icon icon-link"></span></a></h3>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/5.png" alt="5" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">5</figcaption></figure><p></p>
+<p>블로그는 꾸준히 검색 노출이 일어나고 있고 성장하고 있습니다. 과거 글을 작성했을때와 비교해 지금은 클릭률이 훨씬 높아졌다는 걸 알 수 있었습니다.</p>
+<p>최근에는 글을 2주 간격으로 올리고 있는데, 이 또한 부족하다고 느낍니다. 시간이 없다는 건 핑계일 뿐이고 제가 시간을 부족하게 쓰기 때문입니다.</p>
+<p>글을 작성하면서 과거부터 공부를 진행했었는데 글이 안올라오는 것 만큼 개인적인 공부가 부족하지 않은가? 라는 생각이 들고 있습니다. <strong>회사에서의 바쁜 일정과 개인의 성장은 비례하지 않습니다.</strong> 회사에서는 일을 해결하기 위해서 사파의 방법으로 해결하는 경우도 굉장히 많은데, 이는 시간의 촉박함이라던가 다양한 레거시에 의해 일어납니다. 그래서 올바른 방법에 대한 해결방법은 개인 시간을 이용해 공부해야 한다고 생각합니다.</p>
+<h2 id="외부활동">외부활동<a aria-hidden="true" tabindex="-1" href="#외부활동"><span class="icon icon-link"></span></a></h2>
+<p>이번 상반기는 외부 활동을 많이 할 수 없었습니다.</p>
+<h3 id="과외-1">과외<a aria-hidden="true" tabindex="-1" href="#과외-1"><span class="icon icon-link"></span></a></h3>
+<p>상반기에 과외를 총 7분을 바쁜 시간을 쪼개서 틈틈히 진행했습니다. 4분은 마무리를 했고 지금 3분을 여전히 진행하고 있습니다. 과외를 진행하면서 위에 살짝 이야기하긴 했지만 제 자신의 성장을 크게 했던 것 같습니다. 뭐니뭐니해도 과외를 하면서 가장 크게 즐거움을 받는 순간이 있습니다.</p>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/6.png" alt="6" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">6</figcaption></figure>
+(합격!!)<p></p>
+<p>요번에 과외를 진행하셨던 분이 유망한 기업에 성공적으로 웹 프론트엔드 개발자 포지션 전환을 완료하셨습니다. (그러기엔 이제부터 시작이지만!) 제 과외로 하여금 개발자로써 성공적인 커리어 시작을 진행하시는 분들이 더 많아졌으면 좋겠습니다.</p>
+<h3 id="패스트캠퍼스-모의면접관">패스트캠퍼스 모의면접관<a aria-hidden="true" tabindex="-1" href="#패스트캠퍼스-모의면접관"><span class="icon icon-link"></span></a></h3>
+<p>우연한 기회로 패스트캠퍼스에서 모의 면접관을 2달 정도 진행하게 되었습니다. 피드백을 드리면서 공통적으로 학원생 분들께 <strong>자신만의 엣지 포인트를 만들어라</strong> 라고 안내해드리고 있습니다. 이 이야기를 드리는 이유는 같은 환경, 같은 공부 프로세스를 진행한 분들이 매년 쏟아져 나오고 있습니다. 넷상에서 웹 프론트엔드 개발에 대한 정보도 많이 쏟아져 나오고 있구요.</p>
+<p>그래서 말씀드리는 것은 그러한 개발자분과 비교해 다른 포인트가 있어야 본인이 잘 팔린다는 소리입니다. 그래서 각 학원생분에 맞는 엣지 포인트를 충고해드리고 있습니다.</p>
+<p>웹 프론트엔드 개발자가 현재 핫한 직업중 하나인 것은 맞습니다. 다만 핫하다고 해서 쉽게 진입이 가능한 건 아닙니다. 최근 뽑는 수준이 엄청 높아짐에 따라서 (복잡한 웹이 많아지면서) 그에 맞는 엣지 포인트가 없다면 서류조차 떨어지기 마련입니다. 만약 취업이 된다고 하더라도 빠르게 성장하는 웹 프론트엔드 업계에서는 타 업계보다 더 치열한 공부가 필수적이라고 생각이 됩니다.</p>
+<p>가끔 준비하시는 분 중에 너무나 훌륭하신분을 만나곤 합니다. 그럴때는 큰 깨달음을 얻고 돌아가곤 합니다.</p>
+<h2 id="하반기-목표">하반기 목표<a aria-hidden="true" tabindex="-1" href="#하반기-목표"><span class="icon icon-link"></span></a></h2>
+<p>하반기에는 좀 더 나 자신에게 투자할 수 있게 되었으면 좋겠습니다.</p>
+<h3 id="회사-1">회사<a aria-hidden="true" tabindex="-1" href="#회사-1"><span class="icon icon-link"></span></a></h3>
+<p>B마트가 급속도로 성장하는 만큼 튼튼한 구조가 중요하다고 생각이 됩니다. 그래서 앞서 말했던 웹 프론트엔드 구조를 100%는 아니더라도 50%는 작업했으면 좋겠습니다. 이 작업을 위해서는 다양한 준비를 진행해야 하는데 해당 작업들은 아래와 같습니다.</p>
+<ol>
+<li>사내 팀 위키 프론트엔드 부분 재정리</li>
+<li>레거시 프론트엔드 코드 정리</li>
+<li>디자인 시스템, 공통 모델 프로젝트에 적용</li>
+</ol>
+<p>함께 진행하는 웹 프론트엔드 개발자와 함께 하반기에도 일이 많겠지만 의미있는 개발자로써의 커리어를 위해 함께 노력하고 싶습니다.</p>
+<h3 id="사이드-프로젝트">사이드 프로젝트<a aria-hidden="true" tabindex="-1" href="#사이드-프로젝트"><span class="icon icon-link"></span></a></h3>
+<p>사이드 프로젝트로 몇 가지를 상반기부터 진행하고 있습니다. 하반기에는 이 사이드 프로젝트를 오픈했으면 좋겠는데 아직 확정된 건 없어서 조심스럽습니다.</p>
+<p>3가지의 사이드 프로젝트를 진행하고 있고 그 중에 하나를 프리뷰로 슬쩍 오픈!</p>
+<p></p><figure class="img-card"><img src="/contents/articles/2020%EB%85%84-%EC%83%81%EB%B0%98%EA%B8%B0-%ED%9A%8C%EA%B3%A0/assets/7.png" alt="7" loading="lazy" decoding="async" onload="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-loaded&#x27;)" onerror="this.closest(&#x27;.img-card&#x27;).classList.add(&#x27;is-error&#x27;)"><figcaption class="img-card__caption">7</figcaption></figure>
+(이력서를 주제로 canvas를 이용해 게임같은 이력서 페이지를 구현중..)<p></p>
+<h2 id="끝으로">끝으로<a aria-hidden="true" tabindex="-1" href="#끝으로"><span class="icon icon-link"></span></a></h2>
+<p>시간이 너무 빨리 흘러갑니다. 무언가를 하고 싶어도 눈을 떠보니 반년이 지나있네요. 상반기에 수많은 일을 진행한 만큼 하반기에도 알차고 재밋는 일들이 기다렸으면 좋겠습니다.</p>  </article>  <script type="module">function n(){const o=document.querySelector("[data-progress]");if(!o)return;const s=()=>{const t=document.documentElement,r=t.scrollHeight-t.clientHeight,c=r>0?Math.min(100,t.scrollTop/r*100):0;o.style.width=`${c}%`};let e=!1;const a=()=>{e||(e=!0,requestAnimationFrame(()=>{s(),e=!1}))};addEventListener("scroll",a,{passive:!0}),s()}n();document.addEventListener("astro:page-load",n);document.addEventListener("vallista:page-load",n);</script>  </div> <footer class="_1bsh61j0"> <div class="_1bsh61j1"> <div class="_1bsh61j2"> <div class="_1bsh61j3"> <h3 class="_1bsh61j4">사이트 맵</h3> <a href="/" class="_1bsh61j5"> 홈 </a><a href="/articles" class="_1bsh61j5"> 아티클 </a><a href="/notes" class="_1bsh61j5"> 노트 </a><a href="/projects" class="_1bsh61j5"> 프로젝트 </a><a href="/tags" class="_1bsh61j5"> 태그 </a><a href="/series" class="_1bsh61j5"> 시리즈 </a> </div><div class="_1bsh61j3"> <h3 class="_1bsh61j4">관련 사이트</h3> <a href="https://github.com/vallista" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> GitHub </a><a href="https://vallista.tistory.com" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 이전 블로그 </a><a href="https://career.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 채용 </a><a href="https://techblog.woowahan.com/" class="_1bsh61j5" target="_blank" rel="noopener noreferrer"> 우아한형제들 기술블로그 </a> </div> </div> <div class="_1bsh61j6"> <p class="_1bsh61j7">
+Copyright © 2026  <a href="https://vallista.kr" class="_1bsh61j8"> Vallista </a> 
+All rights reserved.
+</p> <p class="_1bsh61j7">
+Created by  <a href="https://vallista.kr" class="_1bsh61j8">
+@Vallista </a>
+. Powered by  <a href="https://github.com/Vallista/vallista-land" class="_1bsh61j8" target="_blank" rel="noopener noreferrer">
+@vallista-land
+</a> </p> </div> </div> </footer> </main> </div> <!-- main 바깥 body 직계. transform 컨텍스트에 묶이지 않아서 position:fixed 가 viewport 기준으로 동작.
+         SPA 네비 시 main-content 와 함께 교체 대상이 되도록 id 컨테이너로 감쌈. --> <div id="page-overlay"> <nav class="yt1e5n0" aria-label="이 글에서"> <div class="yt1e5n1">On this page</div> <ol class="yt1e5n2"> <li class="depth-2"> <a href="#변화" class="yt1e5n3" data-toc-link data-depth="2"> 변화 </a> </li><li class="depth-3"> <a href="#협업" class="yt1e5n3" data-toc-link data-depth="3"> 협업 </a> </li><li class="depth-3"> <a href="#가치관" class="yt1e5n3" data-toc-link data-depth="3"> 가치관 </a> </li><li class="depth-3"> <a href="#기록" class="yt1e5n3" data-toc-link data-depth="3"> 기록 </a> </li><li class="depth-2"> <a href="#공부" class="yt1e5n3" data-toc-link data-depth="2"> 공부 </a> </li><li class="depth-2"> <a href="#회사" class="yt1e5n3" data-toc-link data-depth="2"> 회사 </a> </li><li class="depth-3"> <a href="#이벤트-페이지-자동화" class="yt1e5n3" data-toc-link data-depth="3"> 이벤트 페이지 자동화 </a> </li><li class="depth-3"> <a href="#개발-어드민-개발" class="yt1e5n3" data-toc-link data-depth="3"> 개발 어드민 개발 </a> </li><li class="depth-3"> <a href="#개편" class="yt1e5n3" data-toc-link data-depth="3"> 개편 </a> </li><li class="depth-3"> <a href="#코드리뷰" class="yt1e5n3" data-toc-link data-depth="3"> 코드리뷰 </a> </li><li class="depth-3"> <a href="#회고" class="yt1e5n3" data-toc-link data-depth="3"> 회고 </a> </li><li class="depth-2"> <a href="#블로그" class="yt1e5n3" data-toc-link data-depth="2"> 블로그 </a> </li><li class="depth-3"> <a href="#성장" class="yt1e5n3" data-toc-link data-depth="3"> 성장 </a> </li><li class="depth-2"> <a href="#외부활동" class="yt1e5n3" data-toc-link data-depth="2"> 외부활동 </a> </li><li class="depth-3"> <a href="#과외-1" class="yt1e5n3" data-toc-link data-depth="3"> 과외 </a> </li><li class="depth-3"> <a href="#패스트캠퍼스-모의면접관" class="yt1e5n3" data-toc-link data-depth="3"> 패스트캠퍼스 모의면접관 </a> </li><li class="depth-2"> <a href="#하반기-목표" class="yt1e5n3" data-toc-link data-depth="2"> 하반기 목표 </a> </li><li class="depth-3"> <a href="#회사-1" class="yt1e5n3" data-toc-link data-depth="3"> 회사 </a> </li><li class="depth-3"> <a href="#사이드-프로젝트" class="yt1e5n3" data-toc-link data-depth="3"> 사이드 프로젝트 </a> </li><li class="depth-2"> <a href="#끝으로" class="yt1e5n3" data-toc-link data-depth="2"> 끝으로 </a> </li> </ol> </nav> <script type="module">function c(){const n=Array.from(document.querySelectorAll("[data-toc-link]")),r=Array.from(document.querySelectorAll("article h2[id], article h3[id]"));if(n.length===0||r.length===0)return;const i=new Map;for(const e of n){const t=decodeURIComponent(e.hash.slice(1));t&&i.set(t,e)}function d(){const e=window.scrollY+120;let t=r[0]?.id??null;for(const o of r)if(o.offsetTop<=e)t=o.id;else break;n.forEach(o=>o.classList.remove("active")),t&&i.get(t)?.classList.add("active")}let s=!1;const a=()=>{s||(s=!0,requestAnimationFrame(()=>{d(),s=!1}))},u=window.matchMedia("(prefers-reduced-motion: reduce)").matches;n.forEach(e=>{e.dataset.tocBound!=="1"&&(e.dataset.tocBound="1",e.addEventListener("click",t=>{const o=decodeURIComponent(e.hash.slice(1));if(!o)return;const l=document.getElementById(o);if(!l)return;t.preventDefault();const f=l.getBoundingClientRect().top+window.scrollY-80;window.scrollTo({top:f,behavior:u?"auto":"smooth"}),history.replaceState(null,"",e.hash||`#${o}`)}))}),window.addEventListener("scroll",a,{passive:!0}),window.addEventListener("resize",a,{passive:!0}),d()}c();document.addEventListener("astro:page-load",c);document.addEventListener("vallista:page-load",c);</script> </div> <div data-palette-root hidden data-astro-transition-persist="astro-hlkrgkz4-1"> <div class="_1hyinyi2" data-palette-scrim></div> <div class="_1hyinyi3" role="dialog" aria-modal="true" aria-labelledby="palette-label" data-palette> <div class="_1hyinyi4"> <span class="_1hyinyi5" aria-hidden="true"> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"> <circle cx="7" cy="7" r="5"></circle> <path d="m11 11 3 3" stroke-linecap="round"></path> </svg> </span> <label id="palette-label" class="_1hyinyi6" style="display:none;">글 검색</label> <input type="search" class="_1hyinyi6" placeholder="글 검색…" aria-controls="palette-results" aria-autocomplete="list" aria-labelledby="palette-label" data-palette-input> <kbd class="_1hyinyi7">Esc</kbd> </div> <div id="palette-results" class="_1hyinyi8" role="listbox" aria-label="검색 결과" data-palette-list> <div class="_1hyinyib" data-palette-empty>Pagefind를 불러오는 중…</div> </div> </div> </div> <script type="module" src="/_astro/SearchPalette.astro_astro_type_script_index_0_lang.DpgWP7ko.js"></script> <!-- 커스텀 SPA 네비게이션: 사이드바와 CSS는 그대로 유지하고 main-content 만 교체.
+         Astro ClientRouter 대안 — vanilla-extract head swap 이슈 회피 + 사이드바 persist. --> <script>
+      ;(function () {
+        if (window.__vallistaSpaNav) return
+        window.__vallistaSpaNav = true
+
+        var busy = false
+        var LEAVE_MS = 140
+
+        function getMain() {
+          return document.getElementById('main-content')
+        }
+
+        function shouldIntercept(e, a) {
+          if (busy || e.defaultPrevented) return false
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false
+          if (!a || !a.href) return false
+          if (a.target && a.target !== '_self') return false
+          if (a.hasAttribute('download')) return false
+          var href = a.getAttribute('href')
+          if (!href || href.charAt(0) === '#') return false
+          var url
+          try { url = new URL(a.href, location.href) } catch (_) { return false }
+          if (url.origin !== location.origin) return false
+          if (url.protocol !== 'http:' && url.protocol !== 'https:') return false
+          if (url.pathname === location.pathname && url.search === location.search) return false
+          // 정적 자산은 intercept 하지 않음
+          if (/\.(xml|rss|json|png|jpg|jpeg|gif|webp|svg|pdf|zip)$/i.test(url.pathname)) return false
+          return true
+        }
+
+        async function navigate(url) {
+          var main = getMain()
+          if (!main) { location.href = url.href; return }
+          busy = true
+          main.classList.add('is-leaving')
+          // 사용자가 leave 애니메이션을 보는 동안 fetch 병렬 실행
+          var fetchP = fetch(url.href, { credentials: 'same-origin' }).then(function (r) { return r.text() })
+          var delayP = new Promise(function (resolve) { setTimeout(resolve, LEAVE_MS) })
+          try {
+            var results = await Promise.all([fetchP, delayP])
+            var html = results[0]
+            var doc = new DOMParser().parseFromString(html, 'text/html')
+            var newMain = doc.getElementById('main-content')
+            if (!newMain) { location.href = url.href; return }
+
+            document.title = doc.title
+
+            // head의 새 스타일만 보완적으로 추가 (기존 스타일은 유지). 같은 href면 중복 추가 안 함.
+            var existingHrefs = new Set()
+            document.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) { existingHrefs.add(l.href) })
+            doc.querySelectorAll('link[rel="stylesheet"][href]').forEach(function (l) {
+              if (!existingHrefs.has(l.href)) {
+                var clone = document.createElement('link')
+                clone.rel = 'stylesheet'
+                clone.href = l.getAttribute('href')
+                document.head.appendChild(clone)
+              }
+            })
+
+            // NavRail의 aria-current 업데이트만 따로 처리 (사이드바 DOM은 유지)
+            var newPath = url.pathname
+            document.querySelectorAll('aside a[href]').forEach(function (a) {
+              var ah = a.getAttribute('href') || ''
+              var isCurrent = false
+              if (ah === '/') isCurrent = newPath === '/'
+              else isCurrent = newPath === ah || newPath.indexOf(ah + '/') === 0
+              if (isCurrent) a.setAttribute('aria-current', 'page')
+              else a.removeAttribute('aria-current')
+            })
+
+            // main-content DOM 교체
+            main.replaceWith(newMain)
+
+            function rerunScripts(root) {
+              root.querySelectorAll('script').forEach(function (oldS) {
+                var s = document.createElement('script')
+                for (var i = 0; i < oldS.attributes.length; i++) {
+                  var a = oldS.attributes[i]
+                  s.setAttribute(a.name, a.value)
+                }
+                s.textContent = oldS.textContent
+                oldS.parentNode.replaceChild(s, oldS)
+              })
+            }
+
+            // 새 main에 있는 script 태그 실행
+            rerunScripts(newMain)
+
+            // overlay(예: TOC) 교체 — main 바깥이지만 페이지별 콘텐츠이므로 같이 갱신
+            var overlay = document.getElementById('page-overlay')
+            var newOverlay = doc.getElementById('page-overlay')
+            if (overlay && newOverlay) {
+              overlay.replaceWith(newOverlay)
+              rerunScripts(newOverlay)
+            }
+
+            history.pushState({}, '', url.href)
+            window.scrollTo(0, 0)
+
+            document.dispatchEvent(new CustomEvent('vallista:page-load'))
+          } catch (err) {
+            location.href = url.href
+          } finally {
+            busy = false
+          }
+        }
+
+        document.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[href]') : null
+          if (!shouldIntercept(e, a)) return
+          e.preventDefault()
+          var url = new URL(a.href, location.href)
+          navigate(url)
+        })
+
+        window.addEventListener('popstate', function () {
+          location.reload()
+        })
+      })()
+    </script> </body> </html>
